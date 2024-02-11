@@ -44,14 +44,17 @@ module.exports = {
       },
     ],
 
+    // we should not restrict how we name our variables
     "unicorn/prevent-abbreviations": "off",
+    "unicorn/catch-error-name": "off",
     // https://github.com/sindresorhus/meta/discussions/7
     "unicorn/no-null": "off",
     // https://github.com/orgs/web-infra-dev/discussions/10
     "unicorn/prefer-top-level-await": "off",
-    "unicorn/catch-error-name": "off",
     "unicorn/no-array-reduce": "off",
 
+    // handled by unicorn/filename-case
+    // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/filename-case.md
     "@eslint-react/naming-convention/filename": "off",
 
     "no-restricted-syntax": [
