@@ -1,0 +1,23 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  "tailwindCSS.experimental.classRegex": [
+    // https://cva.style/docs/getting-started/installation#intellisense
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    // https://react-twc.vercel.app/docs/getting-started#setup-autocompletion-in-your-editor
+    "twc\\.[^`]+`([^`]*)`",
+    "twc\\(.*?\\).*?`([^)]*)",
+    ["twc\\.[^`]+\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["twc\\(.*?\\).*?\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "lucide-react",
+    "react-day-picker",
+    "@radix-ui/*",
+    "react-twc"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

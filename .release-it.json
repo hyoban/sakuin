@@ -1,0 +1,18 @@
+{
+  "git": {
+    "commitMessage": "chore: release ${version}"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "name": "angular"
+      },
+      "infile": "CHANGELOG.md"
+    }
+  },
+  "hooks": {
+    "before:init": ["pnpm lint", "pnpm typecheck"],
+    "after:bump": "pnpm build",
+    "before:release": "pnpm prettier --write CHANGELOG.md && git add CHANGELOG.md"
+  }
+}
