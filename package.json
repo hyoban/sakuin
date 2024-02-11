@@ -1,5 +1,5 @@
 {
-  "name": "starter-next",
+  "name": "hyoban.cc",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@8.15.1",
@@ -9,8 +9,7 @@
     "start": "next start",
     "lint": "prettier --check . && next lint --max-warnings 0",
     "typecheck": "tsc",
-    "format": "prettier --write .",
-    "release": "release-it"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "next": "^14.1.0",
