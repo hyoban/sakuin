@@ -1,3 +1,5 @@
+import { Fragment } from "react"
+
 type Project = {
   title: string
   description: string
@@ -98,10 +100,10 @@ export default function Home() {
         <h3>Links</h3>
         <samp>
           {links.map((link, index) => (
-            <span key={link.href}>
+            <Fragment key={link.href}>
               {index > 0 && " . "}
               <ExternalLink href={link.href}>{link.title}</ExternalLink>
-            </span>
+            </Fragment>
           ))}
         </samp>
       </section>
