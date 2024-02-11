@@ -99,6 +99,12 @@ export default function Home() {
             <span className="opacity-70 mt-1">{project.description}</span>
           </ExternalLink>
         ))}
+        <ExternalLink
+          href="https://github.com/search?l=&o=desc&s=stars&type=Repositories&q=user%3Ahyoban"
+          className="font-normal mt-4 block text-sm"
+        >
+          All projects sorted by stars
+        </ExternalLink>
       </section>
       <section>
         <h3>Links</h3>
