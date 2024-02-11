@@ -8,8 +8,8 @@ export const metadata = {
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <html lang="zh-Hans" className="h-full dark:bg-neutral-900 dark:text-white">
-      <body className="h-full">{children}</body>
+    <html lang="zh-Hans" className="dark:bg-neutral-900 dark:text-white">
+      <body>{children}</body>
     </html>
   )
 }
