@@ -87,7 +87,7 @@ export default function Home() {
           <ExternalLink
             href={project.link}
             key={project.title}
-            className="-mx-3 px-3 flex flex-col rounded-md no-underline hover:bg-[#F5F4F4] dark:hover:bg-gray-200 sm:py-3 font-normal"
+            className="-mx-3 px-3 py-3 flex flex-col rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800 font-normal no-underline"
           >
             <span>{project.title}</span>
             <span className="opacity-70 mt-1">{project.description}</span>
