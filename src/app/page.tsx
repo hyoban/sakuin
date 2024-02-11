@@ -31,6 +31,10 @@ type Link = {
 
 const links: Link[] = [
   {
+    href: "https://hyoban.cc",
+    title: "me",
+  },
+  {
     href: "https://hyoban.xlog.app",
     title: "blog",
   },
