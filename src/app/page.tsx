@@ -1,4 +1,7 @@
+import clsx from "clsx"
 import { Fragment } from "react"
+
+import type { PropsWithChildren } from "react"
 
 type Project = {
   title: string
@@ -31,10 +34,6 @@ type Link = {
 
 const links: Link[] = [
   {
-    href: "https://hyoban.cc",
-    title: "me",
-  },
-  {
     href: "https://hyoban.xlog.app",
     title: "blog",
   },
@@ -56,15 +55,12 @@ const links: Link[] = [
   },
 ]
 
-function ExternalLink({
-  href,
-  className,
-  children,
-}: {
+type ExternalLinkProps = PropsWithChildren<{
   href: string
   className?: string
-  children: React.ReactNode
-}) {
+}>
+
+function ExternalLink({ href, className, children }: ExternalLinkProps) {
   return (
     <a
       target="_blank"
@@ -79,7 +75,13 @@ function ExternalLink({
 
 export default function Home() {
   return (
-    <main className="mx-auto my-12 max-w-[692px] px-6 antialiased sm:my-32 md:my-16 prose prose-neutral dark:prose-invert">
+    <main
+      className={clsx(
+        "mx-auto max-w-[692px] px-6 my-12 sm:my-32 md:my-16",
+        "antialiased",
+        "prose prose-neutral dark:prose-invert",
+      )}
+    >
       <section>
         <h3>Me</h3>
         <p>
@@ -93,7 +95,10 @@ export default function Home() {
           <ExternalLink
             href={project.link}
             key={project.title}
-            className="-mx-3 px-3 py-3 flex flex-col rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800 font-normal no-underline"
+            className={clsx(
+              "-mx-3 px-3 py-3 flex flex-col font-normal no-underline",
+              "rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800",
+            )}
           >
             <span>{project.title}</span>
             <span className="opacity-70 mt-1">{project.description}</span>
