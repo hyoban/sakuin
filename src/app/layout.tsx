@@ -1,11 +1,11 @@
-import "./globals.css"
+import './globals.css'
 
-import type { PropsWithChildren } from "react"
+import type { PropsWithChildren } from 'react'
 
 export const metadata = {
-  title: "Hyoban",
-  description: "Hyoban's personal website",
-  icons: [{ rel: "icon", url: "/favicon.svg" }],
+  title: 'Hyoban',
+  description: 'Hyoban\'s personal website',
+  icons: [{ rel: 'icon', url: '/favicon.svg' }],
 }
 
 export default function RootLayout({ children }: PropsWithChildren) {
