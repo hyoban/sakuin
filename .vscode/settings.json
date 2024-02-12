@@ -1,5 +1,5 @@
 {
-  "[javascript][javascriptreact][typescript][typescriptreact]": {
+  "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc]": {
     "editor.formatOnSave": false
   },
   "editor.codeActionsOnSave": {
@@ -7,13 +7,16 @@
     "source.organizeImports": "never"
   },
   "eslint.rules.customizations": [
-    { "rule": "@stylistic/*", "severity": "off" }
+    { "rule": "@stylistic/*", "severity": "off" },
+    { "rule": "jsonc/auto", "severity": "off" }
   ],
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
-    "typescriptreact"
+    "typescriptreact",
+    "json",
+    "jsonc"
   ],
 
   "typescript.tsdk": "node_modules/typescript/lib"
