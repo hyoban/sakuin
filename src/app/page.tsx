@@ -76,7 +76,7 @@ export default function Home() {
   return (
     <main
       className={clsx(
-        'mx-auto max-w-[692px] px-6 my-12 sm:my-32 md:my-16',
+        'mx-auto max-w-[692px] px-6 my-6 sm:my-16',
         'antialiased',
         'prose prose-neutral dark:prose-invert',
       )}
