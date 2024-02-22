@@ -71,7 +71,7 @@ function ExternalLink({ href, className, children }: ExternalLinkProps) {
   )
 }
 
-export default function Home() {
+export function HomePage() {
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
