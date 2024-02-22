@@ -5,7 +5,7 @@
   "private": true,
   "packageManager": "pnpm@8.15.3",
   "scripts": {
-    "build": "waku build --with-ssr",
+    "build": "waku build --with-ssr --with-vercel-static",
     "dev": "waku dev --with-ssr",
     "lint": "eslint .",
     "prepare": "simple-git-hooks",
