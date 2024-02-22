@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import type { PropsWithChildren } from 'react'
 import { Fragment } from 'react'
 
@@ -74,13 +73,7 @@ function ExternalLink({ href, className, children }: ExternalLinkProps) {
 
 export default function Home() {
   return (
-    <main
-      className={clsx(
-        'mx-auto max-w-[692px] px-6 my-6 sm:my-16',
-        'antialiased',
-        'prose prose-neutral dark:prose-invert',
-      )}
-    >
+    <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
         <h3>Me</h3>
         <p>A front-end developer, be good at React & TypeScript.</p>
@@ -91,10 +84,7 @@ export default function Home() {
           <ExternalLink
             href={project.link}
             key={project.title}
-            className={clsx(
-              '-mx-3 px-3 py-3 flex flex-col font-normal no-underline',
-              'rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800',
-            )}
+            className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
           >
             <span>{project.title}</span>
             <span className="opacity-70 mt-1">{project.description}</span>
