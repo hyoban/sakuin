@@ -1,7 +1,6 @@
 import clsx from 'clsx'
-import { Fragment } from 'react'
-
 import type { PropsWithChildren } from 'react'
+import { Fragment } from 'react'
 
 type Project = {
   title: string
