@@ -1,57 +1,8 @@
 import type { PropsWithChildren } from 'react'
 import { Fragment } from 'react'
 
-type Project = {
-  title: string
-  description: string
-  link: string
-}
-
-const projects: Project[] = [
-  {
-    title: 'Tailwind CSS ClassName Highlight',
-    description: 'Highlight valid Tailwind CSS class names in your code.',
-    link: 'https://github.com/hyoban/tailwindcss-classname-highlight',
-  },
-  {
-    title: 'izon',
-    description: 'Find a GitHub repository\'s dependents.',
-    link: 'https://github.com/hyoban/izon',
-  },
-  {
-    title: 'unocss-preset-shadcn',
-    description: 'Use shadcn ui with UnoCSS',
-    link: 'https://github.com/hyoban/unocss-preset-shadcn',
-  },
-]
-
-type Link = {
-  href: string
-  title: string
-}
-
-const links: Link[] = [
-  {
-    href: 'https://hyoban.xlog.app',
-    title: 'blog',
-  },
-  {
-    href: 'https://github.com/hyoban',
-    title: 'github',
-  },
-  {
-    href: 'https://twitter.com/0xhyoban',
-    title: 'tweets',
-  },
-  {
-    href: 'mailto:hi@hyoban.cc',
-    title: 'email',
-  },
-  {
-    href: 'https://gist.github.com/hyoban/7943d4c59c43b79d3f8388671437fe11',
-    title: 'dotfiles',
-  },
-]
+import { links, projects } from '../consts'
+import { getLatestBlogList } from '../storage'
 
 type ExternalLinkProps = PropsWithChildren<{
   href: string
@@ -71,7 +22,8 @@ function ExternalLink({ href, className, children }: ExternalLinkProps) {
   )
 }
 
-export function HomePage() {
+export async function HomePage() {
+  const latestBlogList = await getLatestBlogList()
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
@@ -96,6 +48,19 @@ export function HomePage() {
         >
           All projects sorted by stars
         </ExternalLink>
+      </section>
+      <section>
+        <h3>Latest Blog</h3>
+        {latestBlogList.map(blog => (
+          <ExternalLink
+            href={blog.link}
+            key={blog.link}
+            className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
+          >
+            <span>{blog.title}</span>
+            <span className="opacity-70 mt-1">{blog.date.slice(0, 10)}</span>
+          </ExternalLink>
+        ))}
       </section>
       <section>
         <h3>Links</h3>
