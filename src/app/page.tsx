@@ -83,10 +83,7 @@ export default function Home() {
     >
       <section>
         <h3>Me</h3>
-        <p>
-          I'm a front-end developer, be good at React & TypeScript. Currently
-          I'm studying at NCUT, will graduate in 2024.
-        </p>
+        <p>A front-end developer, be good at React & TypeScript.</p>
       </section>
       <section>
         <h3>Projects</h3>
