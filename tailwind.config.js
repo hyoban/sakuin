@@ -4,4 +4,7 @@ import typography from '@tailwindcss/typography'
 export default {
   content: ['./src/**/*.{ts,tsx}'],
   plugins: [typography()],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
 }
