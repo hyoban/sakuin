@@ -22,14 +22,14 @@ html.dark {
 
 @font-face {
   font-family: "SN Pro";
-  src: url("/fonts/SNPro-SemiBold.otf");
+  src: url("/fonts/SNPro-Semibold.otf");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SN Pro";
-  src: url("/fonts/SNPro-SemiBoldItalic.otf");
+  src: url("/fonts/SNPro-SemiboldItalic.otf");
   font-weight: 600;
   font-style: italic;
 }
