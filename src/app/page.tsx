@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from 'react'
 import { Fragment } from 'react'
 
-import { links, projects } from '../consts'
-import { getLatestBlogList } from '../storage'
+import { links } from '../consts'
+import { getGitHubProjects, getLatestBlogList } from '../storage'
 
 type ExternalLinkProps = PropsWithChildren<{
   href: string
@@ -22,8 +22,15 @@ function ExternalLink({ href, className, children }: ExternalLinkProps) {
   )
 }
 
+function capitalize(str: string) {
+  return str.replaceAll(/\b\w/g, l => l.toUpperCase()).replaceAll('-', ' ')
+}
+
 export async function HomePage() {
-  const latestBlogList = await getLatestBlogList()
+  const [latestBlogList, projects] = await Promise.all([
+    getLatestBlogList(),
+    getGitHubProjects(),
+  ])
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
@@ -34,11 +41,18 @@ export async function HomePage() {
         <h3>Projects</h3>
         {projects.map(project => (
           <ExternalLink
-            href={project.link}
-            key={project.title}
+            href={`https://github.com/${project.repo}`}
+            key={project.id}
             className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
           >
-            <span>{project.title}</span>
+            <div className="flex gap-2">
+              <span>{capitalize(project.name)}</span>
+              <span className="opacity-70 text-xs">
+                {project.stars}
+                {' '}
+                stars
+              </span>
+            </div>
             <span className="opacity-70 mt-1">{project.description}</span>
           </ExternalLink>
         ))}

@@ -1,27 +1,3 @@
-type Project = {
-  title: string
-  description: string
-  link: string
-}
-
-export const projects: Project[] = [
-  {
-    title: 'Tailwind CSS ClassName Highlight',
-    description: 'Highlight valid Tailwind CSS class names in your code.',
-    link: 'https://github.com/hyoban/tailwindcss-classname-highlight',
-  },
-  {
-    title: 'izon',
-    description: 'Find a GitHub repository\'s dependents.',
-    link: 'https://github.com/hyoban/izon',
-  },
-  {
-    title: 'unocss-preset-shadcn',
-    description: 'Use shadcn ui with UnoCSS',
-    link: 'https://github.com/hyoban/unocss-preset-shadcn',
-  },
-]
-
 type Link = {
   href: string
   title: string
