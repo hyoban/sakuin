@@ -23,5 +23,6 @@
 
     "types": ["react/experimental"],
     "jsx": "react-jsx",
-  }
+  },
+  "exclude": ["dist"]
 }
