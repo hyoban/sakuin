@@ -31,6 +31,9 @@ export async function getGitHubProjects() {
   return await Promise.all(projects.map(async (project) => {
     const res = await fetch(`https://ungh.cc/repos/hyoban/${project}`)
     const response = await res.json() as UnghResponse
-    return response.repo
+    return {
+      ...response.repo,
+      link: `https://github.com/${response.repo.repo}`,
+    }
   }))
 }

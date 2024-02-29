@@ -41,7 +41,7 @@ export async function HomePage() {
         <h3>Projects</h3>
         {projects.map(project => (
           <ExternalLink
-            href={`https://github.com/${project.repo}`}
+            href={project.link}
             key={project.id}
             className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
           >
@@ -57,7 +57,7 @@ export async function HomePage() {
           </ExternalLink>
         ))}
         <ExternalLink
-          href="https://github.com/search?l=&o=desc&s=stars&type=Repositories&q=user%3Ahyoban"
+          href="https://github.com/search?o=desc&s=stars&type=repositories&q=user%3Ahyoban+archived%3Afalse"
           className="font-normal mt-4 block text-sm"
         >
           All projects sorted by stars
