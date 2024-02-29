@@ -1,8 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import { Fragment } from 'react'
 
-import { links } from '../consts'
-import { getGitHubProjects, getLatestBlogList } from '../storage'
+import { getGitHubProjects, getLatestBlogList, getSiteInfo } from '../storage'
 
 type ExternalLinkProps = PropsWithChildren<{
   href: string
@@ -27,15 +26,23 @@ function capitalize(str: string) {
 }
 
 export async function HomePage() {
-  const [latestBlogList, projects] = await Promise.all([
+  const [
+    siteInfo,
+    latestBlogList,
+    projects,
+  ] = await Promise.all([
+    getSiteInfo(),
     getLatestBlogList(),
     getGitHubProjects(),
   ])
+
+  const links = siteInfo.links
+
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
-        <h3>Me</h3>
-        <p>A front-end developer, be good at React & TypeScript.</p>
+        <h3>{siteInfo.name}</h3>
+        <p>{siteInfo.bio}</p>
       </section>
       <section>
         <h3>Projects</h3>

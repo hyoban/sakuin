@@ -1,3 +1,13 @@
+export type SiteInfo = {
+  bio: string
+  name: string
+  type: string
+  avatars: string[]
+  banners: unknown[]
+  attributes: Attribute[]
+  connected_accounts: string[]
+}
+
 export type UnghResponse = {
   repo: Repo
 }
