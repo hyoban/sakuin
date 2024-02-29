@@ -63,6 +63,7 @@ export type Content = {
   attributes: Attribute[]
   attachments: Attachment[]
   date_published: string
+  external_urls: string[]
 }
 
 export type Attribute = {
