@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { Router } from 'waku/router/client'
 
-import { ErrorBoundary } from './app/error-boundary.js'
+import { ErrorBoundary } from './error-boundary.js'
 
 const rootElement = (
   <StrictMode>
