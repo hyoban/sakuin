@@ -5,17 +5,19 @@ import type { UnghResponse } from './types/github'
 import type { CrossbellAPIResponse } from './types/notes'
 import type { Stat } from './types/stat'
 
+const indexerFetch = ofetch.create({ baseURL: 'https://indexer.crossbell.io/v1' })
+
 async function getViewDetailCount(
   characterId: number,
   noteId: number,
 ) {
-  return ofetch<Stat>(`https://indexer.crossbell.io/v1/stat/notes/${characterId}/${noteId}`)
+  return indexerFetch<Stat>(`/stat/notes/${characterId}/${noteId}`)
     .then(stat => stat.viewDetailCount)
 }
 
 export async function getLatestBlogList(handle: string) {
   const { characterId, blogUrl } = await getCharacter(handle)
-  return ofetch<CrossbellAPIResponse>(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post&sources=xlog`)
+  return indexerFetch<CrossbellAPIResponse>(`/notes?characterId=${characterId}&tags=post&sources=xlog`)
     .then(res => res.list
       .slice(0, 5)
       .map(blog => ({
@@ -37,7 +39,7 @@ export async function getLatestBlogList(handle: string) {
 
 async function getProjects(handle: string) {
   const { characterId } = await getCharacter(handle)
-  const projectNotes = await ofetch<CrossbellAPIResponse>(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=portfolio`)
+  const projectNotes = await indexerFetch<CrossbellAPIResponse>(`/notes?characterId=${characterId}&tags=portfolio`)
     .then(res => res.list.filter(note => note.metadata.content.external_urls.some(url => url.startsWith('https://github.com'))))
 
   projectNotes.sort((a, b) => {
@@ -66,7 +68,7 @@ export async function getCharacter(
   handle: string,
   siteUrl?: string,
 ) {
-  return ofetch<Character>(`https://indexer.crossbell.io/v1/handles/${handle}/character`)
+  return indexerFetch<Character>(`/handles/${handle}/character`)
     .then((character) => {
       const res = character.metadata.content
       const xLogNavigation = res.attributes.find(attr => attr.trait_type === 'xlog_navigation')
