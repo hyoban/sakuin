@@ -22,7 +22,8 @@ export async function getCharacter(
       const xLogCustomDomain = res?.attributes?.find(attr => attr.trait_type === 'xlog_custom_domain')?.value
       const blogUrl = xLogCustomDomain ? `https://${xLogCustomDomain}` : `https://${handle}.xlog.app`
 
-      const siteName = res?.attributes?.find(attr => attr.trait_type === 'xlog_site_name')!.value as string
+      const siteName = res?.attributes?.find(attr => attr.trait_type === 'xlog_site_name')?.value as string
+
       return {
         name: res?.name,
         siteName: siteName || res?.name,
