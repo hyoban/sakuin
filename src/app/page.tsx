@@ -45,50 +45,58 @@ export async function HomePage() {
         <h3>{siteInfo.name}</h3>
         <p>{siteInfo.bio}</p>
       </section>
-      <section>
-        <h3>Projects</h3>
-        {projects.map(project => (
-          <ExternalLink
-            href={project.link}
-            key={project.id}
-            className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
-          >
-            <div className="flex gap-2">
-              <span>{capitalize(project.name)}</span>
-              <span className="opacity-70 text-xs">
-                {project.stars}
-                {' '}
-                stars
-              </span>
-            </div>
-            <span className="opacity-70 mt-1">{project.description}</span>
-          </ExternalLink>
-        ))}
-      </section>
-      <section>
-        <h3>Latest Blog</h3>
-        {latestBlogList.map(blog => (
-          <ExternalLink
-            href={blog.link}
-            key={blog.link}
-            className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
-          >
-            <span>{blog.title}</span>
-            <span className="opacity-70 mt-1">{blog.date.slice(0, 10)}</span>
-          </ExternalLink>
-        ))}
-      </section>
-      <section>
-        <h3>Links</h3>
-        <samp>
-          {siteInfo.links.map((link, index) => (
-            <Fragment key={link.href}>
-              {index > 0 && ' . '}
-              <ExternalLink href={link.href}>{link.title}</ExternalLink>
-            </Fragment>
+      {projects.length > 0 && (
+        <section>
+          <h3>Projects</h3>
+          {projects.map(project => (
+            <ExternalLink
+              href={project.link}
+              key={project.id}
+              className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
+            >
+              <div className="flex gap-2">
+                <span>{capitalize(project.name)}</span>
+                <span className="opacity-70 text-xs">
+                  {project.stars}
+                  {' '}
+                  stars
+                </span>
+              </div>
+              <span className="opacity-70 mt-1">{project.description}</span>
+            </ExternalLink>
           ))}
-        </samp>
-      </section>
+        </section>
+      )}
+      {
+        latestBlogList.length > 0 && (
+          <section>
+            <h3>Latest Blog</h3>
+            {latestBlogList.map(blog => (
+              <ExternalLink
+                href={blog.link}
+                key={blog.link}
+                className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
+              >
+                <span>{blog.title}</span>
+                <span className="opacity-70 mt-1">{blog.date.slice(0, 10)}</span>
+              </ExternalLink>
+            ))}
+          </section>
+        )
+      }
+      {siteInfo.links.length > 0 && (
+        <section>
+          <h3>Links</h3>
+          <samp>
+            {siteInfo.links.map((link, index) => (
+              <Fragment key={link.href}>
+                {index > 0 && ' . '}
+                <ExternalLink href={link.href}>{link.title}</ExternalLink>
+              </Fragment>
+            ))}
+          </samp>
+        </section>
+      )}
     </main>
   )
 }
