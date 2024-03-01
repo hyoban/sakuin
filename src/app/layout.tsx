@@ -3,7 +3,7 @@ import './globals.css'
 import type { PropsWithChildren } from 'react'
 import { getEnv } from 'waku'
 
-import { getCharacter } from '../storage'
+import { getCharacter } from '../lib/storage'
 
 export async function RootLayout({ children }: PropsWithChildren) {
   const handle = getEnv('HANDLE')!

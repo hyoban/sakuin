@@ -1,8 +1,8 @@
 import { createIndexer } from 'crossbell'
 import { ofetch } from 'ofetch'
 
-import type { UnghResponse } from './types/github'
-import type { Stat } from './types/stat'
+import type { UnghResponse } from '../types/github'
+import type { Stat } from '../types/stat'
 
 const indexer = createIndexer()
 const indexerFetch = ofetch.create({ baseURL: 'https://indexer.crossbell.io/v1' })
