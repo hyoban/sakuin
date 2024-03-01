@@ -1,6 +1,6 @@
 import { getEnv } from 'waku'
 
-import { getCharacter, getGitHubProjects, getLatestPostFromXLog } from '../lib/storage'
+import { getCharacter, getGitHubProjects, getLatestPostFromXLog, getPodcasts } from '../lib/storage'
 import { capitalize } from '../lib/utils'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
@@ -13,10 +13,12 @@ export async function HomePage() {
     siteInfo,
     latestBlogList,
     projects,
+    podcasts,
   ] = await Promise.all([
     getCharacter(handle, siteUrl),
     getLatestPostFromXLog(handle),
     getGitHubProjects(handle),
+    getPodcasts(handle),
   ])
 
   return (
@@ -39,17 +41,30 @@ export async function HomePage() {
           ))}
         </section>
       )}
+      {latestBlogList.length > 0 && (
+        <section>
+          <h3>Latest Blog</h3>
+          {latestBlogList.map(blog => (
+            <ListItem
+              key={blog.link}
+              title={blog.title ?? ''}
+              description={blog.date?.slice(0, 10) ?? ''}
+              superscript={`${blog.views} views`}
+              link={blog.link}
+            />
+          ))}
+        </section>
+      )}
       {
-        latestBlogList.length > 0 && (
+        podcasts.length > 0 && (
           <section>
-            <h3>Latest Blog</h3>
-            {latestBlogList.map(blog => (
+            <h3>Podcasts</h3>
+            {podcasts.map(podcast => (
               <ListItem
-                key={blog.link}
-                title={blog.title ?? ''}
-                description={blog.date?.slice(0, 10) ?? ''}
-                superscript={`${blog.views} views`}
-                link={blog.link}
+                key={podcast.link}
+                title={podcast.title ?? ''}
+                description={podcast.date?.slice(0, 10) ?? ''}
+                link={podcast.link ?? ''}
               />
             ))}
           </section>

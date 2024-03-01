@@ -9,7 +9,7 @@ export function ListItem(
   }: {
     title: string
     description: string
-    superscript: string
+    superscript?: string
     link: string
   },
 ) {
