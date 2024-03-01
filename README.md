@@ -1,9 +1,9 @@
-# hyoban.cc
+# Sakuin
 
-You can generate your site based on your xLog data, and deploy it to Vercel.
+You can generate an index site based on your xLog data with Sakuin, and deploy it to Vercel.
 All you need to do is click the button below and fill in your `HANDLE` in the environment variables.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhyoban%2Fhyoban.cc&env=HANDLE)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhyoban%2Fsakuin&env=HANDLE)
 
 Here is a demo site for [diygod](https://diygod.cc).
 
