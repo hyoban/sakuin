@@ -4,7 +4,7 @@ import type { CrossbellAPIResponse } from './types/notes'
 
 export async function getLatestBlogList(handle: string) {
   const { characterId, blogUrl } = await getCharacter(handle)
-  return await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post`)
+  return await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post&sources=xlog`)
     .then(res => res.json() as Promise<CrossbellAPIResponse>)
     .then(res => res.list
       .slice(0, 5)
