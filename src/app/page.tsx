@@ -100,7 +100,7 @@ export async function HomePage() {
               <ExternalLink
                 href={link.href}
                 key={link.href}
-                className={`${link.icon} text-lg`}
+                className={link.icon}
                 title={link.title}
               >
                 {link.title}

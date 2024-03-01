@@ -5,7 +5,7 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{ts,tsx}'],
-  plugins: [typography(), iconsPlugin()],
+  plugins: [typography(), iconsPlugin({ scale: 1.3 })],
   future: {
     hoverOnlyWhenSupported: true,
   },
