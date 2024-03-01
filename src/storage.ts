@@ -1,19 +1,24 @@
-import type { CrossbellAPIResponse, SiteInfo, UnghResponse } from './types'
+import type { Character } from './types/character'
+import type { UnghResponse } from './types/github'
+import type { CrossbellAPIResponse } from './types/notes'
 
-export async function getLatestBlogList() {
-  return await fetch('https://indexer.crossbell.io/v1/notes?characterId=51657&tags=post&limit=3')
+export async function getLatestBlogList(characterId: number) {
+  return await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post`)
     .then(res => res.json() as Promise<CrossbellAPIResponse>)
-    .then(res => res.list.map(blog => ({
-      title: blog.metadata.content.title,
-      link: `https://hyoban.xlog.app/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
-      date: blog.metadata.content.date_published,
-    })))
+    .then(res => res.list
+      .slice(0, 5)
+      .map(blog => ({
+        title: blog.metadata.content.title,
+        link: `https://hyoban.xlog.app/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
+        date: blog.metadata.content.date_published,
+      })),
+    )
 }
 
-async function getProjects() {
-  const projectNotes = await fetch('https://indexer.crossbell.io/v1/notes?characterId=51657&tags=portfolio&limit=3')
+async function getProjects(characterId: number) {
+  const projectNotes = await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=portfolio`)
     .then(res => res.json() as Promise<CrossbellAPIResponse>)
-    .then(res => res.list.filter(note => note.metadata.content.external_urls.some(url => url.includes('github'))))
+    .then(res => res.list.filter(note => note.metadata.content.external_urls.some(url => url.startsWith('https://github.com'))))
 
   projectNotes.sort((a, b) => {
     const aDate = new Date(a.metadata.content.date_published)
@@ -22,14 +27,14 @@ async function getProjects() {
   })
 
   return projectNotes
-    .flatMap(note => note.metadata.content.external_urls[0]?.split('/').slice(-1))
+    .map(note => note.metadata.content.external_urls[0]?.replace('https://github.com/', ''))
     .filter(Boolean)
 }
 
-export async function getGitHubProjects() {
-  const projects = await getProjects()
+export async function getGitHubProjects(characterId: number) {
+  const projects = await getProjects(characterId)
   return await Promise.all(projects.map(async (project) => {
-    const res = await fetch(`https://ungh.cc/repos/hyoban/${project}`)
+    const res = await fetch(`https://ungh.cc/repos/${project}`)
     const response = await res.json() as UnghResponse
     return {
       ...response.repo,
@@ -38,12 +43,16 @@ export async function getGitHubProjects() {
   }))
 }
 
-export async function getSiteInfo() {
-  return fetch('https://ipfs.crossbell.io/ipfs/QmaitSZt8iMjQgQEp9k6iEXW2Pt8Ypjb1CrSNXgdQkJnQ8')
-    .then(res => res.json() as Promise<SiteInfo>)
-    .then((res) => {
+export async function getCharacter(
+  handle: string,
+  siteUrl?: string,
+) {
+  return fetch(`https://indexer.crossbell.io/v1/handles/${handle}/character`)
+    .then(res => res.json() as Promise<Character>)
+    .then((character) => {
+      const res = character.metadata.content
       const navigationList = JSON.parse(
-        res.attributes.find(attr => attr.trait_type === 'xlog_navigation')?.value as string,
+        res.attributes.find(attr => attr.trait_type === 'xlog_navigation')?.value ?? '',
       ) as Array<{
         id: string
         label: string
@@ -51,13 +60,21 @@ export async function getSiteInfo() {
       }>
       return {
         ...res,
+        characterId: character.characterId,
+        avatars: res.avatars.map((avatar) => {
+          return avatar.replaceAll(
+            /ipfs:\/\/([^\n ]+)/g,
+            'https://ipfs.4everland.xyz/ipfs/' + '$1',
+          )
+        }),
         links: [
-          // connected_accounts like "csb://account:0xhyoban@twitter"
           ...res.connected_accounts
             .map((account) => {
-              const splitIndex = account.slice('csb://account:'.length).lastIndexOf('@')
-              const username = account.slice('csb://account:'.length).slice(0, splitIndex)
-              const platform = account.slice('csb://account:'.length).slice(splitIndex + 1)
+              // connected_accounts like "csb://account:0xhyoban@twitter"
+              const contextWithoutPrefix = account.slice(14)
+              const splitIndex = contextWithoutPrefix.lastIndexOf('@')
+              const username = contextWithoutPrefix.slice(0, splitIndex)
+              const platform = contextWithoutPrefix.slice(splitIndex + 1)
               if (
                 !platform || !username
                 || !PlatformsSyncMap[platform]?.url
@@ -70,13 +87,13 @@ export async function getSiteInfo() {
               }
             }),
           ...navigationList
-            .filter(nav => nav.url.startsWith('http') && nav.url !== 'https://hyoban.cc')
+            .filter(nav => nav.url.startsWith('http') && nav.url !== siteUrl)
             .map(nav => ({
               href: nav.url,
               title: nav.label.toLowerCase(),
             })),
           {
-            href: 'https://hyoban.xlog.app',
+            href: `https://${handle}.xlog.app`,
             title: 'blog',
           },
         ].filter(Boolean).sort((a, b) => a.title.localeCompare(b.title)),

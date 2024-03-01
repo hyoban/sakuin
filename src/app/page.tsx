@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import { Fragment } from 'react'
 
-import { getGitHubProjects, getLatestBlogList, getSiteInfo } from '../storage'
+import { getCharacter, getGitHubProjects, getLatestBlogList } from '../storage'
 
 type ExternalLinkProps = PropsWithChildren<{
   href: string
@@ -26,23 +26,20 @@ function capitalize(str: string) {
 }
 
 export async function HomePage() {
+  const { characterId, name, bio, links } = await getCharacter('diygod', 'https://hyoban.cc')
   const [
-    siteInfo,
     latestBlogList,
     projects,
   ] = await Promise.all([
-    getSiteInfo(),
-    getLatestBlogList(),
-    getGitHubProjects(),
+    getLatestBlogList(characterId),
+    getGitHubProjects(characterId),
   ])
-
-  const links = siteInfo.links
 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
-        <h3>{siteInfo.name}</h3>
-        <p>{siteInfo.bio}</p>
+        <h3>{name}</h3>
+        <p>{bio}</p>
       </section>
       <section>
         <h3>Projects</h3>
@@ -63,12 +60,6 @@ export async function HomePage() {
             <span className="opacity-70 mt-1">{project.description}</span>
           </ExternalLink>
         ))}
-        <ExternalLink
-          href="https://github.com/search?o=desc&s=stars&type=repositories&q=user%3Ahyoban+archived%3Afalse"
-          className="font-normal mt-4 block text-sm"
-        >
-          All projects sorted by stars
-        </ExternalLink>
       </section>
       <section>
         <h3>Latest Blog</h3>
