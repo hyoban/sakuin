@@ -3,14 +3,14 @@ import type { UnghResponse } from './types/github'
 import type { CrossbellAPIResponse } from './types/notes'
 
 export async function getLatestBlogList(handle: string) {
-  const { characterId } = await getCharacter(handle)
+  const { characterId, blogUrl } = await getCharacter(handle)
   return await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post`)
     .then(res => res.json() as Promise<CrossbellAPIResponse>)
     .then(res => res.list
       .slice(0, 5)
       .map(blog => ({
         title: blog.metadata.content.title,
-        link: `https://${handle}.xlog.app/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
+        link: `${blogUrl}/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
         date: blog.metadata.content.date_published,
       })),
     )
@@ -53,8 +53,8 @@ export async function getCharacter(
     .then(res => res.json() as Promise<Character>)
     .then((character) => {
       const res = character.metadata.content
-      const xlogNavigation = res.attributes.find(attr => attr.trait_type === 'xlog_navigation')
-      const navigationList = xlogNavigation
+      const xLogNavigation = res.attributes.find(attr => attr.trait_type === 'xlog_navigation')
+      const navigationList = xLogNavigation
         ? JSON.parse(
           res.attributes.find(attr => attr.trait_type === 'xlog_navigation')?.value ?? '',
         ) as Array<{
@@ -63,6 +63,10 @@ export async function getCharacter(
           url: string
         }>
         : []
+
+      const xLogCustomDomain = res.attributes.find(attr => attr.trait_type === 'xlog_custom_domain')?.value
+      const blogUrl = xLogCustomDomain ? `https://${xLogCustomDomain}` : `https://${handle}.xlog.app`
+
       return {
         name: res.name,
         bio: res.bio,
@@ -73,6 +77,7 @@ export async function getCharacter(
             'https://ipfs.4everland.xyz/ipfs/' + '$1',
           )
         }).at(0),
+        blogUrl,
         links: [
           ...(res.connected_accounts ?? [])
             .map((account) => {
@@ -99,7 +104,7 @@ export async function getCharacter(
               title: nav.label.toLowerCase(),
             })),
           {
-            href: `https://${handle}.xlog.app`,
+            href: blogUrl,
             title: 'blog',
           },
         ].filter(Boolean).sort((a, b) => a.title.localeCompare(b.title)),
