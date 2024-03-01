@@ -125,7 +125,7 @@ export async function getCharacter(
           {
             href: blogUrl,
             title: 'blog',
-            icon: undefined,
+            icon: 'i-lucide-book',
           },
         ]
           .filter(Boolean)
@@ -299,7 +299,7 @@ export const PlatformsSyncMap: Record<string, {
   'email': {
     name: 'Email',
     url: 'mailto:{username}',
-    icon: 'i-simple-icons-gmail',
+    icon: 'i-lucide-mail',
   },
   '500px': {
     name: '500px',
