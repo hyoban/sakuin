@@ -1,21 +1,21 @@
+import { ofetch } from 'ofetch'
+
 import type { Character } from './types/character'
 import type { UnghResponse } from './types/github'
 import type { CrossbellAPIResponse } from './types/notes'
 import type { Stat } from './types/stat'
 
-function getViewDetailCount(
+async function getViewDetailCount(
   characterId: number,
   noteId: number,
 ) {
-  return fetch(`https://indexer.crossbell.io/v1/stat/notes/${characterId}/${noteId}`)
-    .then(res => res.json() as Promise<Stat>)
+  return ofetch<Stat>(`https://indexer.crossbell.io/v1/stat/notes/${characterId}/${noteId}`)
     .then(stat => stat.viewDetailCount)
 }
 
 export async function getLatestBlogList(handle: string) {
   const { characterId, blogUrl } = await getCharacter(handle)
-  return fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post&sources=xlog`)
-    .then(res => res.json() as Promise<CrossbellAPIResponse>)
+  return ofetch<CrossbellAPIResponse>(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post&sources=xlog`)
     .then(res => res.list
       .slice(0, 5)
       .map(blog => ({
@@ -37,8 +37,7 @@ export async function getLatestBlogList(handle: string) {
 
 async function getProjects(handle: string) {
   const { characterId } = await getCharacter(handle)
-  const projectNotes = await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=portfolio`)
-    .then(res => res.json() as Promise<CrossbellAPIResponse>)
+  const projectNotes = await ofetch<CrossbellAPIResponse>(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=portfolio`)
     .then(res => res.list.filter(note => note.metadata.content.external_urls.some(url => url.startsWith('https://github.com'))))
 
   projectNotes.sort((a, b) => {
@@ -55,11 +54,10 @@ async function getProjects(handle: string) {
 export async function getGitHubProjects(handle: string) {
   const projects = await getProjects(handle)
   return await Promise.all(projects.map(async (project) => {
-    const res = await fetch(`https://ungh.cc/repos/${project}`)
-    const response = await res.json() as UnghResponse
+    const res = await ofetch<UnghResponse>(`https://ungh.cc/repos/${project}`)
     return {
-      ...response.repo,
-      link: `https://github.com/${response.repo.repo}`,
+      ...res.repo,
+      link: `https://github.com/${res.repo.repo}`,
     }
   }))
 }
@@ -68,8 +66,7 @@ export async function getCharacter(
   handle: string,
   siteUrl?: string,
 ) {
-  return fetch(`https://indexer.crossbell.io/v1/handles/${handle}/character`)
-    .then(res => res.json() as Promise<Character>)
+  return ofetch<Character>(`https://indexer.crossbell.io/v1/handles/${handle}/character`)
     .then((character) => {
       const res = character.metadata.content
       const xLogNavigation = res.attributes.find(attr => attr.trait_type === 'xlog_navigation')
