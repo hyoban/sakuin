@@ -1,10 +1,11 @@
+import { iconsPlugin } from '@egoist/tailwindcss-icons'
 import typography from '@tailwindcss/typography'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{ts,tsx}'],
-  plugins: [typography()],
+  plugins: [typography(), iconsPlugin()],
   future: {
     hoverOnlyWhenSupported: true,
   },

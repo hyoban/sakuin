@@ -1,5 +1,4 @@
 import type { PropsWithChildren } from 'react'
-import { Fragment } from 'react'
 import { getEnv } from 'waku'
 
 import { getCharacter, getGitHubProjects, getLatestPostFromXLog } from '../storage'
@@ -7,15 +6,17 @@ import { getCharacter, getGitHubProjects, getLatestPostFromXLog } from '../stora
 type ExternalLinkProps = PropsWithChildren<{
   href: string
   className?: string
+  title?: string
 }>
 
-function ExternalLink({ href, className, children }: ExternalLinkProps) {
+function ExternalLink({ href, title, className, children }: ExternalLinkProps) {
   return (
     <a
       target="_blank"
       rel="noreferrer noopener"
       href={href}
       className={className}
+      title={title}
     >
       {children}
     </a>
@@ -94,14 +95,18 @@ export async function HomePage() {
       {siteInfo.links.length > 0 && (
         <section>
           <h3>Links</h3>
-          <samp>
-            {siteInfo.links.map((link, index) => (
-              <Fragment key={link.href}>
-                {index > 0 && ' . '}
-                <ExternalLink href={link.href}>{link.title}</ExternalLink>
-              </Fragment>
+          <div className="flex gap-4 items-center">
+            {siteInfo.links.map(link => (
+              <ExternalLink
+                href={link.href}
+                key={link.href}
+                className={`${link.icon} text-lg`}
+                title={link.title}
+              >
+                {link.title}
+              </ExternalLink>
             ))}
-          </samp>
+          </div>
         </section>
       )}
     </main>
