@@ -1,10 +1,10 @@
+import { createIndexer } from 'crossbell'
 import { ofetch } from 'ofetch'
 
-import type { Character } from './types/character'
 import type { UnghResponse } from './types/github'
-import type { CrossbellAPIResponse } from './types/notes'
 import type { Stat } from './types/stat'
 
+const indexer = createIndexer()
 const indexerFetch = ofetch.create({ baseURL: 'https://indexer.crossbell.io/v1' })
 
 async function getViewDetailCount(
@@ -17,61 +17,63 @@ async function getViewDetailCount(
 
 export async function getLatestPostFromXLog(handle: string) {
   const { characterId, blogUrl } = await getCharacter(handle)
-  return indexerFetch<CrossbellAPIResponse>(`/notes?characterId=${characterId}&tags=post&sources=xlog`)
-    .then(res => res.list
-      .slice(0, 5)
-      .map(blog => ({
-        noteId: blog.noteId,
-        title: blog.metadata.content.title,
-        link: `${blogUrl}/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
-        date: blog.metadata.content.date_published,
-      })),
-    ).then(async (blogs) => {
-      return await Promise.all(blogs.map(async (blog) => {
+  if (!characterId)
+    return []
+
+  return indexer.note.getMany({
+    characterId,
+    tags: 'post',
+    sources: 'xlog',
+    orderBy: 'publishedAt',
+    limit: 5,
+  })
+    .then(res => res.list.map(blog => ({
+      noteId: blog.noteId,
+      title: blog.metadata?.content?.title,
+      link: `${blogUrl}/${blog.metadata?.content?.attributes?.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
+      date: blog.metadata?.content?.date_published,
+    })))
+    .then(blogs => (
+      Promise.all(blogs.map(async (blog) => {
         const views = await getViewDetailCount(characterId, blog.noteId)
         return { ...blog, views }
       }))
-    })
+    ))
 }
 
 async function getGitHubRepo(handle: string) {
   const { characterId } = await getCharacter(handle)
-  const projectNotes = await indexerFetch<CrossbellAPIResponse>(`/notes?characterId=${characterId}&tags=portfolio`)
-    .then(res => res.list.filter(note => note.metadata.content.external_urls.some(url => url.startsWith('https://github.com'))))
 
-  projectNotes.sort((a, b) => {
-    const aDate = new Date(a.metadata.content.date_published)
-    const bDate = new Date(b.metadata.content.date_published)
-    return bDate.getTime() - aDate.getTime()
-  })
-
-  return projectNotes
-    .map(note => note.metadata.content.external_urls[0]?.replace('https://github.com/', ''))
-    .filter(Boolean)
+  return await indexer.note.getMany({ characterId, tags: 'portfolio', orderBy: 'publishedAt' })
+    .then(res => res.list
+      .map(note => note.metadata?.content?.external_urls?.filter(Boolean) ?? [])
+      .filter(urls => urls.some(url => url.startsWith('https://github.com')))
+      .map(urls => urls[0]?.replace('https://github.com/', '')),
+    )
 }
 
 export async function getGitHubProjects(handle: string) {
   const projects = await getGitHubRepo(handle)
-  return await Promise.all(projects.map(async (project) => {
-    const res = await ofetch<UnghResponse>(`https://ungh.cc/repos/${project}`)
-    return {
-      ...res.repo,
-      link: `https://github.com/${res.repo.repo}`,
-    }
-  }))
+
+  return await Promise.all(
+    projects.map(async (project) => {
+      const res = await ofetch<UnghResponse>(`https://ungh.cc/repos/${project}`)
+      return { ...res.repo, link: `https://github.com/${res.repo.repo}` }
+    }),
+  )
 }
 
 export async function getCharacter(
   handle: string,
   siteUrl?: string,
 ) {
-  return indexerFetch<Character>(`/handles/${handle}/character`)
+  return indexer.character.getByHandle(handle)
     .then((character) => {
-      const res = character.metadata.content
-      const xLogNavigation = res.attributes.find(attr => attr.trait_type === 'xlog_navigation')
+      const res = character?.metadata?.content
+      const xLogNavigation = res?.attributes?.find(attr => attr.trait_type === 'xlog_navigation')
       const navigationList = xLogNavigation
         ? JSON.parse(
-          res.attributes.find(attr => attr.trait_type === 'xlog_navigation')?.value ?? '',
+          xLogNavigation.value as string,
         ) as Array<{
           id: string
           label: string
@@ -79,16 +81,16 @@ export async function getCharacter(
         }>
         : []
 
-      const xLogCustomDomain = res.attributes.find(attr => attr.trait_type === 'xlog_custom_domain')?.value
+      const xLogCustomDomain = res?.attributes?.find(attr => attr.trait_type === 'xlog_custom_domain')?.value
       const blogUrl = xLogCustomDomain ? `https://${xLogCustomDomain}` : `https://${handle}.xlog.app`
 
-      const siteName = res.attributes.find(attr => attr.trait_type === 'xlog_site_name')!.value
+      const siteName = res?.attributes?.find(attr => attr.trait_type === 'xlog_site_name')!.value as string
       return {
-        name: res.name,
-        siteName: siteName || res.name,
-        bio: res.bio,
-        characterId: character.characterId,
-        avatar: res.avatars?.map((avatar) => {
+        name: res?.name,
+        siteName: siteName || res?.name,
+        bio: res?.bio,
+        characterId: character?.characterId,
+        avatar: res?.avatars?.map((avatar) => {
           return avatar.replaceAll(
             /ipfs:\/\/([^\n ]+)/g,
             'https://ipfs.4everland.xyz/ipfs/' + '$1',
@@ -96,7 +98,7 @@ export async function getCharacter(
         }).at(0),
         blogUrl,
         links: [
-          ...(res.connected_accounts ?? [])
+          ...(res?.connected_accounts ?? [])
             .map((account) => {
               // connected_accounts like "csb://account:0xhyoban@twitter"
               const contextWithoutPrefix = account.slice(14)

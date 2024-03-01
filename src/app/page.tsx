@@ -86,7 +86,7 @@ export async function HomePage() {
                     views
                   </span>
                 </div>
-                <span className="opacity-70 mt-1">{blog.date.slice(0, 10)}</span>
+                <span className="opacity-70 mt-1">{blog.date?.slice(0, 10)}</span>
               </ExternalLink>
             ))}
           </section>
