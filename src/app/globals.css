@@ -8,6 +8,28 @@
   }
 }
 
+@media screen and (min-width: 1150px) {
+  html {
+    background-size: 30px 30px;
+    background-image: radial-gradient(
+      circle,
+      #d4d4d4 1px,
+      rgba(0, 0, 0, 0) 1px
+    );
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html {
+      background-size: 30px 30px;
+      background-image: radial-gradient(
+        circle,
+        #262626 1px,
+        rgba(0, 0, 0, 0) 1px
+      );
+    }
+  }
+}
+
 @font-face {
   font-family: "SN Pro";
   src: url("/fonts/SNPro-Bold.otf");

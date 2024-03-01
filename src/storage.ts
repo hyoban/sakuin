@@ -2,20 +2,22 @@ import type { Character } from './types/character'
 import type { UnghResponse } from './types/github'
 import type { CrossbellAPIResponse } from './types/notes'
 
-export async function getLatestBlogList(characterId: number) {
+export async function getLatestBlogList(handle: string) {
+  const { characterId } = await getCharacter(handle)
   return await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post`)
     .then(res => res.json() as Promise<CrossbellAPIResponse>)
     .then(res => res.list
       .slice(0, 5)
       .map(blog => ({
         title: blog.metadata.content.title,
-        link: `https://hyoban.xlog.app/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
+        link: `https://${handle}.xlog.app/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
         date: blog.metadata.content.date_published,
       })),
     )
 }
 
-async function getProjects(characterId: number) {
+async function getProjects(handle: string) {
+  const { characterId } = await getCharacter(handle)
   const projectNotes = await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=portfolio`)
     .then(res => res.json() as Promise<CrossbellAPIResponse>)
     .then(res => res.list.filter(note => note.metadata.content.external_urls.some(url => url.startsWith('https://github.com'))))
@@ -31,8 +33,8 @@ async function getProjects(characterId: number) {
     .filter(Boolean)
 }
 
-export async function getGitHubProjects(characterId: number) {
-  const projects = await getProjects(characterId)
+export async function getGitHubProjects(handle: string) {
+  const projects = await getProjects(handle)
   return await Promise.all(projects.map(async (project) => {
     const res = await fetch(`https://ungh.cc/repos/${project}`)
     const response = await res.json() as UnghResponse

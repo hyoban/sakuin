@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { Fragment } from 'react'
+import { getEnv } from 'waku'
 
 import { getCharacter, getGitHubProjects, getLatestBlogList } from '../storage'
 
@@ -26,20 +27,23 @@ function capitalize(str: string) {
 }
 
 export async function HomePage() {
-  const { characterId, name, bio, links } = await getCharacter('diygod', 'https://hyoban.cc')
+  const handle = getEnv('HANDLE')!
+  const siteUrl = getEnv('SITE_URL')
   const [
+    siteInfo,
     latestBlogList,
     projects,
   ] = await Promise.all([
-    getLatestBlogList(characterId),
-    getGitHubProjects(characterId),
+    getCharacter(handle, siteUrl),
+    getLatestBlogList(handle),
+    getGitHubProjects(handle),
   ])
 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
-        <h3>{name}</h3>
-        <p>{bio}</p>
+        <h3>{siteInfo.name}</h3>
+        <p>{siteInfo.bio}</p>
       </section>
       <section>
         <h3>Projects</h3>
@@ -77,7 +81,7 @@ export async function HomePage() {
       <section>
         <h3>Links</h3>
         <samp>
-          {links.map((link, index) => (
+          {siteInfo.links.map((link, index) => (
             <Fragment key={link.href}>
               {index > 0 && ' . '}
               <ExternalLink href={link.href}>{link.title}</ExternalLink>
