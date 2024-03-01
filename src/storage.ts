@@ -1,19 +1,38 @@
 import type { Character } from './types/character'
 import type { UnghResponse } from './types/github'
 import type { CrossbellAPIResponse } from './types/notes'
+import type { Stat } from './types/stat'
+
+function getViewDetailCount(
+  characterId: number,
+  noteId: number,
+) {
+  return fetch(`https://indexer.crossbell.io/v1/stat/notes/${characterId}/${noteId}`)
+    .then(res => res.json() as Promise<Stat>)
+    .then(stat => stat.viewDetailCount)
+}
 
 export async function getLatestBlogList(handle: string) {
   const { characterId, blogUrl } = await getCharacter(handle)
-  return await fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post&sources=xlog`)
+  return fetch(`https://indexer.crossbell.io/v1/notes?characterId=${characterId}&tags=post&sources=xlog`)
     .then(res => res.json() as Promise<CrossbellAPIResponse>)
     .then(res => res.list
       .slice(0, 5)
       .map(blog => ({
+        noteId: blog.noteId,
         title: blog.metadata.content.title,
         link: `${blogUrl}/${blog.metadata.content.attributes.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
         date: blog.metadata.content.date_published,
       })),
-    )
+    ).then(async (blogs) => {
+      return await Promise.all(blogs.map(async (blog) => {
+        const viewDetailCount = await getViewDetailCount(characterId, blog.noteId)
+        return {
+          ...blog,
+          viewDetailCount,
+        }
+      }))
+    })
 }
 
 async function getProjects(handle: string) {

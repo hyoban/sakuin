@@ -77,7 +77,14 @@ export async function HomePage() {
                 key={blog.link}
                 className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
               >
-                <span>{blog.title}</span>
+                <div className="flex gap-2">
+                  <span>{blog.title}</span>
+                  <span className="opacity-70 text-xs">
+                    {blog.viewDetailCount}
+                    {' '}
+                    views
+                  </span>
+                </div>
                 <span className="opacity-70 mt-1">{blog.date.slice(0, 10)}</span>
               </ExternalLink>
             ))}
