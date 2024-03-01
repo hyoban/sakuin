@@ -7,10 +7,10 @@ import { getCharacter } from '../storage'
 
 export async function RootLayout({ children }: PropsWithChildren) {
   const handle = getEnv('HANDLE')!
-  const { name, bio, avatar } = await getCharacter(handle)
+  const { bio, avatar, siteName } = await getCharacter(handle)
   return (
     <html lang="en" className="dark:bg-neutral-900 dark:text-white">
-      <title>{name}</title>
+      <title>{siteName}</title>
       <meta name="description" content={bio} />
       {avatar && <link rel="icon" type="image/png" href={avatar} />}
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />

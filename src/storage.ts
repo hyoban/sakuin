@@ -15,7 +15,7 @@ async function getViewDetailCount(
     .then(stat => stat.viewDetailCount)
 }
 
-export async function getLatestBlogList(handle: string) {
+export async function getLatestPostFromXLog(handle: string) {
   const { characterId, blogUrl } = await getCharacter(handle)
   return indexerFetch<CrossbellAPIResponse>(`/notes?characterId=${characterId}&tags=post&sources=xlog`)
     .then(res => res.list
@@ -28,16 +28,13 @@ export async function getLatestBlogList(handle: string) {
       })),
     ).then(async (blogs) => {
       return await Promise.all(blogs.map(async (blog) => {
-        const viewDetailCount = await getViewDetailCount(characterId, blog.noteId)
-        return {
-          ...blog,
-          viewDetailCount,
-        }
+        const views = await getViewDetailCount(characterId, blog.noteId)
+        return { ...blog, views }
       }))
     })
 }
 
-async function getProjects(handle: string) {
+async function getGitHubRepo(handle: string) {
   const { characterId } = await getCharacter(handle)
   const projectNotes = await indexerFetch<CrossbellAPIResponse>(`/notes?characterId=${characterId}&tags=portfolio`)
     .then(res => res.list.filter(note => note.metadata.content.external_urls.some(url => url.startsWith('https://github.com'))))
@@ -54,7 +51,7 @@ async function getProjects(handle: string) {
 }
 
 export async function getGitHubProjects(handle: string) {
-  const projects = await getProjects(handle)
+  const projects = await getGitHubRepo(handle)
   return await Promise.all(projects.map(async (project) => {
     const res = await ofetch<UnghResponse>(`https://ungh.cc/repos/${project}`)
     return {
@@ -85,8 +82,10 @@ export async function getCharacter(
       const xLogCustomDomain = res.attributes.find(attr => attr.trait_type === 'xlog_custom_domain')?.value
       const blogUrl = xLogCustomDomain ? `https://${xLogCustomDomain}` : `https://${handle}.xlog.app`
 
+      const siteName = res.attributes.find(attr => attr.trait_type === 'xlog_site_name')!.value
       return {
         name: res.name,
+        siteName: siteName || res.name,
         bio: res.bio,
         characterId: character.characterId,
         avatar: res.avatars?.map((avatar) => {

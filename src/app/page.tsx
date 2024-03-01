@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react'
 import { Fragment } from 'react'
 import { getEnv } from 'waku'
 
-import { getCharacter, getGitHubProjects, getLatestBlogList } from '../storage'
+import { getCharacter, getGitHubProjects, getLatestPostFromXLog } from '../storage'
 
 type ExternalLinkProps = PropsWithChildren<{
   href: string
@@ -35,7 +35,7 @@ export async function HomePage() {
     projects,
   ] = await Promise.all([
     getCharacter(handle, siteUrl),
-    getLatestBlogList(handle),
+    getLatestPostFromXLog(handle),
     getGitHubProjects(handle),
   ])
 
@@ -80,7 +80,7 @@ export async function HomePage() {
                 <div className="flex gap-2">
                   <span>{blog.title}</span>
                   <span className="opacity-70 text-xs">
-                    {blog.viewDetailCount}
+                    {blog.views}
                     {' '}
                     views
                   </span>
