@@ -30,11 +30,11 @@ export type Content = {
   bio: string
   name: string
   type: string
-  avatars: string[]
+  avatars?: string[]
   banners: Banner[]
   websites: string[]
   attributes: Attribute[]
-  connected_accounts: string[]
+  connected_accounts?: string[]
 }
 
 export type Banner = {

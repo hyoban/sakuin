@@ -53,24 +53,28 @@ export async function getCharacter(
     .then(res => res.json() as Promise<Character>)
     .then((character) => {
       const res = character.metadata.content
-      const navigationList = JSON.parse(
-        res.attributes.find(attr => attr.trait_type === 'xlog_navigation')?.value ?? '',
-      ) as Array<{
-        id: string
-        label: string
-        url: string
-      }>
+      const xlogNavigation = res.attributes.find(attr => attr.trait_type === 'xlog_navigation')
+      const navigationList = xlogNavigation
+        ? JSON.parse(
+          res.attributes.find(attr => attr.trait_type === 'xlog_navigation')?.value ?? '',
+        ) as Array<{
+          id: string
+          label: string
+          url: string
+        }>
+        : []
       return {
-        ...res,
+        name: res.name,
+        bio: res.bio,
         characterId: character.characterId,
-        avatars: res.avatars.map((avatar) => {
+        avatar: res.avatars?.map((avatar) => {
           return avatar.replaceAll(
             /ipfs:\/\/([^\n ]+)/g,
             'https://ipfs.4everland.xyz/ipfs/' + '$1',
           )
-        }),
+        }).at(0),
         links: [
-          ...res.connected_accounts
+          ...(res.connected_accounts ?? [])
             .map((account) => {
               // connected_accounts like "csb://account:0xhyoban@twitter"
               const contextWithoutPrefix = account.slice(14)
