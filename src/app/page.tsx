@@ -1,24 +1,20 @@
-import { getEnv } from 'waku'
-
+import { env } from '../env'
 import { getCharacter, getGitHubProjects, getLatestPostFromXLog, getPodcasts } from '../lib/storage'
 import { capitalize } from '../lib/utils'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
 
 export async function HomePage() {
-  const handle = getEnv('HANDLE')!
-  const siteUrl = getEnv('SITE_URL')
-
   const [
     siteInfo,
     latestBlogList,
     projects,
     podcasts,
   ] = await Promise.all([
-    getCharacter(handle, siteUrl),
-    getLatestPostFromXLog(handle),
-    getGitHubProjects(handle),
-    getPodcasts(handle),
+    getCharacter(env.HANDLE, env.SITE_URL),
+    getLatestPostFromXLog(env.HANDLE),
+    getGitHubProjects(env.HANDLE),
+    getPodcasts(env.HANDLE),
   ])
 
   return (

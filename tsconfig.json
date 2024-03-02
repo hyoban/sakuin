@@ -21,7 +21,7 @@
     /* If your code runs in the DOM: */
     "lib": ["es2022", "dom", "dom.iterable"],
 
-    "types": ["react/experimental"],
+    "types": ["react/experimental", "node"],
     "jsx": "react-jsx",
   },
   "exclude": ["dist"]
