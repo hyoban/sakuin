@@ -18,9 +18,9 @@ class ErrorBoundaryClass extends Component<Props, { error?: unknown }> {
   }
 
   render() {
-    if ('error' in this.state) {
+    if ('error' in this.state)
       return this.props.fallback(this.state.error)
-    }
+
     return this.props.children
   }
 }
