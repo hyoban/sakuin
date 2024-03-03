@@ -1,18 +1,5 @@
-import { ofetch } from 'ofetch'
-
-import type { Stat } from '../../types/stat'
 import { getCharacter } from './character'
 import { indexer } from './indexer'
-
-const indexerFetch = ofetch.create({ baseURL: 'https://indexer.crossbell.io/v1' })
-
-async function getViewDetailCount(
-  characterId: number,
-  noteId: number,
-) {
-  return indexerFetch<Stat>(`/stat/notes/${characterId}/${noteId}`)
-    .then(stat => stat.viewDetailCount)
-}
 
 export async function getLatestPostFromXLog(handle: string) {
   const { characterId, blogUrl } = await getCharacter(handle)
@@ -34,8 +21,8 @@ export async function getLatestPostFromXLog(handle: string) {
     })))
     .then(blogs => (
       Promise.all(blogs.map(async (blog) => {
-        const views = await getViewDetailCount(characterId, blog.noteId)
-        return { ...blog, views }
+        const views = await indexer.stat.getForNote(characterId, blog.noteId)
+        return { ...blog, views: views.viewDetailCount }
       }))
     ))
 }

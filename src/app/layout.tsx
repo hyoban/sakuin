@@ -1,12 +1,11 @@
 import './globals.css'
 
-import type { PropsWithChildren } from 'react'
-
 import { env } from '../env'
 import { getCharacter } from '../lib/storage'
 
-export async function RootLayout({ children }: PropsWithChildren) {
+export async function RootLayout({ children }: React.PropsWithChildren) {
   const { bio, avatar, siteName } = await getCharacter(env.HANDLE)
+
   return (
     <html lang="en" className="dark:bg-neutral-900 dark:text-white">
       <title>{siteName}</title>
