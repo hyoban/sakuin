@@ -4,7 +4,8 @@ import { env } from '../env'
 import { getSiteInfo } from '../lib/storage'
 
 export async function RootLayout({ children }: React.PropsWithChildren) {
-  const { siteName, description, icon, banner } = await getSiteInfo(env.HANDLE)
+  const { HANDLE, SITE_URL } = env
+  const { siteName, description, icon, banner } = await getSiteInfo(HANDLE)
 
   return (
     <html lang="en" className="dark:bg-neutral-900 dark:text-white">
@@ -19,6 +20,7 @@ export async function RootLayout({ children }: React.PropsWithChildren) {
       <meta property="og:description" content={description} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:card" content="summary_large_image" />
+      {SITE_URL && <meta property="og:url" content={SITE_URL} />}
       {banner && (
         <>
           <meta property="og:image" content={banner} />
