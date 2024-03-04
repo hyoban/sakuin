@@ -2,11 +2,14 @@ import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
 import { getSiteInfo } from './site'
-import type { NoteQueryOptions, Post } from './types'
+import type { HandleOrCharacterId, NoteQueryOptions, Post } from './types'
 import { convertIpfsUrl, getXLogMeta } from './utils'
 
-export async function getPostMany(handle: string, options?: NoteQueryOptions): Promise<Post[]> {
-  const { characterId, xlogUrl } = await getSiteInfo(handle)
+export async function getPostMany(
+  handleOrCharacterId: HandleOrCharacterId,
+  options?: NoteQueryOptions,
+): Promise<Post[]> {
+  const { characterId, xlogUrl } = await getSiteInfo(handleOrCharacterId)
 
   const notes = await indexer.note.getMany({
     characterId,
@@ -18,8 +21,11 @@ export async function getPostMany(handle: string, options?: NoteQueryOptions): P
   return Promise.all(notes.list.map(note => createPostFromNote(note, characterId, xlogUrl)))
 }
 
-export async function getPost(handle: string, noteId: string): Promise<Post | null> {
-  const { characterId, xlogUrl } = await getSiteInfo(handle)
+export async function getPost(
+  handleOrCharacterId: HandleOrCharacterId,
+  noteId: string,
+): Promise<Post | null> {
+  const { characterId, xlogUrl } = await getSiteInfo(handleOrCharacterId)
 
   const note = await indexer.note.get(characterId, noteId)
   if (!note)

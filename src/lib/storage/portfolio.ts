@@ -1,12 +1,14 @@
 import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
-import { getSiteInfo } from './site'
-import type { NoteQueryOptions, Portfolio } from './types'
-import { convertIpfsUrl } from './utils'
+import type { HandleOrCharacterId, NoteQueryOptions, Portfolio } from './types'
+import { convertIpfsUrl, getCharacterId } from './utils'
 
-export async function getPortfolioMany(handle: string, options?: NoteQueryOptions): Promise<Portfolio[]> {
-  const { characterId } = await getSiteInfo(handle)
+export async function getPortfolioMany(
+  handleOrCharacterId: HandleOrCharacterId,
+  options?: NoteQueryOptions,
+): Promise<Portfolio[]> {
+  const characterId = await getCharacterId(handleOrCharacterId)
 
   const notes = await indexer.note.getMany({
     characterId,
@@ -18,8 +20,11 @@ export async function getPortfolioMany(handle: string, options?: NoteQueryOption
   return notes.list.map(note => createPortfolioFromNote(note))
 }
 
-export async function getPortfolio(handle: string, noteId: string): Promise<Portfolio | null> {
-  const { characterId } = await getSiteInfo(handle)
+export async function getPortfolio(
+  handleOrCharacterId: HandleOrCharacterId,
+  noteId: string,
+): Promise<Portfolio | null> {
+  const characterId = await getCharacterId(handleOrCharacterId)
   const note = await indexer.note.get(characterId, noteId)
   return note ? createPortfolioFromNote(note) : null
 }

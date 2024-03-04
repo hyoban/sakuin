@@ -1,6 +1,21 @@
 import type { AttributesMetadata } from 'crossbell'
 
-import type { Navigation, XLogTraitType } from './types'
+import { indexer } from './indexer'
+import type { Navigation, SocialPlatform, XLogTraitType } from './types'
+
+export async function getCharacterId(handleOrCharacterId: string | number) {
+  let characterId: number
+  if (typeof handleOrCharacterId === 'string') {
+    const character = await indexer.character.getByHandle(handleOrCharacterId)
+    if (!character)
+      throw new Error('Character not found')
+    characterId = character.characterId
+  }
+  else {
+    characterId = handleOrCharacterId
+  }
+  return characterId
+}
 
 export function convertIpfsUrl(url?: string) {
   if (!url)
@@ -69,7 +84,7 @@ export function getFullXLogMeta(
 
 export function parseConnectedAccount(
   account: string,
-): { platform: string, id: string } {
+): SocialPlatform {
   const [, id, platform] = account.match(/csb:\/\/account:(.+)@(.+)/) as string[]
   if (!platform || !id)
     throw new Error('Invalid connected account')

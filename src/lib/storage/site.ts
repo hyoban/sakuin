@@ -1,9 +1,12 @@
 import { indexer } from './indexer'
-import type { SiteInfo } from './types'
+import type { HandleOrCharacterId, SiteInfo } from './types'
 import { convertIpfsUrl, getFullXLogMeta, parseConnectedAccount } from './utils'
 
-export async function getSiteInfo(handle: string): Promise<SiteInfo> {
-  const character = await indexer.character.getByHandle(handle)
+export async function getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
+  const character = typeof handleOrCharacterId === 'string'
+    ? await indexer.character.getByHandle(handleOrCharacterId)
+    : await indexer.character.get(handleOrCharacterId)
+
   if (!character)
     throw new Error('Character not found')
 
@@ -30,6 +33,7 @@ export async function getSiteInfo(handle: string): Promise<SiteInfo> {
     css,
   } = getFullXLogMeta(attributes)
 
+  const { handle } = character
   const xlogUrl = customDomain ? `https://${customDomain}` : `https://${handle}.xlog.app`
 
   return {
