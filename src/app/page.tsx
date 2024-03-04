@@ -1,6 +1,6 @@
 import { env } from '../env'
 import { capitalize, getUniverseLinks } from '../lib/other'
-import { getGitHubProjects, getPodcasts, getPostMany, getSiteInfo } from '../lib/storage'
+import { getPortfolioMany, getPostMany, getSiteInfo } from '../lib/storage'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
 
@@ -13,8 +13,20 @@ export async function HomePage() {
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
     getPostMany(env.HANDLE, { orderBy: 'publishedAt', limit: 5 }),
-    getGitHubProjects(env.HANDLE),
-    getPodcasts(env.HANDLE),
+    getPortfolioMany(
+      env.HANDLE,
+      {
+        orderBy: 'publishedAt',
+        filter: p => p.link.startsWith('https://github.com'),
+      },
+    ),
+    getPortfolioMany(
+      env.HANDLE,
+      {
+        orderBy: 'publishedAt',
+        filter: p => p.link.includes('xiaoyuzhoufm.com'),
+      },
+    ),
   ])
 
   const links = getUniverseLinks(
@@ -35,10 +47,9 @@ export async function HomePage() {
           <h3>Projects</h3>
           {projects.map(project => (
             <ListItem
-              key={project.id}
-              title={capitalize(project.name)}
-              description={project.description}
-              superscript={`${project.stars} stars`}
+              key={project.noteId}
+              title={capitalize(project.title)}
+              description={project.summary}
               link={project.link}
             />
           ))}
@@ -65,9 +76,9 @@ export async function HomePage() {
             {podcasts.map(podcast => (
               <ListItem
                 key={podcast.link}
-                title={podcast.title ?? ''}
-                description={podcast.date?.slice(0, 10) ?? ''}
-                link={podcast.link ?? ''}
+                title={podcast.title}
+                description={podcast.date.slice(0, 10)}
+                link={podcast.link}
               />
             ))}
           </section>

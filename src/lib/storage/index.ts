@@ -1,4 +1,3 @@
-export * from './podcasts'
+export * from './portfolio'
 export * from './post'
-export * from './project'
 export * from './site'

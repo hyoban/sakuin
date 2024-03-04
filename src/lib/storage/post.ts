@@ -9,8 +9,6 @@ type NoteQueryOptions = Parameters<typeof indexer.note.getMany>[0]
 
 export async function getPostMany(handle: string, options?: NoteQueryOptions): Promise<Post[]> {
   const { characterId, blogLink } = await getSiteInfo(handle)
-  if (!characterId)
-    return []
 
   const notes = await indexer.note.getMany({
     characterId,
@@ -24,8 +22,6 @@ export async function getPostMany(handle: string, options?: NoteQueryOptions): P
 
 export async function getPost(handle: string, noteId: string): Promise<Post | null> {
   const { characterId, blogLink } = await getSiteInfo(handle)
-  if (!characterId)
-    return null
 
   const note = await indexer.note.get(characterId, noteId)
   if (!note)
