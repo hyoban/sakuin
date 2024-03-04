@@ -49,3 +49,7 @@ export function getUniverseLinks(
       return a.title?.localeCompare(b.title ?? '') ?? 0
     }) as Link[]
 }
+
+export function capitalize(str: string) {
+  return str.replaceAll(/\b\w/g, l => l.toUpperCase()).replaceAll('-', ' ')
+}
