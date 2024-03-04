@@ -1,4 +1,4 @@
-import { convertIpfsUrl, getXLogMetaInAttributes } from '../utils'
+import { convertIpfsUrl, getXLogMetaInAttributes, parseConnectedAccount } from '../utils'
 import { indexer } from './indexer'
 import { platforms } from './platforms'
 
@@ -12,7 +12,8 @@ export async function getSiteInfo(
 
   const content = character.metadata?.content
 
-  const navigationList = getXLogMetaInAttributes(content?.attributes, 'xlog_navigation')
+  const connectedAccounts = content?.connected_accounts ?? []
+  const navigationList = getXLogMetaInAttributes(content?.attributes, 'xlog_navigation') ?? []
   const xLogCustomDomain = getXLogMetaInAttributes(content?.attributes, 'xlog_custom_domain')
   const blogUrl = xLogCustomDomain ? `https://${xLogCustomDomain}` : `https://${handle}.xlog.app`
   const characterName = content?.name
@@ -27,26 +28,19 @@ export async function getSiteInfo(
     banner: content?.banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
     blogUrl,
     links: [
-      ...(content?.connected_accounts ?? [])
+      ...connectedAccounts
         .map((account) => {
-          // connected_accounts like "csb://account:0xhyoban@twitter"
-          const contextWithoutPrefix = account.slice(14)
-          const splitIndex = contextWithoutPrefix.lastIndexOf('@')
-          const username = contextWithoutPrefix.slice(0, splitIndex)
-          const platform = contextWithoutPrefix.slice(splitIndex + 1)
-          if (
-            !platform || !username
-            || !platforms[platform]?.url
-            || !platforms[platform]?.name
-          )
+          const { platform, id } = parseConnectedAccount(account)
+          if (!platforms[platform])
             return
+
           return {
-            href: platforms[platform]!.url!.replace('{username}', username),
-            title: platforms[platform]!.name.toLocaleLowerCase(),
-            icon: platforms[platform]!.icon,
+            href: platforms[platform]?.url?.replace('{username}', id),
+            title: platforms[platform]?.name.toLocaleLowerCase(),
+            icon: platforms[platform]?.icon,
           }
         }),
-      ...(navigationList ?? [])
+      ...navigationList
         .filter(nav => nav.url.startsWith('http') && nav.url !== siteUrl)
         .map(nav => ({
           href: nav.url,
@@ -67,7 +61,7 @@ export async function getSiteInfo(
         if (!a.icon && b.icon)
           return 1
         // then title
-        return a.title.localeCompare(b.title)
+        return a.title?.localeCompare(b.title ?? '') ?? 0
       }),
   }
 }

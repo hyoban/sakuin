@@ -48,3 +48,12 @@ export function getXLogMetaInAttributes(
 
   return attribute as string
 }
+
+export function parseConnectedAccount(
+  account: string,
+): { platform: string, id: string } {
+  const [, id, platform] = account.match(/csb:\/\/account:(.+)@(.+)/) as string[]
+  if (!platform || !id)
+    throw new Error('Invalid connected account')
+  return { platform, id }
+}
