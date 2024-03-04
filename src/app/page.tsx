@@ -8,26 +8,15 @@ export async function HomePage() {
   const [
     siteInfo,
     latestBlogList,
-    projects,
-    podcasts,
+    portfolios,
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
     getPostMany(env.HANDLE, { orderBy: 'publishedAt', limit: 5 }),
-    getPortfolioMany(
-      env.HANDLE,
-      {
-        orderBy: 'publishedAt',
-        filter: p => p.link.startsWith('https://github.com'),
-      },
-    ),
-    getPortfolioMany(
-      env.HANDLE,
-      {
-        orderBy: 'publishedAt',
-        filter: p => p.link.includes('xiaoyuzhoufm.com'),
-      },
-    ),
+    getPortfolioMany(env.HANDLE, { orderBy: 'publishedAt' }),
   ])
+
+  const projects = portfolios.filter(p => p.link.startsWith('https://github.com'))
+  const podcasts = portfolios.filter(p => p.link.includes('xiaoyuzhoufm.com'))
 
   const links = getUniverseLinks(
     siteInfo.socialPlatforms,

@@ -6,10 +6,7 @@ import type { NoteQueryOptions } from './types'
 import type { Portfolio } from './types/portfolio'
 import { convertIpfsUrl } from './utils'
 
-export async function getPortfolioMany(
-  handle: string,
-  options?: NoteQueryOptions & { filter?: (note: Portfolio) => boolean },
-): Promise<Portfolio[]> {
+export async function getPortfolioMany(handle: string, options?: NoteQueryOptions): Promise<Portfolio[]> {
   const { characterId } = await getSiteInfo(handle)
 
   const notes = await indexer.note.getMany({
@@ -19,11 +16,7 @@ export async function getPortfolioMany(
     ...options,
   })
 
-  const filter = options?.filter ?? (() => true)
-
-  return notes.list
-    .map(note => createPortfolioFromNote(note))
-    .filter(portfolio => filter(portfolio))
+  return notes.list.map(note => createPortfolioFromNote(note))
 }
 
 export async function getPortfolio(handle: string, noteId: string): Promise<Portfolio | null> {
