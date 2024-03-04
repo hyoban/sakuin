@@ -2,8 +2,7 @@ import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
 import { getSiteInfo } from './site'
-import type { NoteQueryOptions } from './types'
-import type { Portfolio } from './types/portfolio'
+import type { NoteQueryOptions, Portfolio } from './types'
 import { convertIpfsUrl } from './utils'
 
 export async function getPortfolioMany(handle: string, options?: NoteQueryOptions): Promise<Portfolio[]> {

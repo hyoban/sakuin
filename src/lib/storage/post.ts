@@ -2,10 +2,8 @@ import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
 import { getSiteInfo } from './site'
-import type { Post } from './types/post'
+import type { NoteQueryOptions, Post } from './types'
 import { convertIpfsUrl, getXLogMeta } from './utils'
-
-type NoteQueryOptions = Parameters<typeof indexer.note.getMany>[0]
 
 export async function getPostMany(handle: string, options?: NoteQueryOptions): Promise<Post[]> {
   const { characterId, blogLink } = await getSiteInfo(handle)

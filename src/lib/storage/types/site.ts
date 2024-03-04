@@ -1,5 +1,3 @@
-import type { indexer } from './indexer'
-
 export type SocialPlatform = {
   platform: string
   id: string
@@ -52,5 +50,3 @@ export type SiteInfo = {
   customDomain?: string
   customCSS?: string
 }
-
-export type NoteQueryOptions = Parameters<typeof indexer.note.getMany>[0]
