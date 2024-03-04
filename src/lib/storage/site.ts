@@ -15,6 +15,9 @@ export async function getSiteInfo(handle: string): Promise<SiteInfo> {
     attributes,
     connected_accounts: connectedAccounts = [],
     name: characterName,
+    avatars,
+    banners,
+    bio,
   } = content
   const {
     navigation,
@@ -34,11 +37,11 @@ export async function getSiteInfo(handle: string): Promise<SiteInfo> {
     characterId: character.characterId,
     blogUrl,
 
-    icon: content.avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
-    banner: content.banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
+    icon: avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
+    banner: banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
     characterName,
     siteName,
-    description: content.bio,
+    description: bio,
     footer,
     analytics: {
       google: ga,
