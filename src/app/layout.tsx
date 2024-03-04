@@ -5,11 +5,11 @@ import { getSiteInfo } from '../lib/storage'
 
 export async function RootLayout({ children }: React.PropsWithChildren) {
   const { HANDLE, SITE_URL } = env
-  const { siteName, description, icon, banner } = await getSiteInfo(HANDLE)
+  const { siteName, characterName, description, icon, banner } = await getSiteInfo(HANDLE)
 
   return (
     <html lang="en" className="dark:bg-neutral-900 dark:text-white">
-      <title>{siteName}</title>
+      <title>{siteName ?? characterName}</title>
       <meta name="description" content={description} />
       {icon && <link rel="icon" type="image/png" href={icon} />}
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
