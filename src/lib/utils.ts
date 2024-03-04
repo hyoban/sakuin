@@ -18,8 +18,9 @@ type XLogTrait = [
   'xlog_custom_domain',
   'xlog_footer',
 ]
+type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
 
-export type XLogTraitType = XLogTrait[number]
+export type XLogTraitType = RemovePrefix<XLogTrait[number]>
 
 export type XLogNavigation = {
   id: string
@@ -29,21 +30,24 @@ export type XLogNavigation = {
 
 export function getXLogMetaInAttributes(
   attributes: AttributesMetadata['attributes'],
-  type: 'xlog_navigation'
-): XLogNavigation[] | undefined
+  type: 'navigation'
+): XLogNavigation[]
 export function getXLogMetaInAttributes(
   attributes: AttributesMetadata['attributes'],
-  type: Exclude<XLogTraitType, 'xlog_navigation'>,
+  type: Exclude<XLogTraitType, 'navigation'>,
 ): string | undefined
 export function getXLogMetaInAttributes(
   attributes: AttributesMetadata['attributes'],
   type: XLogTraitType,
 ) {
-  const attribute = attributes?.find(attr => attr.trait_type === type)?.value
-  if (!attribute)
+  const attribute = attributes?.find(attr => attr.trait_type === `xlog_${type}`)?.value
+  if (!attribute) {
+    if (type === 'navigation')
+      return []
     return
+  }
 
-  if (type === 'xlog_navigation')
+  if (type === 'navigation')
     return JSON.parse(attribute as string) as XLogNavigation[]
 
   return attribute as string

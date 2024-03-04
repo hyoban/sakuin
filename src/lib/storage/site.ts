@@ -1,5 +1,5 @@
 import type { XLogNavigation } from '../utils'
-import { convertIpfsUrl, getXLogMetaInAttributes, parseConnectedAccount } from '../utils'
+import { convertIpfsUrl, getXLogMetaInAttributes as getXLogMeta, parseConnectedAccount } from '../utils'
 import { indexer } from './indexer'
 import { platforms } from './platforms'
 
@@ -94,13 +94,16 @@ export async function getSiteInfo(
     throw new Error('Character not found')
 
   const content = character.metadata?.content
+  if (!content)
+    throw new Error('Character content not found')
 
-  const connectedAccounts = content?.connected_accounts ?? []
-  const navigationList = getXLogMetaInAttributes(content?.attributes, 'xlog_navigation') ?? []
-  const xLogCustomDomain = getXLogMetaInAttributes(content?.attributes, 'xlog_custom_domain')
+  const { attributes } = content
+  const connectedAccounts = content.connected_accounts ?? []
+  const navigationList = getXLogMeta(attributes, 'navigation')
+  const xLogCustomDomain = getXLogMeta(attributes, 'custom_domain')
   const blogUrl = xLogCustomDomain ? `https://${xLogCustomDomain}` : `https://${handle}.xlog.app`
-  const characterName = content?.name
-  const siteName = getXLogMetaInAttributes(content?.attributes, 'xlog_site_name')
+  const characterName = content.name
+  const siteName = getXLogMeta(attributes, 'site_name')
 
   return {
     handle,
@@ -108,22 +111,22 @@ export async function getSiteInfo(
     blogUrl,
     links: getUniverseLinks(connectedAccounts, navigationList, blogUrl, siteUrl),
 
-    icon: content?.avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
-    banner: content?.banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
+    icon: content.avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
+    banner: content.banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
     characterName,
     siteName,
-    description: content?.bio,
-    footer: getXLogMetaInAttributes(content?.attributes, 'xlog_footer'),
+    description: content.bio,
+    footer: getXLogMeta(attributes, 'footer'),
     analytics: {
-      google: getXLogMetaInAttributes(content?.attributes, 'xlog_ga'),
+      google: getXLogMeta(attributes, 'ga'),
       umamiCloud: {
-        url: getXLogMetaInAttributes(content?.attributes, 'xlog_uh'),
-        id: getXLogMetaInAttributes(content?.attributes, 'xlog_ua'),
+        url: getXLogMeta(attributes, 'uh'),
+        id: getXLogMeta(attributes, 'ua'),
       },
     },
     socialPlatforms: connectedAccounts.map(account => parseConnectedAccount(account)),
     navigation: navigationList,
     customDomain: xLogCustomDomain,
-    customCSS: getXLogMetaInAttributes(content?.attributes, 'xlog_css'),
+    customCSS: getXLogMeta(attributes, 'css'),
   }
 }
