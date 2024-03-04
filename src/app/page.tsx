@@ -1,6 +1,6 @@
 import { env } from '../env'
 import { capitalize, getUniverseLinks } from '../lib/other'
-import { getGitHubProjects, getPodcasts, getPostList, getSiteInfo } from '../lib/storage'
+import { getGitHubProjects, getPodcasts, getPostMany, getSiteInfo } from '../lib/storage'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
 
@@ -12,7 +12,7 @@ export async function HomePage() {
     podcasts,
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
-    getPostList(env.HANDLE, { orderBy: 'publishedAt', limit: 5 }),
+    getPostMany(env.HANDLE, { orderBy: 'publishedAt', limit: 5 }),
     getGitHubProjects(env.HANDLE),
     getPodcasts(env.HANDLE),
   ])

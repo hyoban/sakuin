@@ -7,7 +7,7 @@ import { convertIpfsUrl, getXLogMeta } from './utils'
 
 type NoteQueryOptions = Parameters<typeof indexer.note.getMany>[0]
 
-export async function getPostList(handle: string, options?: NoteQueryOptions): Promise<Post[]> {
+export async function getPostMany(handle: string, options?: NoteQueryOptions): Promise<Post[]> {
   const { characterId, blogLink } = await getSiteInfo(handle)
   if (!characterId)
     return []

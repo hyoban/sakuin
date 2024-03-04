@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest'
 
-import { getPostList } from '.'
+import { getPostMany } from '.'
 
 test('getPostList', async () => {
-  const postList = await getPostList('diygod', { orderBy: 'publishedAt', limit: 2 })
+  const postList = await getPostMany('diygod', { orderBy: 'publishedAt', limit: 2 })
   expect(postList).toHaveLength(2)
   for (const key of [
     'noteId',
