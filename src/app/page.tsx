@@ -40,7 +40,7 @@ export async function HomePage() {
               title={capitalize(project.title)}
               description={project.summary}
               link={project.link}
-              superscript={project.views ? `${project.views} stars` : undefined}
+              superscript={project.likes ? `${project.likes} stars` : undefined}
             />
           ))}
         </section>

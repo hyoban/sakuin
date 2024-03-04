@@ -49,7 +49,7 @@ async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
     const { repo } = await res.json() as Res
     portfolio.title = repo.name
     portfolio.summary = repo.description
-    portfolio.views = repo.stars
+    portfolio.likes = repo.stars
   }
 
   return portfolio
