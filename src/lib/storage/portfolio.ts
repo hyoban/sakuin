@@ -17,7 +17,7 @@ export async function getPortfolioMany(
     ...options,
   })
 
-  return notes.list.map(note => createPortfolioFromNote(note))
+  return Promise.all(notes.list.map(note => createPortfolioFromNote(note)))
 }
 
 export async function getPortfolio(
@@ -29,8 +29,8 @@ export async function getPortfolio(
   return note ? createPortfolioFromNote(note) : null
 }
 
-function createPortfolioFromNote(note: NoteEntity): Portfolio {
-  return {
+async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
+  const portfolio: Portfolio = {
     noteId: note.noteId,
     title: note.metadata?.content?.title ?? '',
     link: note.metadata?.content?.external_urls?.at(0) ?? '',
@@ -39,4 +39,36 @@ function createPortfolioFromNote(note: NoteEntity): Portfolio {
     summary: note.metadata?.content?.summary as string | undefined ?? '',
     cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
   }
+
+  // check if the link is a GitHub link
+  if (
+    portfolio.link.startsWith('https://github.com')
+    && portfolio.link.split('/').length === 5
+  ) {
+    const res = await fetch(portfolio.link.replace('https://github.com/', 'https://ungh.cc/repos/'))
+    const { repo } = await res.json() as Res
+    portfolio.title = repo.name
+    portfolio.summary = repo.description
+    portfolio.views = repo.stars
+  }
+
+  return portfolio
+}
+
+export type Res = {
+  repo: Repo
+}
+
+export type Repo = {
+  id: number
+  name: string
+  repo: string
+  description: string
+  createdAt: string
+  updatedAt: string
+  pushedAt: string
+  stars: number
+  watchers: number
+  forks: number
+  defaultBranch: string
 }
