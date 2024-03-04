@@ -1,5 +1,5 @@
 import { env } from '../env'
-import { getCharacter, getGitHubProjects, getLatestPostFromXLog, getPodcasts } from '../lib/storage'
+import { getGitHubProjects, getLatestPostFromXLog, getPodcasts, getSiteInfo } from '../lib/storage'
 import { capitalize } from '../lib/utils'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
@@ -11,7 +11,7 @@ export async function HomePage() {
     projects,
     podcasts,
   ] = await Promise.all([
-    getCharacter(env.HANDLE, env.SITE_URL),
+    getSiteInfo(env.HANDLE, env.SITE_URL),
     getLatestPostFromXLog(env.HANDLE),
     getGitHubProjects(env.HANDLE),
     getPodcasts(env.HANDLE),

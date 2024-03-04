@@ -1,11 +1,11 @@
 import { ofetch } from 'ofetch'
 
 import type { UnghResponse } from '../../types/github'
-import { getCharacter } from './character'
 import { indexer } from './indexer'
+import { getSiteInfo } from './site'
 
 async function getGitHubRepo(handle: string) {
-  const { characterId } = await getCharacter(handle)
+  const { characterId } = await getSiteInfo(handle)
   const notes = await indexer.note.getMany({ characterId, tags: 'portfolio', orderBy: 'publishedAt' })
 
   return notes.list

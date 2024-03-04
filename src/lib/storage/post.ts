@@ -1,8 +1,8 @@
-import { getCharacter } from './character'
 import { indexer } from './indexer'
+import { getSiteInfo } from './site'
 
 export async function getLatestPostFromXLog(handle: string) {
-  const { characterId, blogUrl } = await getCharacter(handle)
+  const { characterId, blogUrl } = await getSiteInfo(handle)
   if (!characterId)
     return []
 
