@@ -48,6 +48,8 @@ import {
 
 <!-- /automd -->
 
+Most of functions take a `HANDLE` as the first argument, and return what you need to build your site.
+
 ## See also
 
 - [waku](https://waku.gg) The minimal React framework
