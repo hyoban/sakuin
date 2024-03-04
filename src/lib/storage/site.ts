@@ -9,6 +9,51 @@ type Link = {
   icon?: string
 }
 
+function getUniverseLinks(
+  connectedAccounts: string[] = [],
+  navigationList: XLogNavigation[] = [],
+  blogUrl = '',
+  siteUrl = '',
+) {
+  return [
+    ...connectedAccounts
+      .map((account) => {
+        const { platform, id } = parseConnectedAccount(account)
+        if (!platforms[platform])
+          return
+
+        return {
+          href: platforms[platform]?.url?.replace('{username}', id),
+          title: platforms[platform]?.name.toLocaleLowerCase(),
+          icon: platforms[platform]?.icon,
+        }
+      }),
+    ...navigationList
+      .filter(nav => nav.url.startsWith('http') && nav.url !== siteUrl)
+      .map(nav => ({
+        href: nav.url,
+        title: nav.label.toLowerCase(),
+        icon: undefined,
+      })),
+    {
+      href: blogUrl,
+      title: 'blog',
+      icon: 'i-lucide-book',
+    },
+  ]
+    .filter(Boolean)
+    .filter(link => link.href && link.title)
+    .sort((a, b) => {
+      // icon first
+      if (a.icon && !b.icon)
+        return -1
+      if (!a.icon && b.icon)
+        return 1
+      // then title
+      return a.title?.localeCompare(b.title ?? '') ?? 0
+    }) as Link[]
+}
+
 export type SocialPlatform = {
   platform: string
   id: string
@@ -57,51 +102,11 @@ export async function getSiteInfo(
   const characterName = content?.name
   const siteName = getXLogMetaInAttributes(content?.attributes, 'xlog_site_name')
 
-  function getLinks() {
-    return [
-      ...connectedAccounts
-        .map((account) => {
-          const { platform, id } = parseConnectedAccount(account)
-          if (!platforms[platform])
-            return
-
-          return {
-            href: platforms[platform]?.url?.replace('{username}', id),
-            title: platforms[platform]?.name.toLocaleLowerCase(),
-            icon: platforms[platform]?.icon,
-          }
-        }),
-      ...navigationList
-        .filter(nav => nav.url.startsWith('http') && nav.url !== siteUrl)
-        .map(nav => ({
-          href: nav.url,
-          title: nav.label.toLowerCase(),
-          icon: undefined,
-        })),
-      {
-        href: blogUrl,
-        title: 'blog',
-        icon: 'i-lucide-book',
-      },
-    ]
-      .filter(Boolean)
-      .filter(link => link.href && link.title)
-      .sort((a, b) => {
-        // icon first
-        if (a.icon && !b.icon)
-          return -1
-        if (!a.icon && b.icon)
-          return 1
-        // then title
-        return a.title?.localeCompare(b.title ?? '') ?? 0
-      }) as Link[]
-  }
-
   return {
     handle,
     characterId: character.characterId,
     blogUrl,
-    links: getLinks(),
+    links: getUniverseLinks(connectedAccounts, navigationList, blogUrl, siteUrl),
 
     icon: content?.avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
     banner: content?.banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
