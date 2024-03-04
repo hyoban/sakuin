@@ -44,7 +44,7 @@ export async function getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Pro
     icon: avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
     banner: banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
     characterName,
-    siteName,
+    siteName: siteName || characterName,
     description: bio,
     footer,
     analytics: {
