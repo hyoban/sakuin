@@ -1,8 +1,14 @@
+import type { NoteEntity } from 'crossbell'
+
 import { indexer } from './indexer'
 import { getSiteInfo } from './site'
+import type { Post } from './types/post'
+import { convertIpfsUrl, getXLogMeta } from './utils'
 
-export async function getLatestPostFromXLog(handle: string) {
-  const { characterId, blogUrl } = await getSiteInfo(handle)
+type NoteQueryOptions = Parameters<typeof indexer.note.getMany>[0]
+
+export async function getPostList(handle: string, options?: NoteQueryOptions): Promise<Post[]> {
+  const { characterId, blogLink } = await getSiteInfo(handle)
   if (!characterId)
     return []
 
@@ -10,19 +16,52 @@ export async function getLatestPostFromXLog(handle: string) {
     characterId,
     tags: 'post',
     sources: 'xlog',
-    orderBy: 'publishedAt',
-    limit: 5,
+    ...options,
   })
 
-  const posts = notes.list.map(blog => ({
-    noteId: blog.noteId,
-    title: blog.metadata?.content?.title,
-    link: `${blogUrl}/${blog.metadata?.content?.attributes?.find(attr => attr.trait_type === 'xlog_slug')?.value as string}`,
-    date: blog.metadata?.content?.date_published,
-  }))
+  return Promise.all(notes.list.map(note => createPostFromNote(note, characterId, blogLink)))
+}
 
-  return Promise.all(posts.map(async (post) => {
-    const views = await indexer.stat.getForNote(characterId, post.noteId)
-    return { ...post, views: views.viewDetailCount }
-  }))
+export async function getPost(handle: string, noteId: string): Promise<Post | null> {
+  const { characterId, blogLink } = await getSiteInfo(handle)
+  if (!characterId)
+    return null
+
+  const note = await indexer.note.get(characterId, noteId)
+  if (!note)
+    return null
+
+  return createPostFromNote(note, characterId, blogLink)
+}
+
+async function createPostFromNote(
+  note: NoteEntity,
+  characterId: number,
+  blogLink: string,
+): Promise<Post> {
+  const { noteId } = note
+  const [
+    views,
+    likes,
+    comments,
+  ] = await Promise.all([
+    indexer.stat.getForNote(characterId, noteId),
+    indexer.link.getBacklinksByNote(characterId, noteId, { linkType: 'like' }),
+    indexer.note.getMany({ toCharacterId: characterId, toNoteId: noteId }),
+  ])
+
+  return {
+    noteId: note.noteId,
+    title: note.metadata?.content?.title ?? '',
+    link: `${blogLink}/${getXLogMeta(note.metadata?.content?.attributes, 'slug')}`,
+    date: note.metadata?.content?.date_published ?? '',
+    tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
+    // @ts-expect-error TODO: summary is not in the type
+    summary: note.metadata?.content?.summary as string | undefined ?? '',
+    cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
+    content: note.metadata?.content?.content ?? '',
+    views: views.viewDetailCount,
+    likes: likes.count,
+    comments: comments.count,
+  }
 }

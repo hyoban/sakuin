@@ -1,6 +1,6 @@
 import { env } from '../env'
 import { capitalize, getUniverseLinks } from '../lib/other'
-import { getGitHubProjects, getLatestPostFromXLog, getPodcasts, getSiteInfo } from '../lib/storage'
+import { getGitHubProjects, getPodcasts, getPostList, getSiteInfo } from '../lib/storage'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
 
@@ -12,7 +12,7 @@ export async function HomePage() {
     podcasts,
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
-    getLatestPostFromXLog(env.HANDLE),
+    getPostList(env.HANDLE, { orderBy: 'publishedAt', limit: 5 }),
     getGitHubProjects(env.HANDLE),
     getPodcasts(env.HANDLE),
   ])
@@ -20,7 +20,7 @@ export async function HomePage() {
   const links = getUniverseLinks(
     siteInfo.socialPlatforms,
     siteInfo.navigation,
-    siteInfo.blogUrl,
+    siteInfo.blogLink,
     env.SITE_URL,
   )
 
@@ -50,8 +50,8 @@ export async function HomePage() {
           {latestBlogList.map(blog => (
             <ListItem
               key={blog.link}
-              title={blog.title ?? ''}
-              description={blog.date?.slice(0, 10) ?? ''}
+              title={blog.title}
+              description={blog.date.slice(0, 10)}
               superscript={`${blog.views} views`}
               link={blog.link}
             />

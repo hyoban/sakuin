@@ -12,6 +12,8 @@ const XLogTrait = [
   'xlog_navigation',
   'xlog_custom_domain',
   'xlog_footer',
+
+  'xlog_slug',
 ] as const
 
 type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
@@ -27,7 +29,7 @@ export type Navigation = {
 export type SiteInfo = {
   handle: string
   characterId: number
-  blogUrl: string
+  blogLink: string
 
   // info from XLog Site Settings
   icon?: string

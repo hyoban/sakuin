@@ -2,7 +2,9 @@ import type { AttributesMetadata } from 'crossbell'
 
 import type { Navigation, XLogTraitType } from './types'
 
-export function convertIpfsUrl(url: string) {
+export function convertIpfsUrl(url?: string) {
+  if (!url)
+    return
   return url.replaceAll(/ipfs:\/\/([^\n ]+)/g, 'https://ipfs.4everland.xyz/ipfs/' + '$1')
 }
 
@@ -43,6 +45,8 @@ export function getFullXLogMeta(
     navigation: [],
     custom_domain: '',
     footer: '',
+
+    slug: '',
   }
   if (!attributes)
     return xlogMeta
