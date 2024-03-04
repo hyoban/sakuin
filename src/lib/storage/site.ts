@@ -1,3 +1,4 @@
+import { convertIpfsUrl } from '../utils'
 import { indexer } from './indexer'
 import { platforms } from './platforms'
 
@@ -30,9 +31,10 @@ export async function getSiteInfo(
   return {
     name: content?.name,
     siteName: siteName || content?.name,
-    bio: content?.bio,
+    description: content?.bio,
     characterId: character.characterId,
-    icon: content?.avatars?.map(avatar => avatar.replaceAll(/ipfs:\/\/([^\n ]+)/g, 'https://ipfs.4everland.xyz/ipfs/' + '$1')).at(0),
+    icon: content?.avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
+    banner: content?.banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
     blogUrl,
     links: [
       ...(content?.connected_accounts ?? [])
