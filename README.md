@@ -9,6 +9,45 @@ Here is a demo site for [diygod](https://diygod.cc).
 
 ![demo site for diygod](https://github.com/hyoban/hyoban.cc/assets/38493346/0ccff48f-6679-410b-9288-ae4f4cd0093d)
 
+## SDK usage
+
+<!-- automd:pm-install name="sakuin" -->
+
+```sh
+# ✨ Auto-detect
+npx nypm install sakuin
+
+# npm
+npm install sakuin
+
+# yarn
+yarn add sakuin
+
+# pnpm
+pnpm install sakuin
+
+# bun
+bun install sakuin
+```
+
+<!-- /automd -->
+
+<!-- automd:jsimport name="sakuin" imports="getPortfolio,getPortfolioMany,getPost,getPostMany,getSiteInfo" -->
+
+**ESM** (Node.js, Bun)
+
+```js
+import {
+  getPortfolio,
+  getPortfolioMany,
+  getPost,
+  getPostMany,
+  getSiteInfo,
+} from "sakuin";
+```
+
+<!-- /automd -->
+
 ## See also
 
 - [waku](https://waku.gg) The minimal React framework
