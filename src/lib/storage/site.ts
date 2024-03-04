@@ -1,13 +1,7 @@
-import type { XLogNavigation } from '../utils'
-import { convertIpfsUrl, getXLogMetaInAttributes as getXLogMeta, parseConnectedAccount } from '../utils'
 import { indexer } from './indexer'
 import { platforms } from './platforms'
-
-type Link = {
-  href: string
-  title: string
-  icon?: string
-}
+import type { Link, SiteInfo, XLogNavigation } from './types'
+import { convertIpfsUrl, getXLogMetaInAttributes as getXLogMeta, parseConnectedAccount } from './utils'
 
 function getUniverseLinks(
   connectedAccounts: string[] = [],
@@ -52,37 +46,6 @@ function getUniverseLinks(
       // then title
       return a.title?.localeCompare(b.title ?? '') ?? 0
     }) as Link[]
-}
-
-export type SocialPlatform = {
-  platform: string
-  id: string
-}
-
-export type SiteInfo = {
-  handle: string
-  characterId: number
-  blogUrl: string
-  links: Link[]
-
-  // info from XLog Site Settings
-  icon?: string
-  banner?: string
-  characterName?: string
-  siteName?: string
-  description?: string
-  footer?: string
-  analytics: {
-    google?: string
-    umamiCloud: {
-      url?: string
-      id?: string
-    }
-  }
-  socialPlatforms: SocialPlatform[]
-  navigation: XLogNavigation[]
-  customDomain?: string
-  customCSS?: string
 }
 
 export async function getSiteInfo(

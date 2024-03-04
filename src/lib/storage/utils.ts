@@ -1,31 +1,13 @@
 import type { AttributesMetadata } from 'crossbell'
 
+import type { XLogNavigation, XLogTraitType } from './types'
+
 export function capitalize(str: string) {
   return str.replaceAll(/\b\w/g, l => l.toUpperCase()).replaceAll('-', ' ')
 }
 
 export function convertIpfsUrl(url: string) {
   return url.replaceAll(/ipfs:\/\/([^\n ]+)/g, 'https://ipfs.4everland.xyz/ipfs/' + '$1')
-}
-
-type XLogTrait = [
-  'xlog_css',
-  'xlog_ga',
-  'xlog_ua',
-  'xlog_uh',
-  'xlog_site_name',
-  'xlog_navigation',
-  'xlog_custom_domain',
-  'xlog_footer',
-]
-type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
-
-export type XLogTraitType = RemovePrefix<XLogTrait[number]>
-
-export type XLogNavigation = {
-  id: string
-  label: string
-  url: string
 }
 
 export function getXLogMetaInAttributes(

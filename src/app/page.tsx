@@ -1,6 +1,5 @@
 import { env } from '../env'
-import { getGitHubProjects, getLatestPostFromXLog, getPodcasts, getSiteInfo } from '../lib/storage'
-import { capitalize } from '../lib/utils'
+import { capitalize, getGitHubProjects, getLatestPostFromXLog, getPodcasts, getSiteInfo } from '../lib/storage'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
 
