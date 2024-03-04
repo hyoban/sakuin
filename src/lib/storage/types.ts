@@ -1,9 +1,3 @@
-export type Link = {
-  href: string
-  title: string
-  icon?: string
-}
-
 export type SocialPlatform = {
   platform: string
   id: string
@@ -33,7 +27,6 @@ export type SiteInfo = {
   handle: string
   characterId: number
   blogUrl: string
-  links: Link[]
 
   // info from XLog Site Settings
   icon?: string

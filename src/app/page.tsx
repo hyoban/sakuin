@@ -1,4 +1,5 @@
 import { env } from '../env'
+import { getUniverseLinks } from '../lib/other'
 import { capitalize, getGitHubProjects, getLatestPostFromXLog, getPodcasts, getSiteInfo } from '../lib/storage'
 import { ExternalLink } from './external-link'
 import { ListItem } from './list-item'
@@ -10,11 +11,18 @@ export async function HomePage() {
     projects,
     podcasts,
   ] = await Promise.all([
-    getSiteInfo(env.HANDLE, env.SITE_URL),
+    getSiteInfo(env.HANDLE),
     getLatestPostFromXLog(env.HANDLE),
     getGitHubProjects(env.HANDLE),
     getPodcasts(env.HANDLE),
   ])
+
+  const links = getUniverseLinks(
+    siteInfo.socialPlatforms,
+    siteInfo.navigation,
+    siteInfo.blogUrl,
+    env.SITE_URL,
+  )
 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
@@ -65,11 +73,11 @@ export async function HomePage() {
           </section>
         )
       }
-      {siteInfo.links.length > 0 && (
+      {links.length > 0 && (
         <section>
           <h3>Links</h3>
           <div className="flex gap-4 items-center">
-            {siteInfo.links.map(link => (
+            {links.map(link => (
               <ExternalLink
                 href={link.href}
                 key={link.href}

@@ -1,5 +1,6 @@
 export const platforms: Record<string, {
   name: string
+  // TODO: icon should not be pure string
   icon?: string
   url?: string
   identityFormatTemplate?: string
