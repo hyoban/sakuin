@@ -21,7 +21,7 @@ export async function HomePage() {
   const links = getUniverseLinks(
     siteInfo.socialPlatforms,
     siteInfo.navigation,
-    siteInfo.blogLink,
+    siteInfo.xlogUrl,
     env.SITE_URL,
   )
 

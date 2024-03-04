@@ -30,12 +30,12 @@ export async function getSiteInfo(handle: string): Promise<SiteInfo> {
     css,
   } = getFullXLogMeta(attributes)
 
-  const blogLink = customDomain ? `https://${customDomain}` : `https://${handle}.xlog.app`
+  const xlogUrl = customDomain ? `https://${customDomain}` : `https://${handle}.xlog.app`
 
   return {
     handle,
     characterId: character.characterId,
-    blogLink,
+    xlogUrl,
 
     icon: avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
     banner: banners?.map(banner => convertIpfsUrl(banner.address)).at(0),

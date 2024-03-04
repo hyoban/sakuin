@@ -29,7 +29,7 @@ export type Navigation = {
 export type SiteInfo = {
   handle: string
   characterId: number
-  blogLink: string
+  xlogUrl: string
 
   // info from XLog Site Settings
   icon?: string

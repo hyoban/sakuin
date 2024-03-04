@@ -10,7 +10,7 @@ export type Link = {
 export function getUniverseLinks(
   connectedAccounts: SocialPlatform[] = [],
   navigationList: Navigation[] = [],
-  blogLink = '',
+  xlogUrl = '',
   siteUrl = '',
 ) {
   return [
@@ -32,7 +32,7 @@ export function getUniverseLinks(
         icon: undefined,
       })),
     {
-      href: blogLink,
+      href: xlogUrl,
       title: 'blog',
       icon: 'i-lucide-book',
     },

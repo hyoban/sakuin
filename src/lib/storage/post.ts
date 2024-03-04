@@ -6,7 +6,7 @@ import type { NoteQueryOptions, Post } from './types'
 import { convertIpfsUrl, getXLogMeta } from './utils'
 
 export async function getPostMany(handle: string, options?: NoteQueryOptions): Promise<Post[]> {
-  const { characterId, blogLink } = await getSiteInfo(handle)
+  const { characterId, xlogUrl } = await getSiteInfo(handle)
 
   const notes = await indexer.note.getMany({
     characterId,
@@ -15,23 +15,23 @@ export async function getPostMany(handle: string, options?: NoteQueryOptions): P
     ...options,
   })
 
-  return Promise.all(notes.list.map(note => createPostFromNote(note, characterId, blogLink)))
+  return Promise.all(notes.list.map(note => createPostFromNote(note, characterId, xlogUrl)))
 }
 
 export async function getPost(handle: string, noteId: string): Promise<Post | null> {
-  const { characterId, blogLink } = await getSiteInfo(handle)
+  const { characterId, xlogUrl } = await getSiteInfo(handle)
 
   const note = await indexer.note.get(characterId, noteId)
   if (!note)
     return null
 
-  return createPostFromNote(note, characterId, blogLink)
+  return createPostFromNote(note, characterId, xlogUrl)
 }
 
 async function createPostFromNote(
   note: NoteEntity,
   characterId: number,
-  blogLink: string,
+  xlogUrl: string,
 ): Promise<Post> {
   const { noteId } = note
   const [
@@ -47,7 +47,7 @@ async function createPostFromNote(
   return {
     noteId: note.noteId,
     title: note.metadata?.content?.title ?? '',
-    link: `${blogLink}/${getXLogMeta(note.metadata?.content?.attributes, 'slug')}`,
+    link: `${xlogUrl}/${getXLogMeta(note.metadata?.content?.attributes, 'slug')}`,
     date: note.metadata?.content?.date_published ?? '',
     tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
     // @ts-expect-error TODO: summary is not in the type
