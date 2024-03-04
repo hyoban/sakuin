@@ -1,5 +1,5 @@
 import { platforms } from './storage/platforms'
-import type { SocialPlatform, XLogNavigation } from './storage/types'
+import type { Navigation, SocialPlatform } from './storage/types'
 
 export type Link = {
   href: string
@@ -9,7 +9,7 @@ export type Link = {
 
 export function getUniverseLinks(
   connectedAccounts: SocialPlatform[] = [],
-  navigationList: XLogNavigation[] = [],
+  navigationList: Navigation[] = [],
   blogUrl = '',
   siteUrl = '',
 ) {

@@ -1,6 +1,6 @@
 import { indexer } from './indexer'
 import type { SiteInfo } from './types'
-import { convertIpfsUrl, getXLogMetaInAttributes as getXLogMeta, parseConnectedAccount } from './utils'
+import { convertIpfsUrl, getFullXLogMeta, parseConnectedAccount } from './utils'
 
 export async function getSiteInfo(handle: string): Promise<SiteInfo> {
   const character = await indexer.character.getByHandle(handle)
@@ -11,13 +11,23 @@ export async function getSiteInfo(handle: string): Promise<SiteInfo> {
   if (!content)
     throw new Error('Character content not found')
 
-  const { attributes } = content
-  const connectedAccounts = content.connected_accounts ?? []
-  const navigationList = getXLogMeta(attributes, 'navigation')
-  const xLogCustomDomain = getXLogMeta(attributes, 'custom_domain')
-  const blogUrl = xLogCustomDomain ? `https://${xLogCustomDomain}` : `https://${handle}.xlog.app`
-  const characterName = content.name
-  const siteName = getXLogMeta(attributes, 'site_name')
+  const {
+    attributes,
+    connected_accounts: connectedAccounts = [],
+    name: characterName,
+  } = content
+  const {
+    navigation,
+    custom_domain: customDomain,
+    site_name: siteName,
+    footer,
+    ga,
+    ua,
+    uh,
+    css,
+  } = getFullXLogMeta(attributes)
+
+  const blogUrl = customDomain ? `https://${customDomain}` : `https://${handle}.xlog.app`
 
   return {
     handle,
@@ -29,17 +39,17 @@ export async function getSiteInfo(handle: string): Promise<SiteInfo> {
     characterName,
     siteName,
     description: content.bio,
-    footer: getXLogMeta(attributes, 'footer'),
+    footer,
     analytics: {
-      google: getXLogMeta(attributes, 'ga'),
+      google: ga,
       umamiCloud: {
-        url: getXLogMeta(attributes, 'uh'),
-        id: getXLogMeta(attributes, 'ua'),
+        url: uh,
+        id: ua,
       },
     },
     socialPlatforms: connectedAccounts.map(account => parseConnectedAccount(account)),
-    navigation: navigationList,
-    customDomain: xLogCustomDomain,
-    customCSS: getXLogMeta(attributes, 'css'),
+    navigation,
+    customDomain,
+    customCSS: css,
   }
 }

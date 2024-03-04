@@ -1,20 +1,20 @@
 import type { AttributesMetadata } from 'crossbell'
 
-import type { XLogNavigation, XLogTraitType } from './types'
+import type { Navigation, XLogTraitType } from './types'
 
 export function convertIpfsUrl(url: string) {
   return url.replaceAll(/ipfs:\/\/([^\n ]+)/g, 'https://ipfs.4everland.xyz/ipfs/' + '$1')
 }
 
-export function getXLogMetaInAttributes(
+export function getXLogMeta(
   attributes: AttributesMetadata['attributes'],
   type: 'navigation'
-): XLogNavigation[]
-export function getXLogMetaInAttributes(
+): Navigation[]
+export function getXLogMeta(
   attributes: AttributesMetadata['attributes'],
   type: Exclude<XLogTraitType, 'navigation'>,
 ): string | undefined
-export function getXLogMetaInAttributes(
+export function getXLogMeta(
   attributes: AttributesMetadata['attributes'],
   type: XLogTraitType,
 ) {
@@ -26,9 +26,41 @@ export function getXLogMetaInAttributes(
   }
 
   if (type === 'navigation')
-    return JSON.parse(attribute as string) as XLogNavigation[]
+    return JSON.parse(attribute as string) as Navigation[]
 
   return attribute as string
+}
+
+export function getFullXLogMeta(
+  attributes: AttributesMetadata['attributes'],
+) {
+  const xlogMeta: Record<Exclude<XLogTraitType, 'navigation'>, string> & { navigation: Navigation[] } = {
+    css: '',
+    ga: '',
+    ua: '',
+    uh: '',
+    site_name: '',
+    navigation: [],
+    custom_domain: '',
+    footer: '',
+  }
+  if (!attributes)
+    return xlogMeta
+
+  for (const trait of attributes) {
+    const { trait_type, value } = trait
+    if (!trait_type?.startsWith('xlog_'))
+      continue
+
+    const key = trait_type.replace('xlog_', '') as XLogTraitType
+
+    if (key === 'navigation') {
+      xlogMeta.navigation = JSON.parse(value as string) as Navigation[]
+      continue
+    }
+    xlogMeta[key] = value as string
+  }
+  return xlogMeta
 }
 
 export function parseConnectedAccount(

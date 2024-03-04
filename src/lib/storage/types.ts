@@ -3,7 +3,7 @@ export type SocialPlatform = {
   id: string
 }
 
-type XLogTrait = [
+const XLogTrait = [
   'xlog_css',
   'xlog_ga',
   'xlog_ua',
@@ -12,12 +12,13 @@ type XLogTrait = [
   'xlog_navigation',
   'xlog_custom_domain',
   'xlog_footer',
-]
-  type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
+] as const
 
-export type XLogTraitType = RemovePrefix<XLogTrait[number]>
+type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
 
-export type XLogNavigation = {
+export type XLogTraitType = RemovePrefix<typeof XLogTrait[number]>
+
+export type Navigation = {
   id: string
   label: string
   url: string
@@ -43,7 +44,7 @@ export type SiteInfo = {
     }
   }
   socialPlatforms: SocialPlatform[]
-  navigation: XLogNavigation[]
+  navigation: Navigation[]
   customDomain?: string
   customCSS?: string
 }
