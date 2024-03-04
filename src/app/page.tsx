@@ -20,7 +20,7 @@ export async function HomePage() {
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
-        <h3>{siteInfo.name}</h3>
+        <h3>{siteInfo.characterName}</h3>
         <p>{siteInfo.description}</p>
       </section>
       {projects.length > 0 && (
