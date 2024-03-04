@@ -2,6 +2,7 @@ import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
 import type { HandleOrCharacterId, NoteQueryOptions, Portfolio } from './types'
+import type { UnghResponse } from './types/github'
 import { convertIpfsUrl, getCharacterId } from './utils'
 
 export async function getPortfolioMany(
@@ -46,29 +47,11 @@ async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
     && portfolio.link.split('/').length === 5
   ) {
     const res = await fetch(portfolio.link.replace('https://github.com/', 'https://ungh.cc/repos/'))
-    const { repo } = await res.json() as Res
+    const { repo } = await res.json() as UnghResponse
     portfolio.title = repo.name
     portfolio.summary = repo.description
     portfolio.likes = repo.stars
   }
 
   return portfolio
-}
-
-export type Res = {
-  repo: Repo
-}
-
-export type Repo = {
-  id: number
-  name: string
-  repo: string
-  description: string
-  createdAt: string
-  updatedAt: string
-  pushedAt: string
-  stars: number
-  watchers: number
-  forks: number
-  defaultBranch: string
 }
