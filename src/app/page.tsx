@@ -50,11 +50,11 @@ export async function HomePage() {
           <h3>Latest Blog</h3>
           {latestBlogList.map(blog => (
             <ListItem
-              key={blog.link}
+              key={blog.slug}
               title={blog.title}
               description={blog.date.slice(0, 10)}
               superscript={`${blog.views} views`}
-              link={blog.link}
+              link={blog.slug}
             />
           ))}
         </section>

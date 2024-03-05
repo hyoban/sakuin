@@ -1,15 +1,14 @@
 import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
-import { getSiteInfo } from './site'
 import type { HandleOrCharacterId, NoteQueryOptions, Post } from './types'
-import { convertIpfsUrl, getXLogMeta } from './utils'
+import { convertIpfsUrl, getCharacterId, getXLogMeta } from './utils'
 
 export async function getPostMany(
   handleOrCharacterId: HandleOrCharacterId,
   options?: NoteQueryOptions,
 ): Promise<Post[]> {
-  const { characterId, xlogUrl } = await getSiteInfo(handleOrCharacterId)
+  const characterId = await getCharacterId(handleOrCharacterId)
 
   const notes = await indexer.note.getMany({
     characterId,
@@ -18,26 +17,25 @@ export async function getPostMany(
     ...options,
   })
 
-  return Promise.all(notes.list.map(note => createPostFromNote(note, characterId, xlogUrl)))
+  return Promise.all(notes.list.map(note => createPostFromNote(note, characterId)))
 }
 
 export async function getPost(
   handleOrCharacterId: HandleOrCharacterId,
   noteId: string,
 ): Promise<Post | null> {
-  const { characterId, xlogUrl } = await getSiteInfo(handleOrCharacterId)
+  const characterId = await getCharacterId(handleOrCharacterId)
 
   const note = await indexer.note.get(characterId, noteId)
   if (!note)
     return null
 
-  return createPostFromNote(note, characterId, xlogUrl)
+  return createPostFromNote(note, characterId)
 }
 
 async function createPostFromNote(
   note: NoteEntity,
   characterId: number,
-  xlogUrl: string,
 ): Promise<Post> {
   const { noteId } = note
   const [
@@ -53,7 +51,7 @@ async function createPostFromNote(
   return {
     noteId: note.noteId,
     title: note.metadata?.content?.title ?? '',
-    link: `${xlogUrl}/${getXLogMeta(note.metadata?.content?.attributes, 'slug')}`,
+    slug: getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? '',
     date: note.metadata?.content?.date_published ?? '',
     tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
     // @ts-expect-error TODO: summary is not in the type

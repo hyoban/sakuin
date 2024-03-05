@@ -1,7 +1,7 @@
 export type Post = {
   noteId: number
   title: string
-  link: string
+  slug: string
   date: string
   tags: string[]
   summary: string
