@@ -9,6 +9,7 @@ export async function getCharacterId(handleOrCharacterId: string | number) {
     const character = await indexer.character.getByHandle(handleOrCharacterId)
     if (!character)
       throw new Error('Character not found')
+    // eslint-disable-next-line prefer-destructuring
     characterId = character.characterId
   }
   else {

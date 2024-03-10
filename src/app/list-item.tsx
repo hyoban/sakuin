@@ -1,4 +1,4 @@
-import { ExternalLink } from './external-link'
+import { AppLink } from './external-link'
 
 export function ListItem(
   {
@@ -14,7 +14,7 @@ export function ListItem(
   },
 ) {
   return (
-    <ExternalLink
+    <AppLink
       href={link}
       className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
     >
@@ -25,6 +25,6 @@ export function ListItem(
         </span>
       </div>
       <span className="opacity-70 mt-1">{description}</span>
-    </ExternalLink>
+    </AppLink>
   )
 }

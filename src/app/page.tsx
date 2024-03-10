@@ -1,7 +1,7 @@
 import { env } from '../env'
 import { capitalize, getUniverseLinks } from '../lib/other'
 import { getPortfolioMany, getPostMany, getSiteInfo } from '../lib/storage'
-import { ExternalLink } from './external-link'
+import { AppLink } from './external-link'
 import { ListItem } from './list-item'
 
 export async function HomePage() {
@@ -59,34 +59,32 @@ export async function HomePage() {
           ))}
         </section>
       )}
-      {
-        podcasts.length > 0 && (
-          <section>
-            <h3>Podcasts</h3>
-            {podcasts.map(podcast => (
-              <ListItem
-                key={podcast.link}
-                title={podcast.title}
-                description={podcast.date.slice(0, 10)}
-                link={podcast.link}
-              />
-            ))}
-          </section>
-        )
-      }
+      {podcasts.length > 0 && (
+        <section>
+          <h3>Podcasts</h3>
+          {podcasts.map(podcast => (
+            <ListItem
+              key={podcast.link}
+              title={podcast.title}
+              description={podcast.date.slice(0, 10)}
+              link={podcast.link}
+            />
+          ))}
+        </section>
+      )}
       {links.length > 0 && (
         <section>
           <h3>Links</h3>
           <div className="flex gap-4 items-center">
             {links.map(link => (
-              <ExternalLink
+              <AppLink
                 href={link.href}
                 key={link.href}
                 className={link.icon}
                 title={link.title}
               >
                 {link.title}
-              </ExternalLink>
+              </AppLink>
             ))}
           </div>
         </section>

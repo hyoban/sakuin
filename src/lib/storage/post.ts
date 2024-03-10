@@ -1,6 +1,7 @@
 import type { NoteEntity } from 'crossbell'
 
-import { indexer } from './indexer'
+import { graphql } from '../../gql'
+import { client, indexer } from './indexer'
 import type { HandleOrCharacterId, NoteQueryOptions, Post } from './types'
 import { convertIpfsUrl, getCharacterId, getXLogMeta } from './utils'
 
@@ -31,6 +32,62 @@ export async function getPost(
     return null
 
   return createPostFromNote(note, characterId)
+}
+
+const noteQuery = graphql(`
+query getNotes($characterId: Int!, $slug: JSON!) {
+  notes(
+    where: {
+      characterId: { equals: $characterId }
+      deleted: { equals: false }
+      metadata: {
+        content: { path: ["sources"], array_contains: ["xlog"] }
+        OR: [
+          {
+            content: {
+              path: ["attributes"]
+              array_contains: [{ trait_type: "xlog_slug", value: $slug }]
+            }
+          }
+          { content: { path: ["title"], equals: $slug } }
+        ]
+      }
+    }
+    orderBy: [{ createdAt: desc }]
+    take: 1
+  ) {
+    characterId
+    noteId
+    metadata {
+      uri
+      content
+    }
+    owner
+    createdAt
+    updatedAt
+    publishedAt
+    transactionHash
+    blockNumber
+    updatedTransactionHash
+    updatedBlockNumber
+    stat {
+      viewDetailCount
+    }
+  }
+}
+`)
+
+export async function getPostBySlug(
+  handleOrCharacterId: HandleOrCharacterId,
+  slug: string,
+): Promise<Post | null> {
+  const characterId = await getCharacterId(handleOrCharacterId)
+
+  const note = await client.query(noteQuery, { characterId, slug })
+  const post = note.data?.notes.at(0)
+  if (!post)
+    return null
+  return createPostFromNote(post as NoteEntity, characterId)
 }
 
 async function createPostFromNote(
