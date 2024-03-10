@@ -1,3 +1,6 @@
+import 'remark-github-alerts/styles/github-colors-light.css'
+import 'remark-github-alerts/styles/github-colors-dark-media.css'
+import 'remark-github-alerts/styles/github-base.css'
 import './globals.css'
 
 import { env } from '../env'
