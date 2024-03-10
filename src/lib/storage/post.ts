@@ -114,7 +114,7 @@ async function createPostFromNote(
     // @ts-expect-error TODO: summary is not in the type
     summary: note.metadata?.content?.summary as string | undefined ?? '',
     cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
-    content: note.metadata?.content?.content ?? '',
+    content: convertIpfsUrl(note.metadata?.content?.content) ?? '',
     views: views.viewDetailCount,
     likes: likes.count,
     comments: comments.count,
