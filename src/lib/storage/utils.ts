@@ -1,7 +1,7 @@
 import type { AttributesMetadata } from 'crossbell'
 
 import { indexer } from './indexer'
-import type { Navigation, SocialPlatform, XLogTraitType } from './types'
+import type { Interaction, Navigation, SocialPlatform, XLogTraitType } from './types'
 
 export async function getCharacterId(handleOrCharacterId: string | number) {
   let characterId: number
@@ -94,4 +94,25 @@ export function parseConnectedAccount(
   if (!platform || !id)
     throw new Error('Invalid connected account')
   return { platform, id }
+}
+
+export async function getNoteInteractionCount(
+  characterId: number,
+  noteId: number,
+): Promise<Interaction> {
+  const [
+    views,
+    likes,
+    comments,
+  ] = await Promise.all([
+    indexer.stat.getForNote(characterId, noteId),
+    indexer.link.getBacklinksByNote(characterId, noteId, { linkType: 'like' }),
+    indexer.note.getMany({ toCharacterId: characterId, toNoteId: noteId }),
+  ])
+
+  return {
+    views: views.viewDetailCount,
+    likes: likes.count,
+    comments: comments.count,
+  }
 }

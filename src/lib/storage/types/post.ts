@@ -1,3 +1,5 @@
+import type { Interaction } from '.'
+
 export type Post = {
   noteId: number
   title: string
@@ -7,7 +9,4 @@ export type Post = {
   summary: string
   cover: string
   content: string
-  views: number
-  likes: number
-  comments: number
-}
+} & Interaction

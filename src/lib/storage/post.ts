@@ -3,7 +3,7 @@ import type { NoteEntity, Numberish } from 'crossbell'
 import { graphql } from '../../gql'
 import { client, indexer } from './indexer'
 import type { HandleOrCharacterId, NoteQueryOptions, Post } from './types'
-import { convertIpfsUrl, getCharacterId, getXLogMeta } from './utils'
+import { convertIpfsUrl, getCharacterId, getNoteInteractionCount, getXLogMeta } from './utils'
 
 export async function getPostMany(
   handleOrCharacterId: HandleOrCharacterId,
@@ -92,15 +92,7 @@ async function createPostFromNote(
   characterId: number,
 ): Promise<Post> {
   const { noteId } = note
-  const [
-    views,
-    likes,
-    comments,
-  ] = await Promise.all([
-    indexer.stat.getForNote(characterId, noteId),
-    indexer.link.getBacklinksByNote(characterId, noteId, { linkType: 'like' }),
-    indexer.note.getMany({ toCharacterId: characterId, toNoteId: noteId }),
-  ])
+  const interaction = await getNoteInteractionCount(characterId, noteId)
 
   return {
     noteId: note.noteId,
@@ -112,8 +104,6 @@ async function createPostFromNote(
     summary: note.metadata?.content?.summary as string | undefined ?? '',
     cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
     content: convertIpfsUrl(note.metadata?.content?.content) ?? '',
-    views: views.viewDetailCount,
-    likes: likes.count,
-    comments: comments.count,
+    ...interaction,
   }
 }

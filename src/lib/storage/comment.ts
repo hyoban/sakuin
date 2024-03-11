@@ -3,7 +3,7 @@ import type { Numberish } from 'crossbell'
 import { getSiteInfo } from '.'
 import { indexer } from './indexer'
 import type { Comment, HandleOrCharacterId, NoteQueryOptions } from './types'
-import { getCharacterId, getXLogMeta } from './utils'
+import { getCharacterId, getNoteInteractionCount, getXLogMeta } from './utils'
 
 export async function getComment(
   handleOrCharacterId: HandleOrCharacterId,
@@ -35,18 +35,27 @@ export async function getComment(
         email: senderEmail ?? '',
         url: senderUrl ?? '',
       },
+      comments: 0,
+      likes: 0,
+      views: 0,
     }
   })
 
   const commentsWithReplies = await Promise.all(
     comments.map(async (comment) => {
-      const replies = await getComment(comment.characterId, comment.noteId, options)
+      const [
+        replies,
+        interaction,
+      ] = await Promise.all([
+        getComment(comment.characterId, comment.noteId, options),
+        getNoteInteractionCount(comment.characterId, comment.noteId),
+      ])
       if (comment.sender.name === '') {
         const siteInfo = await getSiteInfo(comment.characterId)
         comment.sender.name = siteInfo.characterName ?? ''
         comment.sender.url = siteInfo.xlogUrl
       }
-      return { ...comment, replies }
+      return { ...comment, replies, ...interaction }
     }),
   )
 
