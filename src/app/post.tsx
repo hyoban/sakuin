@@ -34,14 +34,21 @@ export async function Post({ slug }: { slug: string }) {
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <article>
         <h1>{post.title}</h1>
-        <InteractionView
-          interaction={{
-            views: post.views,
-            likes: post.likes,
-            comments: post.comments,
-            tips: post.tips,
-          }}
-        />
+        <div className="flex gap-4 items-center">
+          <InteractionView
+            interaction={{
+              views: post.views,
+              likes: post.likes,
+              comments: post.comments,
+              tips: post.tips,
+            }}
+          />
+          {post.tags.map(tag => (
+            <span key={tag}>
+              {`# ${tag}`}
+            </span>
+          ))}
+        </div>
         <div dangerouslySetInnerHTML={{ __html: postContent.toString() }} />
       </article>
       <section>
