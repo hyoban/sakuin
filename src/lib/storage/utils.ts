@@ -63,6 +63,10 @@ export function getFullXLogMeta(
     footer: '',
 
     slug: '',
+
+    sender_name: '',
+    sender_email: '',
+    sender_url: '',
   }
   if (!attributes)
     return xlogMeta

@@ -1,4 +1,4 @@
-import type { NoteEntity } from 'crossbell'
+import type { NoteEntity, Numberish } from 'crossbell'
 
 import { graphql } from '../../gql'
 import { client, indexer } from './indexer'
@@ -23,7 +23,7 @@ export async function getPostMany(
 
 export async function getPost(
   handleOrCharacterId: HandleOrCharacterId,
-  noteId: string,
+  noteId: Numberish,
 ): Promise<Post | null> {
   const characterId = await getCharacterId(handleOrCharacterId)
 

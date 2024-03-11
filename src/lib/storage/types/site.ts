@@ -14,6 +14,10 @@ const XLogTrait = [
   'xlog_footer',
 
   'xlog_slug',
+
+  'xlog_sender_name',
+  'xlog_sender_email',
+  'xlog_sender_url',
 ] as const
 
 type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
