@@ -57,7 +57,7 @@ export async function Post({ slug }: { slug: string }) {
 
 function InteractionView({ interaction }: { interaction: InteractionCount }) {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 my-4">
       <span className="flex gap-2 items-center">
         <span className="i-lucide-eye" />
         <span className="text-lg">{interaction.views}</span>
