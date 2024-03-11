@@ -1,6 +1,6 @@
 import { env } from '../env'
 import { capitalize, getUniverseLinks } from '../lib/other'
-import { getPortfolioMany, getPostFull, getSiteInfo } from '../lib/storage'
+import { getPortfolioFull, getPostFull, getSiteInfo } from '../lib/storage'
 import { AppLink } from './external-link'
 import { ListItem } from './list-item'
 
@@ -12,7 +12,7 @@ export async function HomePage() {
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
     getPostFull(env.HANDLE, { orderBy: 'publishedAt' }),
-    getPortfolioMany(env.HANDLE, { orderBy: 'publishedAt' }),
+    getPortfolioFull(env.HANDLE, { orderBy: 'publishedAt' }),
   ])
 
   const projects = portfolios.filter(p => p.link.startsWith('https://github.com'))

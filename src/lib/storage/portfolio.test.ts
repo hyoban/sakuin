@@ -3,7 +3,7 @@ import { expect, test } from 'vitest'
 import { getPortfolioMany } from './portfolio'
 
 test('get portfolios', async () => {
-  const portfolios = await getPortfolioMany('diygod', { orderBy: 'publishedAt', limit: 2 })
+  const { list: portfolios } = await getPortfolioMany('diygod', { orderBy: 'publishedAt', limit: 2 })
   expect(portfolios).toHaveLength(2)
   for (const key of [
     'noteId',
