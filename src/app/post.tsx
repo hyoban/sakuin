@@ -9,8 +9,7 @@ import { unified } from 'unified'
 import { env } from '../env'
 import { getPostBySlug } from '../lib/storage'
 import { getCommentFull } from '../lib/storage/comment'
-import type { InteractionCount } from '../lib/storage/types'
-import { Comment } from '../lib/storage/types'
+import type { Comment, InteractionCount } from '../lib/storage/types'
 
 export async function Post({ slug }: { slug: string }) {
   const post = await getPostBySlug(env.HANDLE, slug)
@@ -34,7 +33,7 @@ export async function Post({ slug }: { slug: string }) {
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <article>
         <h1>{post.title}</h1>
-        <Interaction
+        <InteractionView
           interaction={{
             views: post.views,
             likes: post.likes,
@@ -48,7 +47,7 @@ export async function Post({ slug }: { slug: string }) {
         <h2>Comments</h2>
         <ul>
           {comments.map(comment => (
-            <Comment key={comment.noteId} comment={comment} />
+            <CommentView key={comment.noteId} comment={comment} />
           ))}
         </ul>
       </section>
@@ -56,7 +55,7 @@ export async function Post({ slug }: { slug: string }) {
   )
 }
 
-function Interaction({ interaction }: { interaction: InteractionCount }) {
+function InteractionView({ interaction }: { interaction: InteractionCount }) {
   return (
     <div className="flex gap-4">
       <span className="flex gap-2 items-center">
@@ -79,7 +78,7 @@ function Interaction({ interaction }: { interaction: InteractionCount }) {
   )
 }
 
-function Comment({ comment }: { comment: Comment }) {
+function CommentView({ comment }: { comment: Comment }) {
   return (
     <li>
       <p>
@@ -99,7 +98,7 @@ function Comment({ comment }: { comment: Comment }) {
       </p>
       <ul>
         {comment.replies.map(reply => (
-          <Comment key={reply.noteId} comment={reply} />
+          <CommentView key={reply.noteId} comment={reply} />
         ))}
       </ul>
     </li>

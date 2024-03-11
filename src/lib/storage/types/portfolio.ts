@@ -1,3 +1,11 @@
+export type PortfolioStats = {
+  videoViewsCount?: number
+  audoListensCount?: number
+  projectStarsCount?: number
+  textViewsCount?: number
+  commentsCount?: number
+}
+
 export type Portfolio = {
   noteId: number
   title: string
@@ -5,7 +13,4 @@ export type Portfolio = {
   date: string
   summary: string
   cover: string
-  views?: number
-  likes?: number
-  comments?: number
-}
+} & PortfolioStats

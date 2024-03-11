@@ -59,6 +59,7 @@ export async function getCommentMany(
       comments: 0,
       likes: 0,
       views: 0,
+      tips: 0,
     }
   })
 

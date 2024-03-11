@@ -1,8 +1,7 @@
 import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
-import type { HandleOrCharacterId, NoteQueryOptions, Portfolio } from './types'
-import type { UnghResponse } from './types/github'
+import type { HandleOrCharacterId, NoteQueryOptions, Portfolio, PortfolioStats } from './types'
 import { convertIpfsUrl, getCharacterId } from './utils'
 
 export async function getPortfolioMany(
@@ -31,7 +30,7 @@ export async function getPortfolio(
 }
 
 async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
-  const portfolio: Portfolio = {
+  let portfolio: Portfolio = {
     noteId: note.noteId,
     title: note.metadata?.content?.title ?? '',
     link: note.metadata?.content?.external_urls?.at(0) ?? '',
@@ -41,17 +40,9 @@ async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
     cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
   }
 
-  // check if the link is a GitHub link
-  if (
-    portfolio.link.startsWith('https://github.com')
-    && portfolio.link.split('/').length === 5
-  ) {
-    const res = await fetch(portfolio.link.replace('https://github.com/', 'https://ungh.cc/repos/'))
-    const { repo } = await res.json() as UnghResponse
-    portfolio.title = repo.name
-    portfolio.summary = repo.description
-    portfolio.likes = repo.stars
-  }
+  const res = await fetch(`https://xlog.app/api/portfolio-stats?url=${portfolio.link}`)
+  const stats = await res.json() as PortfolioStats
+  portfolio = { ...portfolio, ...stats }
 
   return portfolio
 }

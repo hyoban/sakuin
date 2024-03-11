@@ -40,7 +40,7 @@ export async function HomePage() {
               title={capitalize(project.title)}
               description={project.summary}
               link={project.link}
-              superscript={project.likes ? `${project.likes} stars` : undefined}
+              superscript={project.projectStarsCount ? `${project.projectStarsCount} stars` : undefined}
             />
           ))}
         </section>
@@ -68,6 +68,7 @@ export async function HomePage() {
               title={podcast.title}
               description={podcast.date.slice(0, 10)}
               link={podcast.link}
+              superscript={podcast.audoListensCount ? `${podcast.audoListensCount} listens` : undefined}
             />
           ))}
         </section>
