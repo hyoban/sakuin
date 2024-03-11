@@ -8,7 +8,7 @@ import { unified } from 'unified'
 
 import { env } from '../env'
 import { getPostBySlug } from '../lib/storage'
-import { getComment } from '../lib/storage/comment'
+import { getCommentFull } from '../lib/storage/comment'
 import { Comment } from '../lib/storage/types'
 
 export async function Post({ slug }: { slug: string }) {
@@ -28,7 +28,7 @@ export async function Post({ slug }: { slug: string }) {
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(`# ${post.title}\n${post.content}`)
 
-  const comments = await getComment(env.HANDLE, post.noteId)
+  const comments = await getCommentFull(env.HANDLE, post.noteId)
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <article dangerouslySetInnerHTML={{ __html: String(postContent) }} />

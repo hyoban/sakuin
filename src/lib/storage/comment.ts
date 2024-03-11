@@ -2,14 +2,35 @@ import type { Numberish } from 'crossbell'
 
 import { getSiteInfo } from '.'
 import { indexer } from './indexer'
-import type { Comment, HandleOrCharacterId, NoteQueryOptions } from './types'
+import type { Comment, HandleOrCharacterId, NoteQueryOptions, ResultMany } from './types'
 import { getCharacterId, getNoteInteractionCount, getXLogMeta } from './utils'
 
-export async function getComment(
+export async function getCommentFull(
+  handleOrCharacterId: HandleOrCharacterId,
+  noteId: Numberish,
+  options?: Omit<NoteQueryOptions, 'cursor' | 'limit'>,
+): Promise<Comment[]> {
+  const result: Comment[] = []
+
+  let currentCursor: string | null = null
+  const { list, count, cursor } = await getCommentMany(handleOrCharacterId, noteId, options)
+  result.push(...list)
+  currentCursor = cursor
+
+  while (result.length < count && currentCursor) {
+    const { list, cursor: nextCursor } = await getCommentMany(handleOrCharacterId, noteId, { ...options, cursor: currentCursor })
+    result.push(...list)
+    currentCursor = nextCursor
+  }
+
+  return result
+}
+
+export async function getCommentMany(
   handleOrCharacterId: HandleOrCharacterId,
   noteId: Numberish,
   options?: NoteQueryOptions,
-): Promise<Comment[]> {
+): Promise<ResultMany<Comment>> {
   const characterId = await getCharacterId(handleOrCharacterId)
 
   const res = await indexer.note.getMany(
@@ -41,7 +62,7 @@ export async function getComment(
     }
   })
 
-  const commentsWithReplies = await Promise.all(
+  const commentsWithReplies: Comment[] = await Promise.all(
     comments.map(async (comment) => {
       if (comment.sender.name === '') {
         const siteInfo = await getSiteInfo(comment.characterId)
@@ -52,10 +73,14 @@ export async function getComment(
       if (interaction.comments === 0)
         return { ...comment, ...interaction }
 
-      const replies = await getComment(comment.characterId, comment.noteId, options)
+      const { list: replies } = await getCommentMany(comment.characterId, comment.noteId, options)
       return { ...comment, replies, ...interaction }
     }),
   )
 
-  return commentsWithReplies
+  return {
+    list: commentsWithReplies,
+    count: res.count,
+    cursor: res.cursor,
+  }
 }
