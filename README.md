@@ -32,15 +32,18 @@ bun install sakuin
 
 <!-- /automd -->
 
-<!-- automd:jsimport name="sakuin" imports="getPortfolio,getPortfolioMany,getPost,getPostMany,getSiteInfo" -->
+<!-- automd:jsimport name="sakuin" imports="getPortfolio,getPortfolioFull,getPortfolioMany,getPost,getPostBySlug,getPostFull,getPostMany,getSiteInfo" -->
 
 **ESM** (Node.js, Bun)
 
 ```js
 import {
   getPortfolio,
+  getPortfolioFull,
   getPortfolioMany,
   getPost,
+  getPostBySlug,
+  getPostFull,
   getPostMany,
   getSiteInfo,
 } from "sakuin";
