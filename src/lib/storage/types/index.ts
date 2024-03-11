@@ -7,6 +7,11 @@ export type Interaction = {
   likes: number
   comments: number
 }
+export type ResultMany<T> = {
+  list: T[]
+  count: number
+  cursor: string | null
+}
 
 export * from './comment'
 export * from './portfolio'

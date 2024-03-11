@@ -4,7 +4,7 @@ import { RootLayout } from './app/layout'
 import { HomePage } from './app/page'
 import { Post } from './app/post'
 import { env } from './env'
-import { getPostMany } from './lib/storage'
+import { getPostFull } from './lib/storage'
 
 export default createPages(async ({ createPage, createLayout }) => {
   createLayout({
@@ -19,7 +19,7 @@ export default createPages(async ({ createPage, createLayout }) => {
   })
 
   // eslint-disable-next-line unicorn/no-await-expression-member
-  const slugs = (await getPostMany(env.HANDLE)).map(post => post.slug)
+  const slugs = (await getPostFull(env.HANDLE)).map(post => post.slug)
 
   createPage({
     render: 'static',

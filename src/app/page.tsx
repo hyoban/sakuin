@@ -1,6 +1,6 @@
 import { env } from '../env'
 import { capitalize, getUniverseLinks } from '../lib/other'
-import { getPortfolioMany, getPostMany, getSiteInfo } from '../lib/storage'
+import { getPortfolioMany, getPostFull, getSiteInfo } from '../lib/storage'
 import { AppLink } from './external-link'
 import { ListItem } from './list-item'
 
@@ -11,7 +11,7 @@ export async function HomePage() {
     portfolios,
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
-    getPostMany(env.HANDLE, { orderBy: 'publishedAt' }),
+    getPostFull(env.HANDLE, { orderBy: 'publishedAt' }),
     getPortfolioMany(env.HANDLE, { orderBy: 'publishedAt' }),
   ])
 

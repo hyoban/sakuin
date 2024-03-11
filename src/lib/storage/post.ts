@@ -2,13 +2,33 @@ import type { NoteEntity, Numberish } from 'crossbell'
 
 import { graphql } from '../../gql'
 import { client, indexer } from './indexer'
-import type { HandleOrCharacterId, NoteQueryOptions, Post } from './types'
+import type { HandleOrCharacterId, NoteQueryOptions, Post, ResultMany } from './types'
 import { convertIpfsUrl, getCharacterId, getNoteInteractionCount, getXLogMeta } from './utils'
+
+export async function getPostFull(
+  handleOrCharacterId: HandleOrCharacterId,
+  options?: Omit<NoteQueryOptions, 'cursor' | 'limit'>,
+): Promise<Post[]> {
+  const result: Post[] = []
+
+  let currentCursor: string | null = null
+  const { list, count, cursor } = await getPostMany(handleOrCharacterId, options)
+  result.push(...list)
+  currentCursor = cursor
+
+  while (result.length < count && currentCursor) {
+    const { list, cursor: nextCursor } = await getPostMany(handleOrCharacterId, { ...options, cursor: currentCursor })
+    result.push(...list)
+    currentCursor = nextCursor
+  }
+
+  return result
+}
 
 export async function getPostMany(
   handleOrCharacterId: HandleOrCharacterId,
   options?: NoteQueryOptions,
-): Promise<Post[]> {
+): Promise<ResultMany<Post>> {
   const characterId = await getCharacterId(handleOrCharacterId)
 
   const notes = await indexer.note.getMany({
@@ -18,7 +38,13 @@ export async function getPostMany(
     ...options,
   })
 
-  return Promise.all(notes.list.map(note => createPostFromNote(note, characterId)))
+  const list = await Promise.all(notes.list.map(note => createPostFromNote(note, characterId)))
+
+  return {
+    list,
+    count: notes.count,
+    cursor: notes.cursor,
+  }
 }
 
 export async function getPost(
