@@ -4,17 +4,13 @@ import { indexer } from './indexer'
 import type { HandleOrCharacterId, Interaction, Navigation, SocialPlatform, XLogTraitType } from './types'
 
 export async function getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
-  let characterId: number
-  if (typeof handleOrCharacterId === 'string') {
-    const character = await indexer.character.getByHandle(handleOrCharacterId)
-    if (!character)
-      throw new Error('Character not found')
-    ;({ characterId } = character)
-  }
-  else {
-    characterId = handleOrCharacterId
-  }
-  return characterId
+  if (typeof handleOrCharacterId === 'number')
+    return handleOrCharacterId
+
+  const character = await indexer.character.getByHandle(handleOrCharacterId)
+  if (!character)
+    throw new Error('Character not found')
+  return character.characterId
 }
 
 export function convertIpfsUrl(url?: string) {
