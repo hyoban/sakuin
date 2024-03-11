@@ -51,7 +51,7 @@ import {
 
 <!-- /automd -->
 
-Most of functions take a `HANDLE` as the first argument, and return what you need to build your site.
+Most of functions take `HandleOrCharacterId` and `NoteId` as the arguments, and return what you need to build your site.
 
 ## See also
 
