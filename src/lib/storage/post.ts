@@ -108,7 +108,7 @@ async function createPostFromNote(
     slug: getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? '',
     date: note.metadata?.content?.date_published ?? '',
     tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
-    // @ts-expect-error TODO: summary is not in the type
+    // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     summary: note.metadata?.content?.summary as string | undefined ?? '',
     cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
     content: convertIpfsUrl(note.metadata?.content?.content) ?? '',
