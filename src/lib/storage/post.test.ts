@@ -8,7 +8,7 @@ test('get post list', async () => {
   for (const key of [
     'noteId',
     'title',
-    'link',
+    'slug',
     'date',
     'tags',
     'summary',

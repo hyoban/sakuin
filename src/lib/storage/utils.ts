@@ -1,16 +1,15 @@
 import type { AttributesMetadata } from 'crossbell'
 
 import { indexer } from './indexer'
-import type { Interaction, Navigation, SocialPlatform, XLogTraitType } from './types'
+import type { HandleOrCharacterId, Interaction, Navigation, SocialPlatform, XLogTraitType } from './types'
 
-export async function getCharacterId(handleOrCharacterId: string | number) {
+export async function getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
   let characterId: number
   if (typeof handleOrCharacterId === 'string') {
     const character = await indexer.character.getByHandle(handleOrCharacterId)
     if (!character)
       throw new Error('Character not found')
-    // eslint-disable-next-line prefer-destructuring
-    characterId = character.characterId
+    ;({ characterId } = character)
   }
   else {
     characterId = handleOrCharacterId
