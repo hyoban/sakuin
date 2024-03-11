@@ -1,7 +1,7 @@
 import type { AttributesMetadata } from 'crossbell'
 
-import { indexer } from './indexer'
-import type { HandleOrCharacterId, Interaction, Navigation, SocialPlatform, XLogTraitType } from './types'
+import { contract, indexer } from './indexer'
+import type { HandleOrCharacterId, InteractionCount, Navigation, SocialPlatform, XLogTraitType } from './types'
 
 export async function getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
   if (typeof handleOrCharacterId === 'number')
@@ -94,20 +94,58 @@ export function parseConnectedAccount(
 export async function getNoteInteractionCount(
   characterId: number,
   noteId: number,
-): Promise<Interaction> {
+): Promise<InteractionCount> {
   const [
     views,
     likes,
     comments,
+    tips,
   ] = await Promise.all([
     indexer.stat.getForNote(characterId, noteId),
     indexer.link.getBacklinksByNote(characterId, noteId, { linkType: 'like' }),
     indexer.note.getMany({ toCharacterId: characterId, toNoteId: noteId }),
+    await indexer.tip.getMany({
+      toNoteId: noteId,
+      toCharacterId: characterId,
+    }),
   ])
+
+  if (tips.list.length > 0) {
+    const decimals = await getMiraTokenDecimals()
+    tips.list = tips.list.filter((t) => {
+      return (
+        BigInt(t.amount)
+        >= BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
+      )
+    })
+    tips.list = tips.list.map((t) => {
+      return {
+        ...t,
+        amount: (
+          BigInt(t.amount)
+          / BigInt(10) ** BigInt(decimals.data || 18)
+        ).toString(),
+      }
+    })
+  }
 
   return {
     views: views.viewDetailCount,
     likes: likes.count,
     comments: comments.count,
+    tips: tips.list.reduce((acc, tip) => acc + Number(tip.amount), 0),
   }
+}
+
+async function getMiraTokenDecimals() {
+  let decimals
+  try {
+    decimals = await contract.tips.getTokenDecimals()
+  }
+  catch {
+    decimals = {
+      data: 18,
+    }
+  }
+  return decimals
 }

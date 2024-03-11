@@ -2,10 +2,11 @@ import type { indexer } from '../indexer'
 
 export type NoteQueryOptions = Parameters<typeof indexer.note.getMany>[0]
 export type HandleOrCharacterId = string | number
-export type Interaction = {
+export type InteractionCount = {
   views: number
   likes: number
   comments: number
+  tips: number
 }
 export type ResultMany<T> = {
   list: T[]

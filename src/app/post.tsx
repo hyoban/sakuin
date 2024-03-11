@@ -9,7 +9,8 @@ import { unified } from 'unified'
 import { env } from '../env'
 import { getPostBySlug } from '../lib/storage'
 import { getCommentFull } from '../lib/storage/comment'
-import { Comment, Interaction } from '../lib/storage/types'
+import type { InteractionCount } from '../lib/storage/types'
+import { Comment } from '../lib/storage/types'
 
 export async function Post({ slug }: { slug: string }) {
   const post = await getPostBySlug(env.HANDLE, slug)
@@ -38,6 +39,7 @@ export async function Post({ slug }: { slug: string }) {
             views: post.views,
             likes: post.likes,
             comments: post.comments,
+            tips: post.tips,
           }}
         />
         <div dangerouslySetInnerHTML={{ __html: postContent.toString() }} />
@@ -54,7 +56,7 @@ export async function Post({ slug }: { slug: string }) {
   )
 }
 
-function Interaction({ interaction }: { interaction: Interaction }) {
+function Interaction({ interaction }: { interaction: InteractionCount }) {
   return (
     <div className="flex gap-4">
       <span className="flex gap-2 items-center">
@@ -64,6 +66,10 @@ function Interaction({ interaction }: { interaction: Interaction }) {
       <span className="flex gap-2 items-center">
         <span className="i-lucide-thumbs-up" />
         <span className="text-lg">{interaction.likes}</span>
+      </span>
+      <span className="flex gap-2 items-center">
+        <span className="i-lucide-circle-dollar-sign" />
+        <span className="text-lg">{interaction.tips}</span>
       </span>
       <span className="flex gap-2 items-center">
         <span className="i-lucide-message-circle" />
