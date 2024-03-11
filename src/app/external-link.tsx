@@ -7,6 +7,9 @@ type AppLinkProps = React.PropsWithChildren<{
 }>
 
 export function AppLink({ href, title, className, children }: AppLinkProps) {
+  if (!href)
+    return <>{children}</>
+
   if (href.startsWith('http')) {
     return (
       <a

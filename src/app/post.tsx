@@ -10,6 +10,7 @@ import { env } from '../env'
 import { getPostBySlug } from '../lib/storage'
 import { getCommentFull } from '../lib/storage/comment'
 import type { Comment, InteractionCount } from '../lib/storage/types'
+import { AppLink } from './external-link'
 
 export async function Post({ slug }: { slug: string }) {
   const post = await getPostBySlug(env.HANDLE, slug)
@@ -82,7 +83,9 @@ function CommentView({ comment }: { comment: Comment }) {
   return (
     <li>
       <p>
-        {comment.sender.name}
+        <AppLink href={comment.sender.url} className="font-bold">
+          {comment.sender.name}
+        </AppLink>
         {' '}
         :
         {' '}
