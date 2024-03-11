@@ -70,9 +70,6 @@ query getNotes($characterId: Int!, $slug: JSON!) {
     blockNumber
     updatedTransactionHash
     updatedBlockNumber
-    stat {
-      viewDetailCount
-    }
   }
 }
 `)
