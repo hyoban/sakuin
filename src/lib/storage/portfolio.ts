@@ -1,32 +1,60 @@
 import type { NoteEntity } from 'crossbell'
 
 import { indexer } from './indexer'
-import type { HandleOrCharacterId, NoteQueryOptions, Portfolio, PortfolioStats } from './types'
+import type { HandleOrCharacterId, NoteQueryOptions, Portfolio, PortfolioStats, ResultMany } from './types'
 import { convertIpfsUrl, getCharacterId } from './utils'
+
+export async function getPortfolioFull(
+  handleOrCharacterId: HandleOrCharacterId,
+  options?: Omit<NoteQueryOptions, 'cursor' | 'limit'>,
+): Promise<Portfolio[]> {
+  const result: Portfolio[] = []
+
+  let currentCursor: string | null = null
+  const { list, count, cursor } = await getPortfolioMany(handleOrCharacterId, options)
+  result.push(...list)
+  currentCursor = cursor
+
+  while (result.length < count && currentCursor) {
+    const { list, cursor: nextCursor } = await getPortfolioMany(handleOrCharacterId, { ...options, cursor: currentCursor })
+    result.push(...list)
+    currentCursor = nextCursor
+  }
+
+  return result
+}
 
 export async function getPortfolioMany(
   handleOrCharacterId: HandleOrCharacterId,
   options?: NoteQueryOptions,
-): Promise<Portfolio[]> {
+): Promise<ResultMany<Portfolio>> {
   const characterId = await getCharacterId(handleOrCharacterId)
 
   const notes = await indexer.note.getMany({
+    ...options,
     characterId,
     tags: 'portfolio',
     sources: 'xlog',
-    ...options,
   })
 
-  return Promise.all(notes.list.map(note => createPortfolioFromNote(note)))
+  const list = await Promise.all(notes.list.map(note => createPortfolioFromNote(note)))
+
+  return {
+    list,
+    count: notes.count,
+    cursor: notes.cursor,
+  }
 }
 
 export async function getPortfolio(
   handleOrCharacterId: HandleOrCharacterId,
   noteId: string,
-): Promise<Portfolio | null> {
+): Promise<Portfolio> {
   const characterId = await getCharacterId(handleOrCharacterId)
   const note = await indexer.note.get(characterId, noteId)
-  return note ? createPortfolioFromNote(note) : null
+  if (!note)
+    throw new Error(`Note not found: ${noteId}`)
+  return createPortfolioFromNote(note)
 }
 
 async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
