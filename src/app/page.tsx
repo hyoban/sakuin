@@ -11,7 +11,7 @@ export async function HomePage() {
     portfolios,
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
-    getPostMany(env.HANDLE, { orderBy: 'publishedAt', limit: 5 }),
+    getPostMany(env.HANDLE, { orderBy: 'publishedAt' }),
     getPortfolioMany(env.HANDLE, { orderBy: 'publishedAt' }),
   ])
 

@@ -31,11 +31,9 @@ export async function Post({ slug }: { slug: string }) {
   const comments = await getComment(env.HANDLE, post.noteId)
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
-      <article
-        dangerouslySetInnerHTML={{ __html: String(postContent) }}
-      />
+      <article dangerouslySetInnerHTML={{ __html: String(postContent) }} />
       <section>
-        <h2 className="text-2xl font-bold mb-4">Comments</h2>
+        <h2>Comments</h2>
         <ul>
           {comments.map(comment => (
             <Comment key={comment.noteId} comment={comment} />

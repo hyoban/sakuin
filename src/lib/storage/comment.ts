@@ -43,18 +43,16 @@ export async function getComment(
 
   const commentsWithReplies = await Promise.all(
     comments.map(async (comment) => {
-      const [
-        replies,
-        interaction,
-      ] = await Promise.all([
-        getComment(comment.characterId, comment.noteId, options),
-        getNoteInteractionCount(comment.characterId, comment.noteId),
-      ])
       if (comment.sender.name === '') {
         const siteInfo = await getSiteInfo(comment.characterId)
         comment.sender.name = siteInfo.characterName ?? ''
         comment.sender.url = siteInfo.xlogUrl
       }
+      const interaction = await getNoteInteractionCount(comment.characterId, comment.noteId)
+      if (interaction.comments === 0)
+        return { ...comment, ...interaction }
+
+      const replies = await getComment(comment.characterId, comment.noteId, options)
       return { ...comment, replies, ...interaction }
     }),
   )
