@@ -13,6 +13,12 @@ export type ResultMany<T> = {
   count: number
   cursor: string | null
 }
+export type TimeInfo = {
+  createdAt: string
+  publishedAt: string
+  updatedAt: string
+  deletedAt: string | null
+}
 
 export * from './comment'
 export * from './portfolio'

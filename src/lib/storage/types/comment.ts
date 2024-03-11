@@ -1,4 +1,4 @@
-import type { InteractionCount } from '.'
+import type { InteractionCount, TimeInfo } from '.'
 
 export type Comment = {
   characterId: number
@@ -10,4 +10,4 @@ export type Comment = {
     email: string
     url: string
   }
-} & InteractionCount
+} & InteractionCount & TimeInfo

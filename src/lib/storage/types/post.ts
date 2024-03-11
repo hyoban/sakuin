@@ -1,4 +1,4 @@
-import type { InteractionCount } from '.'
+import type { InteractionCount, TimeInfo } from '.'
 
 export type Post = {
   noteId: number
@@ -9,4 +9,4 @@ export type Post = {
   summary: string
   cover: string
   content: string
-} & InteractionCount
+} & InteractionCount & TimeInfo

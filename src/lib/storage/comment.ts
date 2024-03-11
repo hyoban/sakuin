@@ -50,6 +50,10 @@ export async function getCommentMany(
       characterId: note.characterId,
       noteId: note.noteId,
       content: note.metadata?.content?.content ?? '',
+      createdAt: note.createdAt,
+      updatedAt: note.updatedAt,
+      publishedAt: note.publishedAt,
+      deletedAt: note.deletedAt,
       replies: [],
       sender: {
         name: senderName ?? '',

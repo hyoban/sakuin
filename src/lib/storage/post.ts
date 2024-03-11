@@ -130,6 +130,10 @@ async function createPostFromNote(
     summary: note.metadata?.content?.summary as string | undefined ?? '',
     cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
     content: convertIpfsUrl(note.metadata?.content?.content) ?? '',
+    createdAt: note.createdAt,
+    updatedAt: note.updatedAt,
+    publishedAt: note.publishedAt,
+    deletedAt: note.deletedAt,
     ...interaction,
   }
 }
