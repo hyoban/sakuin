@@ -68,7 +68,7 @@ export async function HomePage() {
               title={podcast.title}
               description={podcast.date.slice(0, 10)}
               link={podcast.link}
-              superscript={podcast.audoListensCount ? `${podcast.audoListensCount} listens` : undefined}
+              superscript={podcast.audioListensCount ? `${podcast.audioListensCount} listens` : undefined}
             />
           ))}
         </section>

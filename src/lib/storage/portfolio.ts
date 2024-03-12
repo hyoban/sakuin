@@ -1,6 +1,6 @@
 import type { NoteEntity } from 'crossbell'
 
-import { indexer } from './indexer'
+import { ClientContext, useContext } from './context'
 import type { HandleOrCharacterId, NoteQueryOptions, Portfolio, PortfolioStats, ResultMany } from './types'
 import { convertIpfsUrl, getCharacterId } from './utils'
 
@@ -29,6 +29,7 @@ export async function getPortfolioMany(
   options?: NoteQueryOptions,
 ): Promise<ResultMany<Portfolio>> {
   const characterId = await getCharacterId(handleOrCharacterId)
+  const { indexer } = useContext(ClientContext)
 
   const notes = await indexer.note.getMany({
     ...options,
@@ -50,6 +51,7 @@ export async function getPortfolio(
   handleOrCharacterId: HandleOrCharacterId,
   noteId: string,
 ): Promise<Portfolio> {
+  const { indexer } = useContext(ClientContext)
   const characterId = await getCharacterId(handleOrCharacterId)
   const note = await indexer.note.get(characterId, noteId)
   if (!note)

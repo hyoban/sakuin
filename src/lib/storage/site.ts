@@ -1,8 +1,9 @@
-import { indexer } from './indexer'
+import { ClientContext, useContext } from './context'
 import type { HandleOrCharacterId, SiteInfo } from './types'
 import { convertIpfsUrl, getFullXLogMeta, parseConnectedAccount } from './utils'
 
 export async function getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
+  const { indexer } = useContext(ClientContext)
   const character = typeof handleOrCharacterId === 'string'
     ? await indexer.character.getByHandle(handleOrCharacterId)
     : await indexer.character.get(handleOrCharacterId)

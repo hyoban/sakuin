@@ -1,7 +1,7 @@
 import type { NoteEntity, Numberish } from 'crossbell'
 
 import { graphql } from '../../gql'
-import { client, indexer } from './indexer'
+import { ClientContext, useContext } from './context'
 import type { HandleOrCharacterId, NoteQueryOptions, Post, ResultMany } from './types'
 import { convertIpfsUrl, getCharacterId, getNoteInteractionCount, getXLogMeta } from './utils'
 
@@ -30,6 +30,7 @@ export async function getPostMany(
   options?: NoteQueryOptions,
 ): Promise<ResultMany<Post>> {
   const characterId = await getCharacterId(handleOrCharacterId)
+  const { indexer } = useContext(ClientContext)
 
   const notes = await indexer.note.getMany({
     characterId,
@@ -52,6 +53,7 @@ export async function getPost(
   noteId: Numberish,
 ): Promise<Post | null> {
   const characterId = await getCharacterId(handleOrCharacterId)
+  const { indexer } = useContext(ClientContext)
 
   const note = await indexer.note.get(characterId, noteId)
   if (!note)
@@ -105,6 +107,7 @@ export async function getPostBySlug(
   slug: string,
 ): Promise<Post | null> {
   const characterId = await getCharacterId(handleOrCharacterId)
+  const { client } = useContext(ClientContext)
 
   const note = await client.query(noteQuery, { characterId, slug })
   const post = note.data?.notes.at(0)

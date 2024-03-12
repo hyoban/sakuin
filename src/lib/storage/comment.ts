@@ -1,7 +1,7 @@
 import type { Numberish } from 'crossbell'
 
 import { getSiteInfo } from '.'
-import { indexer } from './indexer'
+import { ClientContext, useContext } from './context'
 import type { Comment, HandleOrCharacterId, NoteQueryOptions, ResultMany } from './types'
 import { getCharacterId, getNoteInteractionCount, getXLogMeta } from './utils'
 
@@ -32,6 +32,7 @@ export async function getCommentMany(
   options?: NoteQueryOptions,
 ): Promise<ResultMany<Comment>> {
   const characterId = await getCharacterId(handleOrCharacterId)
+  const { indexer } = useContext(ClientContext)
 
   const res = await indexer.note.getMany(
     {

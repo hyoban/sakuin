@@ -1,11 +1,13 @@
 import type { AttributesMetadata } from 'crossbell'
 
-import { contract, indexer } from './indexer'
+import { ClientContext, useContext } from './context'
 import type { HandleOrCharacterId, InteractionCount, Navigation, SocialPlatform, XLogTraitType } from './types'
 
 export async function getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
   if (typeof handleOrCharacterId === 'number')
     return handleOrCharacterId
+
+  const { indexer } = useContext(ClientContext)
 
   const character = await indexer.character.getByHandle(handleOrCharacterId)
   if (!character)
@@ -95,6 +97,8 @@ export async function getNoteInteractionCount(
   characterId: number,
   noteId: number,
 ): Promise<InteractionCount> {
+  const { indexer } = useContext(ClientContext)
+
   const [
     views,
     likes,
@@ -138,6 +142,7 @@ export async function getNoteInteractionCount(
 }
 
 async function getMiraTokenDecimals() {
+  const { contract } = useContext(ClientContext)
   let decimals
   try {
     decimals = await contract.tips.getTokenDecimals()

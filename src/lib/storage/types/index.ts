@@ -1,6 +1,6 @@
-import type { indexer } from '../indexer'
+import type { Indexer } from 'crossbell'
 
-export type NoteQueryOptions = Parameters<typeof indexer.note.getMany>[0]
+export type NoteQueryOptions = Parameters<Indexer['note']['getMany']>[0]
 export type HandleOrCharacterId = string | number
 export type InteractionCount = {
   views: number
