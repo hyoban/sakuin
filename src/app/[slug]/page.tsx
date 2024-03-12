@@ -13,6 +13,8 @@ import { env } from '../../env'
 import { AppLink } from '../external-link'
 import { rehypeEmbed, transformers } from './rehype-embed'
 
+export const revalidate = 3600
+
 export async function generateStaticParams() {
   // eslint-disable-next-line unicorn/no-await-expression-member
   const slugs = (await getPostFull(env.HANDLE)).map(post => post.slug)

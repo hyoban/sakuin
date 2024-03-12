@@ -5,6 +5,8 @@ import { capitalize, getUniverseLinks } from '../lib/other'
 import { AppLink } from './external-link'
 import { ListItem } from './list-item'
 
+export const revalidate = 3600
+
 export default async function HomePage() {
   const [
     siteInfo,
