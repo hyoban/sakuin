@@ -1,15 +1,16 @@
-/* eslint-disable @eslint-react/dom/no-dangerously-set-innerhtml */
 import rehypeShiki from '@shikijs/rehype'
-import rehypeStringify from 'rehype-stringify'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import { Tweet } from 'react-tweet'
+import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
 import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
 import type { Comment, InteractionCount } from 'sakuin'
 import { getCommentFull, getPostBySlug, getPostFull } from 'sakuin'
-import { unified } from 'unified'
 
 import { env } from '../../env'
 import { AppLink } from '../external-link'
+import { rehypeEmbed, TweetTransformer } from './rehype-embed'
 
 export async function generateStaticParams() {
   // eslint-disable-next-line unicorn/no-await-expression-member
@@ -21,18 +22,6 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const post = await getPostBySlug(env.HANDLE, params.slug)
   if (!post)
     return null
-  const postContent = await unified()
-    .use(remarkParse)
-    .use(remarkGithubAlerts)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeShiki, {
-      themes: {
-        light: 'vitesse-light',
-        dark: 'vitesse-dark',
-      },
-    })
-    .use(rehypeStringify, { allowDangerousHtml: true })
-    .process(post.content)
 
   const comments = await getCommentFull(env.HANDLE, post.noteId)
   return (
@@ -54,7 +43,31 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </span>
           ))}
         </div>
-        <div dangerouslySetInnerHTML={{ __html: postContent.toString() }} />
+        <MDXRemote
+          source={post.content}
+          components={{ tweet: (props: { id: string }) => <div className="not-prose"><Tweet id={props.id} /></div> }}
+          options={{
+            mdxOptions: {
+              remarkRehypeOptions: { allowDangerousHtml: true },
+              remarkPlugins: [
+                // @ts-expect-error I do not care
+                remarkParse,
+                // @ts-expect-error I do not care
+                remarkGithubAlerts,
+                remarkGfm,
+              ],
+              rehypePlugins: [
+                // @ts-expect-error I do not care
+                [rehypeEmbed, { transformers: [TweetTransformer] }],
+                // @ts-expect-error I do not care
+                [rehypeRaw, { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }],
+                // @ts-expect-error I do not care
+                [rehypeShiki, { themes: { light: 'vitesse-light', dark: 'vitesse-dark' } }],
+              ],
+              format: 'md',
+            },
+          }}
+        />
       </article>
       <section>
         <h2>Comments</h2>
