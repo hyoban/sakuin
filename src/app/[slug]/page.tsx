@@ -39,7 +39,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <article>
         <h1>{post.title}</h1>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center mb-6">
           <InteractionView
             interaction={{
               views: post.views,
@@ -70,7 +70,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
 function InteractionView({ interaction }: { interaction: InteractionCount }) {
   return (
-    <div className="flex gap-4 my-4">
+    <div className="flex gap-4">
       <span className="flex gap-2 items-center">
         <span className="i-lucide-eye" />
         <span className="text-lg">{interaction.views}</span>

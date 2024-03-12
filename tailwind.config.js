@@ -16,6 +16,13 @@ export default {
           'SN Pro',
           ...defaultTheme.fontFamily.sans,
         ],
+        mono: [
+          'Monolisa Variable',
+          'Monolisa',
+          'Input Mono',
+          'Input',
+          ...defaultTheme.fontFamily.mono,
+        ],
       },
     },
   },
