@@ -3,7 +3,7 @@ import type { NoteEntity, Numberish } from 'crossbell'
 import { graphql } from '../../gql'
 import { ClientContext, useContext } from './context'
 import type { HandleOrCharacterId, NoteQueryOptions, Post, ResultMany } from './types'
-import { convertIpfsUrl, getCharacterId, getNoteInteractionCount, getXLogMeta } from './utils'
+import { getCharacterId, getNoteInteractionCount, getXLogMeta, toGateway } from './utils'
 
 export async function getPostFull(
   handleOrCharacterId: HandleOrCharacterId,
@@ -131,8 +131,8 @@ async function createPostFromNote(
     tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     summary: note.metadata?.content?.summary as string | undefined ?? '',
-    cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
-    content: convertIpfsUrl(note.metadata?.content?.content) ?? '',
+    cover: toGateway(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
+    content: toGateway(note.metadata?.content?.content) ?? '',
     ...interaction,
   }
 }

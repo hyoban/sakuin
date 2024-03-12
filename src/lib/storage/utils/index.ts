@@ -1,7 +1,9 @@
 import type { AttributesMetadata } from 'crossbell'
 
-import { ClientContext, useContext } from './context'
-import type { HandleOrCharacterId, InteractionCount, Navigation, SocialPlatform, XLogTraitType } from './types'
+import { ClientContext, useContext } from '../context'
+import type { HandleOrCharacterId, InteractionCount, Navigation, SocialPlatform, XLogTraitType } from '../types'
+
+export * from './ipfs-parser'
 
 export async function getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
   if (typeof handleOrCharacterId === 'number')
@@ -13,12 +15,6 @@ export async function getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
   if (!character)
     throw new Error('Character not found')
   return character.characterId
-}
-
-export function convertIpfsUrl(url?: string) {
-  if (!url)
-    return
-  return url.replaceAll(/ipfs:\/\/([^\n ]+)/g, 'https://ipfs.4everland.xyz/ipfs/' + '$1')
 }
 
 export function getXLogMeta(

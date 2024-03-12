@@ -1,6 +1,6 @@
 import { ClientContext, useContext } from './context'
 import type { HandleOrCharacterId, SiteInfo } from './types'
-import { convertIpfsUrl, getFullXLogMeta, parseConnectedAccount } from './utils'
+import { getFullXLogMeta, parseConnectedAccount, toGateway } from './utils'
 
 export async function getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
   const { indexer } = useContext(ClientContext)
@@ -42,8 +42,8 @@ export async function getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Pro
     characterId: character.characterId,
     xlogUrl,
 
-    icon: avatars?.map(avatar => convertIpfsUrl(avatar)).at(0),
-    banner: banners?.map(banner => convertIpfsUrl(banner.address)).at(0),
+    icon: avatars?.map(avatar => toGateway(avatar)).at(0),
+    banner: banners?.map(banner => toGateway(banner.address)).at(0),
     characterName,
     siteName: siteName || characterName,
     description: bio,

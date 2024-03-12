@@ -2,7 +2,7 @@ import type { NoteEntity } from 'crossbell'
 
 import { ClientContext, useContext } from './context'
 import type { HandleOrCharacterId, NoteQueryOptions, Portfolio, PortfolioStats, ResultMany } from './types'
-import { convertIpfsUrl, getCharacterId } from './utils'
+import { getCharacterId, toGateway } from './utils'
 
 export async function getPortfolioFull(
   handleOrCharacterId: HandleOrCharacterId,
@@ -67,7 +67,7 @@ async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
     date: note.metadata?.content?.date_published ?? '',
     // @ts-expect-error TODO: summary is not in the type
     summary: note.metadata?.content?.summary as string | undefined ?? '',
-    cover: convertIpfsUrl(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
+    cover: toGateway(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
   }
 
   const res = await fetch(`https://xlog.app/api/portfolio-stats?url=${portfolio.link}`)

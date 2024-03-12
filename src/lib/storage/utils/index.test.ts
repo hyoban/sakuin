@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { getCharacterId, parseConnectedAccount } from './utils'
+import { getCharacterId, parseConnectedAccount } from '.'
 
 test('get character id', async () => {
   expect(await getCharacterId('diygod')).toBe(10)
