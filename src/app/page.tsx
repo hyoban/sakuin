@@ -5,7 +5,7 @@ import { capitalize, getUniverseLinks } from '../lib/other'
 import { AppLink } from './external-link'
 import { ListItem } from './list-item'
 
-export async function HomePage() {
+export default async function HomePage() {
   const [
     siteInfo,
     latestBlogList,

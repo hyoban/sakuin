@@ -5,14 +5,20 @@ import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import type { Comment, InteractionCount } from 'sakuin'
-import { getCommentFull, getPostBySlug } from 'sakuin'
+import { getCommentFull, getPostBySlug, getPostFull } from 'sakuin'
 import { unified } from 'unified'
 
-import { env } from '../env'
-import { AppLink } from './external-link'
+import { env } from '../../env'
+import { AppLink } from '../external-link'
 
-export async function Post({ slug }: { slug: string }) {
-  const post = await getPostBySlug(env.HANDLE, slug)
+export async function generateStaticParams() {
+  // eslint-disable-next-line unicorn/no-await-expression-member
+  const slugs = (await getPostFull(env.HANDLE)).map(post => post.slug)
+  return slugs.map(slug => ({ slug }))
+}
+
+export default async function PostPage({ params }: { params: { slug: string } }) {
+  const post = await getPostBySlug(env.HANDLE, params.slug)
   if (!post)
     return null
   const postContent = await unified()

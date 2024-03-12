@@ -1,4 +1,4 @@
-import { Link } from 'waku'
+import Link from 'next/link'
 
 type AppLinkProps = React.PropsWithChildren<{
   href: string
@@ -26,7 +26,7 @@ export function AppLink({ href, title, className, children }: AppLinkProps) {
 
   return (
     <Link
-      to={href.startsWith('/') ? href : `/${href}`}
+      href={href.startsWith('/') ? href : `/${href}`}
       className={className}
       title={title}
     >

@@ -7,7 +7,7 @@ import { getSiteInfo } from 'sakuin'
 
 import { env } from '../env'
 
-export async function RootLayout({ children }: React.PropsWithChildren) {
+export default async function RootLayout({ children }: React.PropsWithChildren) {
   const { HANDLE, SITE_URL } = env
   const { siteName, characterName, description, icon, banner } = await getSiteInfo(HANDLE)
 

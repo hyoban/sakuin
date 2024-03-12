@@ -8,25 +8,44 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
-
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
-
     /* If NOT transpiling with TypeScript: */
     "moduleResolution": "Bundler",
     "module": "ESNext",
     "noEmit": true,
-
     /* If your code runs in the DOM: */
-    "lib": ["es2022", "dom", "dom.iterable"],
-
-    "types": ["react/experimental", "node"],
-    "jsx": "react-jsx",
-
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ],
+    "types": [
+      "react/experimental",
+      "node"
+    ],
+    "jsx": "preserve",
     "paths": {
-      "sakuin": ["./src/lib/storage/index.ts"]
-    }
+      "sakuin": [
+        "./src/lib/storage/index.ts"
+      ]
+    },
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "exclude": ["dist", "out"]
+  "exclude": [
+    "dist",
+    "out"
+  ],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
