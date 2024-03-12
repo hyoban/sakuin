@@ -1,4 +1,4 @@
-import { createEnv } from '@t3-oss/env-core'
+import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
 
 export const env = createEnv({
@@ -6,8 +6,7 @@ export const env = createEnv({
     HANDLE: z.string(),
     SITE_URL: z.string().optional(),
   },
-  clientPrefix: 'WAKU_PUBLIC_',
   client: {},
-  runtimeEnv: process.env,
+  experimental__runtimeEnv: {},
   emptyStringAsUndefined: true,
 })
