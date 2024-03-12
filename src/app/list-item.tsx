@@ -20,7 +20,7 @@ export function ListItem(
     >
       <div className="flex gap-2">
         <span>{title}</span>
-        <span className="opacity-70 text-xs">
+        <span className="opacity-70 text-xs shrink-0">
           {superscript}
         </span>
       </div>
