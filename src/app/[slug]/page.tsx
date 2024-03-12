@@ -59,7 +59,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             'github-repo': ({ repo }: { repo: string }) => (
               <AppLink href={`https://github.com/${repo}`}>
                 <Image
-                  src={`https://socialify.git.ci/${repo}/image?description=0&forks=1&issues=1&language=1&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Auto`}
+                  src={`https://socialify.git.ci/${repo}/image?description=0&forks=1&issues=1&language=1&name=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Auto`}
                   alt={`Social preview for ${repo}`}
                   width="1280"
                   height="640"
