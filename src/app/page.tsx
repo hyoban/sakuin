@@ -1,3 +1,4 @@
+import type { Portfolio } from 'sakuin'
 import { getPortfolioFull, getPostFull, getSiteInfo } from 'sakuin'
 
 import { env } from '../env'
@@ -7,19 +8,32 @@ import { ListItem } from './list-item'
 
 export const revalidate = 3600
 
+function getSuperscript(portfolio: Portfolio) {
+  if (portfolio.projectStarsCount)
+    return `${portfolio.projectStarsCount} stars`
+
+  if (portfolio.audioListensCount)
+    return `${portfolio.audioListensCount} listens`
+
+  if (portfolio.commentsCount)
+    return `${portfolio.commentsCount} comments`
+
+  if (portfolio.videoViewsCount)
+    return `${portfolio.videoViewsCount} views`
+
+  return ''
+}
+
 export default async function HomePage() {
   const [
     siteInfo,
-    latestBlogList,
+    posts,
     portfolios,
   ] = await Promise.all([
     getSiteInfo(env.HANDLE),
     getPostFull(env.HANDLE, { orderBy: 'publishedAt' }),
     getPortfolioFull(env.HANDLE, { orderBy: 'publishedAt' }),
   ])
-
-  const projects = portfolios.filter(p => p.link.startsWith('https://github.com'))
-  const podcasts = portfolios.filter(p => p.link.includes('xiaoyuzhoufm.com'))
 
   const links = getUniverseLinks(
     siteInfo.socialPlatforms,
@@ -33,53 +47,8 @@ export default async function HomePage() {
       <section>
         <h3>{siteInfo.characterName}</h3>
         <p>{siteInfo.description}</p>
-      </section>
-      {projects.length > 0 && (
-        <section>
-          <h3>Projects</h3>
-          {projects.map(project => (
-            <ListItem
-              key={project.noteId}
-              title={capitalize(project.title)}
-              description={project.summary}
-              link={project.link}
-              superscript={project.projectStarsCount ? `${project.projectStarsCount} stars` : undefined}
-            />
-          ))}
-        </section>
-      )}
-      {latestBlogList.length > 0 && (
-        <section>
-          <h3>Latest Blog</h3>
-          {latestBlogList.map(blog => (
-            <ListItem
-              key={blog.slug}
-              title={blog.title}
-              description={blog.date.slice(0, 10)}
-              superscript={`${blog.views} views`}
-              link={blog.slug}
-            />
-          ))}
-        </section>
-      )}
-      {podcasts.length > 0 && (
-        <section>
-          <h3>Podcasts</h3>
-          {podcasts.map(podcast => (
-            <ListItem
-              key={podcast.link}
-              title={podcast.title}
-              description={podcast.date.slice(0, 10)}
-              link={podcast.link}
-              superscript={podcast.audioListensCount ? `${podcast.audioListensCount} listens` : undefined}
-            />
-          ))}
-        </section>
-      )}
-      {links.length > 0 && (
-        <section>
-          <h3>Links</h3>
-          <div className="flex gap-4 items-center">
+        {links.length > 0 && (
+          <section className="flex gap-4 items-center">
             {links.map(link => (
               <AppLink
                 href={link.href}
@@ -90,7 +59,35 @@ export default async function HomePage() {
                 {link.title}
               </AppLink>
             ))}
-          </div>
+          </section>
+        )}
+      </section>
+      {posts.length > 0 && (
+        <section>
+          <h3>Posts</h3>
+          {posts.map(blog => (
+            <ListItem
+              key={blog.slug}
+              title={blog.title}
+              description={blog.date.slice(0, 10)}
+              superscript={`${blog.views} views`}
+              link={blog.slug}
+            />
+          ))}
+        </section>
+      )}
+      {portfolios.length > 0 && (
+        <section>
+          <h3>Portfolios</h3>
+          {portfolios.map(portfolio => (
+            <ListItem
+              key={portfolio.noteId}
+              title={capitalize(portfolio.title)}
+              description={portfolio.summary}
+              link={portfolio.link}
+              superscript={getSuperscript(portfolio)}
+            />
+          ))}
         </section>
       )}
     </main>

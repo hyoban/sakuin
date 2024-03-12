@@ -60,6 +60,8 @@ export async function getPortfolio(
 }
 
 async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
+  const { xLogBase } = useContext(ClientContext)
+
   let portfolio: Portfolio = {
     noteId: note.noteId,
     title: note.metadata?.content?.title ?? '',
@@ -70,7 +72,7 @@ async function createPortfolioFromNote(note: NoteEntity): Promise<Portfolio> {
     cover: toGateway(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
   }
 
-  const res = await fetch(`https://xlog.app/api/portfolio-stats?url=${portfolio.link}`)
+  const res = await fetch(`https://${xLogBase}/api/portfolio-stats?url=${portfolio.link}`)
   const stats = await res.json() as PortfolioStats
   portfolio = { ...portfolio, ...stats }
 

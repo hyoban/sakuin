@@ -3,7 +3,7 @@ import type { HandleOrCharacterId, SiteInfo } from './types'
 import { getFullXLogMeta, parseConnectedAccount, toGateway } from './utils'
 
 export async function getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
-  const { indexer } = useContext(ClientContext)
+  const { indexer, xLogBase } = useContext(ClientContext)
   const character = typeof handleOrCharacterId === 'string'
     ? await indexer.character.getByHandle(handleOrCharacterId)
     : await indexer.character.get(handleOrCharacterId)
@@ -35,7 +35,7 @@ export async function getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Pro
   } = getFullXLogMeta(attributes)
 
   const { handle } = character
-  const xlogUrl = customDomain ? `https://${customDomain}` : `https://${handle}.xlog.app`
+  const xlogUrl = customDomain ? `https://${customDomain}` : `https://${handle}.${xLogBase}`
 
   return {
     handle,

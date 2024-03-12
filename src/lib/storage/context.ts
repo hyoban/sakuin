@@ -51,6 +51,12 @@ export type ClientContextType = {
   client: Client
   indexer: Indexer
   contract: Contract
+  xLogBase: string
 }
 
-export const ClientContext = createContext<ClientContextType>({ client, indexer, contract })
+export const ClientContext = createContext<ClientContextType>({
+  client,
+  indexer,
+  contract,
+  xLogBase: 'xlog.app',
+})
