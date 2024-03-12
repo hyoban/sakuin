@@ -28,5 +28,5 @@
       "sakuin": ["./src/lib/storage/index.ts"]
     }
   },
-  "exclude": ["dist"]
+  "exclude": ["dist", "out"]
 }
