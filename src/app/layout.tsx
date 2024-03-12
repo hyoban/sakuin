@@ -1,8 +1,7 @@
-import '@unocss/reset/tailwind.css'
-import 'virtual:uno.css'
 import 'remark-github-alerts/styles/github-colors-light.css'
 import 'remark-github-alerts/styles/github-colors-dark-media.css'
 import 'remark-github-alerts/styles/github-base.css'
+import './globals.css'
 
 import { getSiteInfo } from 'sakuin'
 
@@ -13,7 +12,7 @@ export async function RootLayout({ children }: React.PropsWithChildren) {
   const { siteName, characterName, description, icon, banner } = await getSiteInfo(HANDLE)
 
   return (
-    <html lang="en" className="dark:bg-neutral-900 dark:text-white font-sans">
+    <html lang="en" className="dark:bg-neutral-900 dark:text-white">
       <title>{siteName ?? characterName}</title>
       <meta name="description" content={description} />
       {icon && <link rel="icon" type="image/png" href={icon} />}
