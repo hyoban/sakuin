@@ -7,7 +7,7 @@ import remarkGfm from 'remark-gfm'
 import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
 import type { Comment, InteractionCount } from 'sakuin'
-import { getCommentFull, getPostBySlug, getPostFull } from 'sakuin'
+import { getCommentFull, getPostBySlug, getPostFull, getSiteInfo } from 'sakuin'
 
 import { env } from '../../env'
 import { AppLink } from '../external-link'
@@ -20,7 +20,10 @@ export async function generateStaticParams() {
 }
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
-  const post = await getPostBySlug(env.HANDLE, params.slug)
+  const [post, site] = await Promise.all([
+    getPostBySlug(env.HANDLE, params.slug),
+    getSiteInfo(env.HANDLE),
+  ])
   if (!post)
     return null
 
@@ -43,6 +46,11 @@ export default async function PostPage({ params }: { params: { slug: string } })
               {`# ${tag}`}
             </span>
           ))}
+          <AppLink
+            href={`${site.xlogUrl}/${params.slug}`}
+          >
+            View on xLog
+          </AppLink>
         </div>
         <MDXRemote
           source={post.content}

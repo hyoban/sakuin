@@ -26,7 +26,7 @@ export function AppLink({ href, title, className, children }: AppLinkProps) {
 
   return (
     <Link
-      href={href.startsWith('/') ? href : `/${href}`}
+      href={href}
       className={className}
       title={title}
     >
