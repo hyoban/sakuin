@@ -1,6 +1,7 @@
+import { getPortfolioFull, getPostFull, getSiteInfo } from 'sakuin'
+
 import { env } from '../env'
 import { capitalize, getUniverseLinks } from '../lib/other'
-import { getPortfolioFull, getPostFull, getSiteInfo } from '../lib/storage'
 import { AppLink } from './external-link'
 import { ListItem } from './list-item'
 

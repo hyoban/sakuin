@@ -1,10 +1,10 @@
+import { getPostFull } from 'sakuin'
 import { createPages } from 'waku'
 
 import { RootLayout } from './app/layout'
 import { HomePage } from './app/page'
 import { Post } from './app/post'
 import { env } from './env'
-import { getPostFull } from './lib/storage'
 
 export default createPages(async ({ createPage, createLayout }) => {
   createLayout({

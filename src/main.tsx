@@ -1,3 +1,9 @@
+import '@unocss/reset/tailwind.css'
+import 'virtual:uno.css'
+import 'remark-github-alerts/styles/github-colors-light.css'
+import 'remark-github-alerts/styles/github-colors-dark-media.css'
+import 'remark-github-alerts/styles/github-base.css'
+
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { Router } from 'waku/router/client'

@@ -4,12 +4,11 @@ import rehypeStringify from 'rehype-stringify'
 import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
+import type { Comment, InteractionCount } from 'sakuin'
+import { getCommentFull, getPostBySlug } from 'sakuin'
 import { unified } from 'unified'
 
 import { env } from '../env'
-import { getPostBySlug } from '../lib/storage'
-import { getCommentFull } from '../lib/storage/comment'
-import type { Comment, InteractionCount } from '../lib/storage/types'
 import { AppLink } from './external-link'
 
 export async function Post({ slug }: { slug: string }) {
