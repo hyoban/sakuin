@@ -1,3 +1,9 @@
+import '@unocss/reset/tailwind.css'
+import 'virtual:uno.css'
+import 'remark-github-alerts/styles/github-colors-light.css'
+import 'remark-github-alerts/styles/github-colors-dark-media.css'
+import 'remark-github-alerts/styles/github-base.css'
+
 import { getSiteInfo } from 'sakuin'
 
 import { env } from '../env'
