@@ -81,9 +81,10 @@ export function getFullXLogMeta(
 }
 
 export function parseConnectedAccount(
-  account: string,
+  account: string | { uri: string, extra: Record<string, string> },
 ): SocialPlatform {
-  const [, id, platform] = account.match(/csb:\/\/account:(.+)@(.+)/) as string[]
+  const uri = typeof account === 'string' ? account : account.uri
+  const [, id, platform] = uri.match(/csb:\/\/account:(.+)@(.+)/) as string[]
   if (!platform || !id)
     throw new Error('Invalid connected account')
   return { platform, id }
