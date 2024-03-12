@@ -1,4 +1,5 @@
 import rehypeShiki from '@shikijs/rehype'
+import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { Tweet } from 'react-tweet'
 import rehypeRaw from 'rehype-raw'
@@ -10,7 +11,7 @@ import { getCommentFull, getPostBySlug, getPostFull } from 'sakuin'
 
 import { env } from '../../env'
 import { AppLink } from '../external-link'
-import { rehypeEmbed, TweetTransformer } from './rehype-embed'
+import { rehypeEmbed, transformers } from './rehype-embed'
 
 export async function generateStaticParams() {
   // eslint-disable-next-line unicorn/no-await-expression-member
@@ -45,7 +46,19 @@ export default async function PostPage({ params }: { params: { slug: string } })
         </div>
         <MDXRemote
           source={post.content}
-          components={{ tweet: (props: { id: string }) => <div className="not-prose"><Tweet id={props.id} /></div> }}
+          components={{
+            'tweet': ({ id }: { id: string }) => <div className="not-prose"><Tweet id={id} /></div>,
+            'github-repo': ({ repo }: { repo: string }) => (
+              <AppLink href={`https://github.com/${repo}`}>
+                <Image
+                  src={`https://socialify.git.ci/${repo}/image?description=0&forks=1&issues=1&language=1&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Auto`}
+                  alt={`Social preview for ${repo}`}
+                  width="1280"
+                  height="640"
+                />
+              </AppLink>
+            ),
+          }}
           options={{
             mdxOptions: {
               remarkRehypeOptions: { allowDangerousHtml: true },
@@ -58,7 +71,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
               ],
               rehypePlugins: [
                 // @ts-expect-error I do not care
-                [rehypeEmbed, { transformers: [TweetTransformer] }],
+                [rehypeEmbed, { transformers }],
                 // @ts-expect-error I do not care
                 [rehypeRaw, { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }],
                 // @ts-expect-error I do not care

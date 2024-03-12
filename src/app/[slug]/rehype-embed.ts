@@ -33,6 +33,26 @@ export const TweetTransformer: Transformer = {
   },
 }
 
+export const GitHubRepoTransformer: Transformer = {
+  name: 'GithubRepo',
+  shouldTransform(url) {
+    const { host } = url
+
+    return isHostIncludes('github.com', host)
+  },
+  getHTML(url) {
+    const matched = match<{ user: string, repo: string }>('/:user/:repo')(
+      url.pathname,
+    )
+    if (!matched)
+      return
+    const repo = `${matched.params.user}/${matched.params.repo}`
+    return `<github-repo repo="${repo}"/>`
+  },
+}
+
+export const transformers = [TweetTransformer, GitHubRepoTransformer]
+
 export const rehypeEmbed: Plugin<
   Array<{ transformers: Transformer[] }>,
   Root
