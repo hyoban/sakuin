@@ -48,13 +48,8 @@ export async function getCommentMany(
     const senderUrl = getXLogMeta(note.metadata?.content?.attributes, 'sender_url')
 
     return {
-      characterId: note.characterId,
-      noteId: note.noteId,
+      ...note,
       content: note.metadata?.content?.content ?? '',
-      createdAt: note.createdAt,
-      updatedAt: note.updatedAt,
-      publishedAt: note.publishedAt,
-      deletedAt: note.deletedAt,
       replies: [],
       sender: {
         name: senderName ?? '',
