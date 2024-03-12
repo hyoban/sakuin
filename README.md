@@ -9,35 +9,17 @@ Here is a demo site for [diygod](https://diygod.cc).
 
 ![demo site for diygod](https://github.com/hyoban/hyoban.cc/assets/38493346/0ccff48f-6679-410b-9288-ae4f4cd0093d)
 
-## SDK usage
-
-<!-- automd:pm-install name="sakuin" -->
+## SDK Usage
 
 ```sh
-# ✨ Auto-detect
-npx nypm install sakuin
-
-# npm
-npm install sakuin
-
-# yarn
-yarn add sakuin
-
-# pnpm
-pnpm install sakuin
-
-# bun
-bun install sakuin
+ni sakuin
 ```
-
-<!-- /automd -->
-
-<!-- automd:jsimport name="sakuin" imports="getPortfolio,getPortfolioFull,getPortfolioMany,getPost,getPostBySlug,getPostFull,getPostMany,getSiteInfo" -->
-
-**ESM** (Node.js, Bun)
 
 ```js
 import {
+  ClientContext,
+  getCommentFull,
+  getCommentMany,
   getPortfolio,
   getPortfolioFull,
   getPortfolioMany,
@@ -48,8 +30,6 @@ import {
   getSiteInfo,
 } from "sakuin";
 ```
-
-<!-- /automd -->
 
 Most of functions take `HandleOrCharacterId` and `NoteId` as the arguments, and return what you need to build your site.
 
