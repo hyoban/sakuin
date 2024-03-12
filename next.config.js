@@ -18,9 +18,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'socialify.git.ci',
-        port: '',
-        pathname: '/**',
+        hostname: '**',
       },
     ],
   },

@@ -1,4 +1,6 @@
 import rehypeShiki from '@shikijs/rehype'
+import sizeOf from 'image-size'
+import type { ImageProps } from 'next/image'
 import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { Tweet } from 'react-tweet'
@@ -19,6 +21,34 @@ export async function generateStaticParams() {
   // eslint-disable-next-line unicorn/no-await-expression-member
   const slugs = (await getPostFull(env.HANDLE)).map(post => post.slug)
   return slugs.map(slug => ({ slug }))
+}
+
+async function getImageDimensionByUri(uri: string, useFullSize = false): Promise<{ width: number, height: number, uri: string } | null> {
+  const headers: Record<string, string> = {}
+
+  if (!useFullSize)
+    headers.Range = 'bytes=0-10240'
+
+  try {
+    const response = await fetch(uri, { headers })
+    const arrayBuffer = await response.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+    const dimensions = sizeOf(buffer)
+    if (!(dimensions.width && dimensions.height))
+      throw new Error('Could not determine image dimensions.')
+
+    return {
+      width: dimensions.width,
+      height: dimensions.height,
+      uri,
+    }
+  }
+  catch {
+    if (!useFullSize)
+      return getImageDimensionByUri(uri, true)
+
+    return null
+  }
 }
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
@@ -57,6 +87,23 @@ export default async function PostPage({ params }: { params: { slug: string } })
         <MDXRemote
           source={post.content}
           components={{
+            'img': async (props) => {
+              if (!props.src)
+                return null
+
+              const size = await getImageDimensionByUri(props.src)
+              if (!size)
+                // eslint-disable-next-line @next/next/no-img-element
+                return <img {...props} />
+              return (
+                <Image
+                  style={{ width: '100%', height: 'auto' }}
+                  width={size.width}
+                  height={size.height}
+                  {...(props as ImageProps)}
+                />
+              )
+            },
             'tweet': ({ id }: { id: string }) => <div className="not-prose"><Tweet id={id} /></div>,
             'github-repo': ({ repo }: { repo: string }) => (
               <AppLink href={`https://github.com/${repo}`}>
