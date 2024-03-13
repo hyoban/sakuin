@@ -16,19 +16,10 @@ ni sakuin
 ```
 
 ```js
-import {
-  ClientContext,
-  getCommentFull,
-  getCommentMany,
-  getPortfolio,
-  getPortfolioFull,
-  getPortfolioMany,
-  getPost,
-  getPostBySlug,
-  getPostFull,
-  getPostMany,
-  getSiteInfo,
-} from "sakuin";
+import { Client } from "sakuin";
+
+const client = new Client();
+const site = = await client.site.getInfo(HANDLE)
 ```
 
 Most of functions take `HandleOrCharacterId` and `NoteId` as the arguments, and return what you need to build your site.
