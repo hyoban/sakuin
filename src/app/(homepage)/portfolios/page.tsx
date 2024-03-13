@@ -1,7 +1,7 @@
-import { env } from '../../env'
-import { client } from '../../lib/client'
-import { ListItem } from '../list-item'
-import { capitalize, getSuperscript } from '../utils'
+import { env } from '../../../env'
+import { client } from '../../../lib/client'
+import { ListItem } from '../../list-item'
+import { capitalize, getSuperscript } from '../../utils'
 
 export const revalidate = 3600
 

@@ -1,6 +1,6 @@
-import { env } from '../env'
-import { client } from '../lib/client'
-import { ListItem } from './list-item'
+import { env } from '../../env'
+import { client } from '../../lib/client'
+import { ListItem } from '../list-item'
 
 export const revalidate = 3600
 
