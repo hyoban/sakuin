@@ -7,6 +7,6 @@ export type Post = {
   date: string
   tags: string[]
   summary: string
-  cover: string
+  cover?: string
   content: string
 } & InteractionCount & NoteBasic

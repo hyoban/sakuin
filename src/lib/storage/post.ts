@@ -46,7 +46,7 @@ query getNotes($characterId: Int!, $slug: JSON!) {
 `)
 
 export class PostClient {
-  constructor(private base: ClientBase) {}
+  constructor(private base: ClientBase, private tag: 'post' | 'short' = 'post') {}
 
   async getAll(
     handleOrCharacterId: HandleOrCharacterId,
@@ -77,7 +77,7 @@ export class PostClient {
 
     const notes = await indexer.note.getMany({
       characterId,
-      tags: 'post',
+      tags: this.tag,
       sources: 'xlog',
       ...options,
     })
@@ -119,6 +119,9 @@ export class PostClient {
     return this.createPostFromNote(post as NoteEntity, characterId)
   }
 
+  private postFilter = (att: { name?: string }) => att.name === 'cover'
+  private shortFilter = (att: { name?: string }) => att.name === 'image'
+
   private async createPostFromNote(
     note: NoteEntity,
     characterId: number,
@@ -130,6 +133,14 @@ export class PostClient {
     const content = toGateway(note.metadata?.content?.content) ?? ''
     const match = content.match(/!\[.*?]\((.*?)\)/g)
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
+
+    const cover = toGateway(
+      note.metadata?.content?.attachments
+        ?.find(
+          this.tag === 'post' ? this.postFilter : this.shortFilter,
+        )
+        ?.address,
+    ) ?? imagesInContent.at(0)
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
@@ -147,7 +158,7 @@ export class PostClient {
       date: note.metadata?.content?.date_published ?? '',
       tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
       summary,
-      cover: toGateway(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? imagesInContent.at(0) ?? '',
+      cover,
       content,
       ...interaction,
     }
