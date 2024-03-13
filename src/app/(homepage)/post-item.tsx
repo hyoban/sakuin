@@ -41,7 +41,7 @@ function PostDetail({ post }: { post: Post }) {
   return (
     <>
       <h2 className="text-2xl font-medium my-4">{post.title}</h2>
-      <p className="opacity-90 text-[0.9rem]">{post.summary}</p>
+      <p className="opacity-90 text-[0.9rem]">{post.summary.length > 100 ? `${post.summary.slice(0, 100)}...` : post.summary}</p>
       <p className="opacity-70 mt-4 text-sm space-x-2">
         <span>{post.publishedAt.slice(0, 10)}</span>
         {post.tags.map(tag => (

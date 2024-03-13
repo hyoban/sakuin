@@ -4,6 +4,7 @@ import 'remark-github-alerts/styles/github-colors-light.css'
 import './globals.css'
 
 import localFont from 'next/font/local'
+import Balancer from 'react-wrap-balancer'
 
 import { env } from '../env'
 import { client } from '../lib/client'
@@ -116,7 +117,14 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
       )}
       <body>
         {children}
-        {footer && <footer className="mx-auto max-w-[600px] opacity-80 text-sm my-6 text-center">{footer}</footer>}
+        {footer
+        && (
+          <footer
+            className="mx-6 flex justify-center opacity-80 text-sm my-6 text-center"
+          >
+            <Balancer className="max-w-[670px]">{footer}</Balancer>
+          </footer>
+        )}
       </body>
     </html>
   )
