@@ -134,8 +134,8 @@ export class PostClient {
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
     const disableAISummary = getXLogMeta(note.metadata?.content?.attributes, 'disable_ai_summary')
-    if (!disableAISummary && !summary) {
-      const res = await fetch(`https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri!)}&lang=zh`)
+    if (!disableAISummary && !summary && note.uri) {
+      const res = await fetch(`https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri)}&lang=zh`)
       const json = await res.json() as { summary: string | null }
       summary = json.summary ?? ''
     }
