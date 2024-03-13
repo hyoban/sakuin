@@ -4,6 +4,7 @@ import { PortfolioClient } from './portfolio'
 import { PostClient } from './post'
 import { SiteClient } from './site'
 
+export { platforms } from './platforms'
 export * from './types'
 
 export class Client extends ClientBase {

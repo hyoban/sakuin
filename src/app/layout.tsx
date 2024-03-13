@@ -7,9 +7,12 @@ import localFont from 'next/font/local'
 
 import { env } from '../env'
 import { client } from '../lib/client'
+import { AppLink } from './external-link'
+import { Navigation } from './navigation'
+import { getUniverseLinks } from './utils'
 
 const snPro = localFont({
-  variable: '--font-fans',
+  variable: '--font-sans',
   preload: false,
   src: [
     {
@@ -77,7 +80,23 @@ const snPro = localFont({
 
 export default async function RootLayout({ children }: React.PropsWithChildren) {
   const { HANDLE, SITE_URL } = env
-  const { siteName, characterName, description, icon, banner } = await client.site.getInfo(HANDLE)
+  const {
+    siteName,
+    characterName,
+    description,
+    icon,
+    banner,
+    socialPlatforms,
+    navigation,
+    xlogUrl,
+  } = await client.site.getInfo(HANDLE)
+
+  const links = getUniverseLinks(
+    socialPlatforms,
+    navigation,
+    xlogUrl,
+    env.SITE_URL,
+  )
 
   return (
     <html lang="en" className={`dark:bg-neutral-900 dark:text-white ${snPro.variable}`}>
@@ -99,7 +118,30 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
           <meta name="twitter:image" content={banner} />
         </>
       )}
-      <body>{children}</body>
+      <body>
+        <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
+          <section>
+            <h3>{characterName}</h3>
+            <p>{description}</p>
+            {links.length > 0 && (
+              <section className="flex gap-4 items-center">
+                {links.map(link => (
+                  <AppLink
+                    href={link.href}
+                    key={link.href}
+                    className={link.icon}
+                    title={link.title}
+                  >
+                    {link.title}
+                  </AppLink>
+                ))}
+              </section>
+            )}
+          </section>
+          <Navigation />
+          {children}
+        </main>
+      </body>
     </html>
   )
 }

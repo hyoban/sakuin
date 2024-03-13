@@ -1,5 +1,20 @@
-import { platforms } from './storage/platforms'
-import type { Navigation, SocialPlatform } from './storage/types'
+import { type Navigation, platforms, type Portfolio, type SocialPlatform } from 'sakuin'
+
+export function getSuperscript(portfolio: Portfolio) {
+  if (portfolio.projectStarsCount)
+    return `${portfolio.projectStarsCount} stars`
+
+  if (portfolio.audioListensCount)
+    return `${portfolio.audioListensCount} listens`
+
+  if (portfolio.commentsCount)
+    return `${portfolio.commentsCount} comments`
+
+  if (portfolio.videoViewsCount)
+    return `${portfolio.videoViewsCount} views`
+
+  return ''
+}
 
 export type Link = {
   href: string

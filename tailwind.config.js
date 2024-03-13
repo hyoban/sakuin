@@ -12,10 +12,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: [
-          'SN Pro',
-          ...defaultTheme.fontFamily.sans,
-        ],
+        sans: ['var(--font-sans)'],
         mono: [
           'Monolisa Variable',
           'Monolisa',
