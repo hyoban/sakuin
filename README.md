@@ -26,5 +26,4 @@ Most of functions take `HandleOrCharacterId` and `NoteId` as the arguments, and 
 
 ## See also
 
-- [waku](https://waku.gg) The minimal React framework
 - [xLog](https://xlog.app) An open-source creative community written on the blockchain.
