@@ -8,6 +8,7 @@ import Balancer from 'react-wrap-balancer'
 
 import { env } from '../env'
 import { client } from '../lib/client'
+import Providers from './providers'
 
 const snPro = localFont({
   variable: '--font-sans',
@@ -116,7 +117,9 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
         </>
       )}
       <body>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         {footer
         && (
           <footer

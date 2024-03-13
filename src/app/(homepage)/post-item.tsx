@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Image from 'next/image'
 import type { Post } from 'sakuin'
 
@@ -8,7 +9,13 @@ export function PostItem({ post }: { post: Post & { coverSize: { width: number, 
     return (
       <AppLink
         href={post.slug}
-        className="not-prose my-6 p-4 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800"
+        className={(isLoading) => {
+          return clsx(
+            'not-prose my-6 p-4 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
+            isLoading && 'animate-pulse',
+          )
+        }}
+        transition
       >
         <PostDetail post={post} />
       </AppLink>
@@ -16,25 +23,25 @@ export function PostItem({ post }: { post: Post & { coverSize: { width: number, 
   }
 
   return (
-    <div
-      className="not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800"
+    <AppLink
+      href={post.slug}
+      transition
+      className={isLoading => clsx(
+        'not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
+        isLoading && 'animate-pulse',
+      )}
     >
-      <AppLink
-        isExternal
-        href={post.slug}
-      >
-        <Image
-          src={post.cover}
-          alt={post.title}
-          width={post.coverSize?.width}
-          height={post.coverSize?.height}
-          className="object-cover w-full h-32 sm:h-48"
-        />
-      </AppLink>
+      <Image
+        src={post.cover}
+        alt={post.title}
+        width={post.coverSize?.width}
+        height={post.coverSize?.height}
+        className="object-cover w-full h-32 sm:h-48"
+      />
       <div className="px-4 pb-4">
         <PostDetail post={post} />
       </div>
-    </div>
+    </AppLink>
   )
 }
 

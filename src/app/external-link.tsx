@@ -1,17 +1,29 @@
+'use client'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useTransition } from 'react'
 
 type AppLinkProps = React.PropsWithChildren<{
   href: string
+  transition?: false
   className?: string
   title?: string
-  isExternal?: boolean
+} | {
+  href: string
+  transition: true
+  className?: (isLoading: boolean) => string
+  title?: string
 }>
 
-export function AppLink({ href, title, className, children, isExternal }: AppLinkProps) {
+export function AppLink({ href, title, className, children, transition }: AppLinkProps) {
+  const router = useRouter()
+  const [isLoading, startTransition] = useTransition()
+
   if (!href)
     return <>{children}</>
 
-  if (isExternal || href.startsWith('http')) {
+  if (href.startsWith('http') && !transition) {
     return (
       <a
         target="_blank"
@@ -25,13 +37,31 @@ export function AppLink({ href, title, className, children, isExternal }: AppLin
     )
   }
 
+  if (!transition) {
+    return (
+      <Link
+        href={href}
+        className={className}
+        title={title}
+      >
+        {children}
+      </Link>
+    )
+  }
+
   return (
-    <Link
+    <a
       href={href}
-      className={className}
+      onClick={(e) => {
+        e.preventDefault()
+        startTransition(() => {
+          router.push(href)
+        })
+      }}
+      className={typeof className === 'function' ? className(isLoading) : className}
       title={title}
     >
       {children}
-    </Link>
+    </a>
   )
 }

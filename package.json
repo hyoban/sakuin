@@ -84,6 +84,7 @@
     "hast-util-from-html": "^2.0.1",
     "image-size": "^1.1.1",
     "jiti": "^1.21.0",
+    "jotai": "^2.7.0",
     "knip": "^5.0.4",
     "lint-staged": "^15.2.2",
     "next": "^14.1.3",

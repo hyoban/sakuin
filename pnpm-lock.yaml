@@ -91,6 +91,9 @@ devDependencies:
   jiti:
     specifier: ^1.21.0
     version: 1.21.0
+  jotai:
+    specifier: ^2.7.0
+    version: 2.7.0(@types/react@18.2.65)(react@18.2.0)
   knip:
     specifier: ^5.0.4
     version: 5.0.4(@types/node@20.11.26)(typescript@5.4.2)
@@ -7485,6 +7488,22 @@ packages:
 
   /jose@5.2.2:
     resolution: {integrity: sha512-/WByRr4jDcsKlvMd1dRJnPfS1GVO3WuKyaurJ/vvXcOaUQO8rnNObCQMlv/5uCceVQIq5Q4WLF44ohsdiTohdg==}
+    dev: true
+
+  /jotai@2.7.0(@types/react@18.2.65)(react@18.2.0):
+    resolution: {integrity: sha512-4qsyFKu4MprI39rj2uoItyhu24NoCHzkOV7z70PQr65SpzV6CSyhQvVIfbNlNqOIOspNMdf5OK+kTXLvqe63Jw==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.65
+      react: 18.2.0
     dev: true
 
   /joycon@3.1.1:
