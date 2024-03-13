@@ -20,6 +20,7 @@ export function PostItem({ post }: { post: Post & { coverSize: { width: number, 
       className="not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800"
     >
       <AppLink
+        isExternal
         href={post.slug}
       >
         <Image

@@ -4,13 +4,14 @@ type AppLinkProps = React.PropsWithChildren<{
   href: string
   className?: string
   title?: string
+  isExternal?: boolean
 }>
 
-export function AppLink({ href, title, className, children }: AppLinkProps) {
+export function AppLink({ href, title, className, children, isExternal }: AppLinkProps) {
   if (!href)
     return <>{children}</>
 
-  if (href.startsWith('http')) {
+  if (isExternal || href.startsWith('http')) {
     return (
       <a
         target="_blank"
