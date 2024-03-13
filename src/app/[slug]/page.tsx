@@ -2,6 +2,7 @@ import rehypeShiki from '@shikijs/rehype'
 import type { ImageProps } from 'next/image'
 import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import { Suspense } from 'react'
 import { Tweet } from 'react-tweet'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
@@ -39,7 +40,6 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const siteTitle = siteName ?? characterName
   const title = post.title + (siteTitle ? ` - ${siteTitle}` : '')
 
-  const comments = await client.comment.getAll(env.HANDLE, post.noteId)
   return (
 
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
@@ -134,16 +134,9 @@ export default async function PostPage({ params }: { params: { slug: string } })
           }}
         />
       </article>
-      {comments.length > 0 && (
-        <section>
-          <h2>Comments</h2>
-          <ul>
-            {comments.map(comment => (
-              <CommentView key={comment.noteId} comment={comment} />
-            ))}
-          </ul>
-        </section>
-      )}
+      <Suspense fallback="Loading comments...">
+        <CommentList noteId={post.noteId} />
+      </Suspense>
     </main>
   )
 }
@@ -168,6 +161,23 @@ function InteractionView({ interaction }: { interaction: InteractionCount }) {
         <span className="text-lg">{interaction.comments}</span>
       </span>
     </div>
+  )
+}
+
+async function CommentList({ noteId }: { noteId: number }) {
+  const comments = await client.comment.getAll(env.HANDLE, noteId)
+  if (comments.length === 0)
+    return null
+
+  return (
+    <section>
+      <h2>Comments</h2>
+      <ul>
+        {comments.map(comment => (
+          <CommentView key={comment.noteId} comment={comment} />
+        ))}
+      </ul>
+    </section>
   )
 }
 
