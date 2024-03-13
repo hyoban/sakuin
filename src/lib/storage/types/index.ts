@@ -1,5 +1,6 @@
-import type { Indexer, NoteEntity } from 'crossbell'
+import type { createIndexer, Indexer, NoteEntity } from 'crossbell'
 
+export type IndexerOptions = Exclude<Parameters<typeof createIndexer>[0], undefined | string>
 export type NoteQueryOptions = Parameters<Indexer['note']['getMany']>[0]
 export type HandleOrCharacterId = string | number
 export type InteractionCount = {

@@ -1,14 +1,17 @@
 import { expect, test } from 'vitest'
 
-import { getCharacterId, parseConnectedAccount } from '.'
+import { Client } from '../'
+import { parseConnectedAccount } from '.'
+
+const client = new Client()
 
 test('get character id', async () => {
-  expect(await getCharacterId('diygod')).toBe(10)
-  expect(await getCharacterId(10)).toBe(10)
-  await expect(() => getCharacterId('thisCharacterDoesNotExist')).rejects
+  expect(await client.getCharacterId('diygod')).toBe(10)
+  expect(await client.getCharacterId(10)).toBe(10)
+  await expect(() => client.getCharacterId('thisCharacterDoesNotExist')).rejects
     .toThrowErrorMatchingInlineSnapshot(`[Error: Character not found]`)
 
-  await expect(() => getCharacterId('$')).rejects
+  await expect(() => client.getCharacterId('$')).rejects
     .toThrowErrorMatchingInlineSnapshot(`
     [Error: Request failed, status code: 400
     Response:

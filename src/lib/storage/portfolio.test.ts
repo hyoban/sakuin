@@ -1,9 +1,11 @@
 import { expect, test } from 'vitest'
 
-import { getPortfolioMany } from './portfolio'
+import { Client } from '.'
+
+const client = new Client()
 
 test('get portfolios', async () => {
-  const { list: portfolios } = await getPortfolioMany('diygod', { orderBy: 'publishedAt', limit: 2 })
+  const { list: portfolios } = await client.portfolio.getPortfolioMany('diygod', { orderBy: 'publishedAt', limit: 2 })
   expect(portfolios).toHaveLength(2)
   for (const key of [
     'noteId',

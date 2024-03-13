@@ -4,59 +4,106 @@ import { cacheExchange, Client, fetchExchange } from '@urql/core'
 import type { Contract, Indexer } from 'crossbell'
 import { createContract, createIndexer } from 'crossbell'
 
-const NO_VALUE_DEFAULT = Symbol('NO_VALUE_DEFAULT')
-type ContextValue<T> = T | typeof NO_VALUE_DEFAULT
+import type { HandleOrCharacterId, IndexerOptions, InteractionCount } from './types'
 
-export function createContext<T>(defaultValue: ContextValue<T> = NO_VALUE_DEFAULT) {
-  let contextValue: ContextValue<T> = defaultValue
-
-  const Provider = (value: T, callback: () => void) => {
-    const currentValue: ContextValue<T> = contextValue
-    contextValue = value
-    callback()
-    contextValue = currentValue
-  }
-
-  const Consumer = (): T => {
-    // 只有当 Consumer 没有在 Provider 的作用域之内调用、且 Context 本身没有提供默认值时，
-    // contextValue 才会是 NO_VALUE_DEFAULT 的 Symbol，此时我们可以抛出一个 TypeError
-    if (contextValue === NO_VALUE_DEFAULT)
-      throw new TypeError('You should only use useContext inside a Provider, or provide a default value!')
-
-    // 由于 contextValue 的类型是 T | typeof NO_VALUE_DEFAULT，而我们在之前的 type guard 中
-    // narrow 掉了 typeof NO_VALUE_DEFAULT，所以这里的 contextValue 的类型一定是 T
-    return contextValue
-  }
-
-  return {
-    Provider,
-    Consumer,
-  }
-}
-
-export function useContext<T>(contextRef: ReturnType<typeof createContext<T>>) {
-  return contextRef.Consumer()
-}
-
-const indexer = createIndexer()
-
-const client = new Client({
-  url: 'https://indexer.crossbell.io/v1/graphql',
-  exchanges: [cacheExchange, fetchExchange],
-})
-
-const contract = createContract()
-
-export type ClientContextType = {
+export type XLogOptions = IndexerOptions
+export type ClientContext = {
   client: Client
   indexer: Indexer
   contract: Contract
   xLogBase: string
 }
 
-export const ClientContext = createContext<ClientContextType>({
-  client,
-  indexer,
-  contract,
-  xLogBase: 'xlog.app',
-})
+export class ClientBase {
+  context: ClientContext
+
+  constructor(options?: XLogOptions) {
+    const {
+      endpoint = 'https://indexer.crossbell.io/v1',
+    } = options ?? {}
+
+    this.context = {
+      client: new Client({
+        url: `${endpoint}/graphql`,
+        exchanges: [cacheExchange, fetchExchange],
+      }),
+      indexer: createIndexer(options),
+      contract: createContract(),
+      xLogBase: 'xlog.app',
+    }
+  }
+
+  async getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
+    if (typeof handleOrCharacterId === 'number')
+      return handleOrCharacterId
+
+    const { indexer } = this.context
+
+    const character = await indexer.character.getByHandle(handleOrCharacterId)
+    if (!character)
+      throw new Error('Character not found')
+    return character.characterId
+  }
+
+  async getNoteInteractionCount(
+    characterId: number,
+    noteId: number,
+  ): Promise<InteractionCount> {
+    const { indexer } = this.context
+
+    const [
+      views,
+      likes,
+      comments,
+      tips,
+    ] = await Promise.all([
+      indexer.stat.getForNote(characterId, noteId),
+      indexer.link.getBacklinksByNote(characterId, noteId, { linkType: 'like' }),
+      indexer.note.getMany({ toCharacterId: characterId, toNoteId: noteId }),
+      await indexer.tip.getMany({
+        toNoteId: noteId,
+        toCharacterId: characterId,
+      }),
+    ])
+
+    if (tips.list.length > 0) {
+      const decimals = await this.getMiraTokenDecimals()
+      tips.list = tips.list.filter((t) => {
+        return (
+          BigInt(t.amount)
+          >= BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
+        )
+      })
+      tips.list = tips.list.map((t) => {
+        return {
+          ...t,
+          amount: (
+            BigInt(t.amount)
+            / BigInt(10) ** BigInt(decimals.data || 18)
+          ).toString(),
+        }
+      })
+    }
+
+    return {
+      views: views.viewDetailCount,
+      likes: likes.count,
+      comments: comments.count,
+      tips: tips.list.reduce((acc, tip) => acc + Number(tip.amount), 0),
+    }
+  }
+
+  private async getMiraTokenDecimals() {
+    const { contract } = this.context
+    let decimals
+    try {
+      decimals = await contract.tips.getTokenDecimals()
+    }
+    catch {
+      decimals = {
+        data: 18,
+      }
+    }
+    return decimals
+  }
+}

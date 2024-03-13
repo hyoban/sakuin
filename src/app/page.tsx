@@ -1,7 +1,7 @@
 import type { Portfolio } from 'sakuin'
-import { getPortfolioFull, getPostFull, getSiteInfo } from 'sakuin'
 
 import { env } from '../env'
+import { client } from '../lib/client'
 import { capitalize, getUniverseLinks } from '../lib/other'
 import { AppLink } from './external-link'
 import { ListItem } from './list-item'
@@ -30,9 +30,9 @@ export default async function HomePage() {
     posts,
     portfolios,
   ] = await Promise.all([
-    getSiteInfo(env.HANDLE),
-    getPostFull(env.HANDLE, { orderBy: 'publishedAt' }),
-    getPortfolioFull(env.HANDLE, { orderBy: 'publishedAt' }),
+    client.site.getSiteInfo(env.HANDLE),
+    client.post.getPostFull(env.HANDLE, { orderBy: 'publishedAt' }),
+    client.portfolio.getPortfolioFull(env.HANDLE, { orderBy: 'publishedAt' }),
   ])
 
   const links = getUniverseLinks(

@@ -1,12 +1,12 @@
-import 'remark-github-alerts/styles/github-colors-light.css'
-import 'remark-github-alerts/styles/github-colors-dark-media.css'
 import 'remark-github-alerts/styles/github-base.css'
+import 'remark-github-alerts/styles/github-colors-dark-media.css'
+import 'remark-github-alerts/styles/github-colors-light.css'
 import './globals.css'
 
 import localFont from 'next/font/local'
-import { getSiteInfo } from 'sakuin'
 
 import { env } from '../env'
+import { client } from '../lib/client'
 
 const snPro = localFont({
   variable: '--font-fans',
@@ -77,7 +77,7 @@ const snPro = localFont({
 
 export default async function RootLayout({ children }: React.PropsWithChildren) {
   const { HANDLE, SITE_URL } = env
-  const { siteName, characterName, description, icon, banner } = await getSiteInfo(HANDLE)
+  const { siteName, characterName, description, icon, banner } = await client.site.getSiteInfo(HANDLE)
 
   return (
     <html lang="en" className={`dark:bg-neutral-900 dark:text-white ${snPro.variable}`}>

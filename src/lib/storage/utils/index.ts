@@ -1,21 +1,8 @@
 import type { AttributesMetadata } from 'crossbell'
 
-import { ClientContext, useContext } from '../context'
-import type { HandleOrCharacterId, InteractionCount, Navigation, SocialPlatform, XLogTraitType } from '../types'
+import type { Navigation, SocialPlatform, XLogTraitType } from '../types'
 
 export * from './ipfs-parser'
-
-export async function getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
-  if (typeof handleOrCharacterId === 'number')
-    return handleOrCharacterId
-
-  const { indexer } = useContext(ClientContext)
-
-  const character = await indexer.character.getByHandle(handleOrCharacterId)
-  if (!character)
-    throw new Error('Character not found')
-  return character.characterId
-}
 
 export function getXLogMeta(
   attributes: AttributesMetadata['attributes'],
@@ -88,66 +75,4 @@ export function parseConnectedAccount(
   if (!platform || !id)
     throw new Error('Invalid connected account')
   return { platform, id }
-}
-
-export async function getNoteInteractionCount(
-  characterId: number,
-  noteId: number,
-): Promise<InteractionCount> {
-  const { indexer } = useContext(ClientContext)
-
-  const [
-    views,
-    likes,
-    comments,
-    tips,
-  ] = await Promise.all([
-    indexer.stat.getForNote(characterId, noteId),
-    indexer.link.getBacklinksByNote(characterId, noteId, { linkType: 'like' }),
-    indexer.note.getMany({ toCharacterId: characterId, toNoteId: noteId }),
-    await indexer.tip.getMany({
-      toNoteId: noteId,
-      toCharacterId: characterId,
-    }),
-  ])
-
-  if (tips.list.length > 0) {
-    const decimals = await getMiraTokenDecimals()
-    tips.list = tips.list.filter((t) => {
-      return (
-        BigInt(t.amount)
-        >= BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
-      )
-    })
-    tips.list = tips.list.map((t) => {
-      return {
-        ...t,
-        amount: (
-          BigInt(t.amount)
-          / BigInt(10) ** BigInt(decimals.data || 18)
-        ).toString(),
-      }
-    })
-  }
-
-  return {
-    views: views.viewDetailCount,
-    likes: likes.count,
-    comments: comments.count,
-    tips: tips.list.reduce((acc, tip) => acc + Number(tip.amount), 0),
-  }
-}
-
-async function getMiraTokenDecimals() {
-  const { contract } = useContext(ClientContext)
-  let decimals
-  try {
-    decimals = await contract.tips.getTokenDecimals()
-  }
-  catch {
-    decimals = {
-      data: 18,
-    }
-  }
-  return decimals
 }

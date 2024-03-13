@@ -9,9 +9,9 @@ import remarkGfm from 'remark-gfm'
 import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
 import type { Comment, InteractionCount } from 'sakuin'
-import { getCommentFull, getPostBySlug, getPostFull, getSiteInfo } from 'sakuin'
 
 import { env } from '../../env'
+import { client } from '../../lib/client'
 import { AppLink } from '../external-link'
 import { rehypeEmbed, transformers } from './rehype-embed'
 
@@ -19,7 +19,7 @@ export const revalidate = 3600
 
 export async function generateStaticParams() {
   // eslint-disable-next-line unicorn/no-await-expression-member
-  const slugs = (await getPostFull(env.HANDLE)).map(post => post.slug)
+  const slugs = (await client.post.getPostFull(env.HANDLE)).map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }
 
@@ -53,13 +53,13 @@ async function getImageDimensionByUri(uri: string, useFullSize = false): Promise
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const [post, site] = await Promise.all([
-    getPostBySlug(env.HANDLE, params.slug),
-    getSiteInfo(env.HANDLE),
+    client.post.getPostBySlug(env.HANDLE, params.slug),
+    client.site.getSiteInfo(env.HANDLE),
   ])
   if (!post)
     return null
 
-  const comments = await getCommentFull(env.HANDLE, post.noteId)
+  const comments = await client.comment.getCommentFull(env.HANDLE, post.noteId)
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <article>
