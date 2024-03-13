@@ -32,7 +32,10 @@ async function ShortItem(
       className="not-prose my-3 flex flex-col rounded-md overflow-hidden hover:bg-neutral-50 dark:hover:bg-neutral-800"
     >
       <Image src={short.cover} alt={short.title} width={size?.width} height={size?.height} />
-      <span className="p-3">{short.content}</span>
+      <div className="px-2 py-3 space-y-2">
+        <p>{short.title}</p>
+        <p>{short.content}</p>
+      </div>
     </AppLink>
   )
 }
