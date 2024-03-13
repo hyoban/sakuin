@@ -30,9 +30,9 @@ export default async function HomePage() {
     posts,
     portfolios,
   ] = await Promise.all([
-    client.site.getSiteInfo(env.HANDLE),
-    client.post.getPostFull(env.HANDLE, { orderBy: 'publishedAt' }),
-    client.portfolio.getPortfolioFull(env.HANDLE, { orderBy: 'publishedAt' }),
+    client.site.getInfo(env.HANDLE),
+    client.post.getAll(env.HANDLE, { orderBy: 'publishedAt' }),
+    client.portfolio.getAll(env.HANDLE, { orderBy: 'publishedAt' }),
   ])
 
   const links = getUniverseLinks(

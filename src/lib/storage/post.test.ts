@@ -5,7 +5,7 @@ import { Client } from '.'
 const client = new Client()
 
 test('get post list', async () => {
-  const { list: postList } = await client.post.getPostMany('diygod', { orderBy: 'publishedAt', limit: 2 })
+  const { list: postList } = await client.post.getMany('diygod', { orderBy: 'publishedAt', limit: 2 })
   expect(postList).toHaveLength(2)
   for (const key of [
     'noteId',

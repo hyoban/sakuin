@@ -77,7 +77,7 @@ const snPro = localFont({
 
 export default async function RootLayout({ children }: React.PropsWithChildren) {
   const { HANDLE, SITE_URL } = env
-  const { siteName, characterName, description, icon, banner } = await client.site.getSiteInfo(HANDLE)
+  const { siteName, characterName, description, icon, banner } = await client.site.getInfo(HANDLE)
 
   return (
     <html lang="en" className={`dark:bg-neutral-900 dark:text-white ${snPro.variable}`}>

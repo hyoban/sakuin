@@ -11,7 +11,7 @@ export class CommentClient {
     private siteClient: SiteClient,
   ) {}
 
-  async getCommentFull(
+  async getAll(
     handleOrCharacterId: HandleOrCharacterId,
     noteId: Numberish,
     options?: Omit<NoteQueryOptions, 'cursor' | 'limit'>,
@@ -19,12 +19,12 @@ export class CommentClient {
     const result: Comment[] = []
 
     let currentCursor: string | null = null
-    const { list, count, cursor } = await this.getCommentMany(handleOrCharacterId, noteId, options)
+    const { list, count, cursor } = await this.getMany(handleOrCharacterId, noteId, options)
     result.push(...list)
     currentCursor = cursor
 
     while (result.length < count && currentCursor) {
-      const { list, cursor: nextCursor } = await this.getCommentMany(handleOrCharacterId, noteId, { ...options, cursor: currentCursor })
+      const { list, cursor: nextCursor } = await this.getMany(handleOrCharacterId, noteId, { ...options, cursor: currentCursor })
       result.push(...list)
       currentCursor = nextCursor
     }
@@ -32,7 +32,7 @@ export class CommentClient {
     return result
   }
 
-  async getCommentMany(
+  async getMany(
     handleOrCharacterId: HandleOrCharacterId,
     noteId: Numberish,
     options?: NoteQueryOptions,
@@ -72,7 +72,7 @@ export class CommentClient {
     const commentsWithReplies: Comment[] = await Promise.all(
       comments.map(async (comment) => {
         if (comment.sender.name === '') {
-          const siteInfo = await this.siteClient.getSiteInfo(comment.characterId)
+          const siteInfo = await this.siteClient.getInfo(comment.characterId)
           comment.sender.name = siteInfo.characterName ?? ''
           comment.sender.url = siteInfo.xlogUrl
         }
@@ -80,7 +80,7 @@ export class CommentClient {
         if (interaction.comments === 0)
           return { ...comment, ...interaction }
 
-        const { list: replies } = await this.getCommentMany(comment.characterId, comment.noteId, options)
+        const { list: replies } = await this.getMany(comment.characterId, comment.noteId, options)
         return { ...comment, replies, ...interaction }
       }),
     )

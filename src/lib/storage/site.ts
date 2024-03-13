@@ -5,7 +5,7 @@ import { getFullXLogMeta, parseConnectedAccount, toGateway } from './utils'
 export class SiteClient {
   constructor(private base: ClientBase) {}
 
-  async getSiteInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
+  async getInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
     const { indexer, xLogBase } = this.base.context
     const character = typeof handleOrCharacterId === 'string'
       ? await indexer.character.getByHandle(handleOrCharacterId)

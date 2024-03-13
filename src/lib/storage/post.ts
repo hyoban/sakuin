@@ -48,19 +48,19 @@ query getNotes($characterId: Int!, $slug: JSON!) {
 export class PostClient {
   constructor(private base: ClientBase) {}
 
-  async getPostFull(
+  async getAll(
     handleOrCharacterId: HandleOrCharacterId,
     options?: Omit<NoteQueryOptions, 'cursor' | 'limit'>,
   ): Promise<Post[]> {
     const result: Post[] = []
 
     let currentCursor: string | null = null
-    const { list, count, cursor } = await this.getPostMany(handleOrCharacterId, options)
+    const { list, count, cursor } = await this.getMany(handleOrCharacterId, options)
     result.push(...list)
     currentCursor = cursor
 
     while (result.length < count && currentCursor) {
-      const { list, cursor: nextCursor } = await this.getPostMany(handleOrCharacterId, { ...options, cursor: currentCursor })
+      const { list, cursor: nextCursor } = await this.getMany(handleOrCharacterId, { ...options, cursor: currentCursor })
       result.push(...list)
       currentCursor = nextCursor
     }
@@ -68,7 +68,7 @@ export class PostClient {
     return result
   }
 
-  async getPostMany(
+  async getMany(
     handleOrCharacterId: HandleOrCharacterId,
     options?: NoteQueryOptions,
   ): Promise<ResultMany<Post>> {
@@ -91,7 +91,7 @@ export class PostClient {
     }
   }
 
-  async getPost(
+  async get(
     handleOrCharacterId: HandleOrCharacterId,
     noteId: Numberish,
   ): Promise<Post | null> {
@@ -105,7 +105,7 @@ export class PostClient {
     return this.createPostFromNote(note, characterId)
   }
 
-  async getPostBySlug(
+  async getBySlug(
     handleOrCharacterId: HandleOrCharacterId,
     slug: string,
   ): Promise<Post | null> {

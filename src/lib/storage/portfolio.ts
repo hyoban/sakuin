@@ -7,19 +7,19 @@ import { toGateway } from './utils'
 export class PortfolioClient {
   constructor(private base: ClientBase) {}
 
-  async getPortfolioFull(
+  async getAll(
     handleOrCharacterId: HandleOrCharacterId,
     options?: Omit<NoteQueryOptions, 'cursor' | 'limit'>,
   ): Promise<Portfolio[]> {
     const result: Portfolio[] = []
 
     let currentCursor: string | null = null
-    const { list, count, cursor } = await this.getPortfolioMany(handleOrCharacterId, options)
+    const { list, count, cursor } = await this.getMany(handleOrCharacterId, options)
     result.push(...list)
     currentCursor = cursor
 
     while (result.length < count && currentCursor) {
-      const { list, cursor: nextCursor } = await this.getPortfolioMany(handleOrCharacterId, { ...options, cursor: currentCursor })
+      const { list, cursor: nextCursor } = await this.getMany(handleOrCharacterId, { ...options, cursor: currentCursor })
       result.push(...list)
       currentCursor = nextCursor
     }
@@ -27,7 +27,7 @@ export class PortfolioClient {
     return result
   }
 
-  async getPortfolioMany(
+  async getMany(
     handleOrCharacterId: HandleOrCharacterId,
     options?: NoteQueryOptions,
   ): Promise<ResultMany<Portfolio>> {
@@ -50,7 +50,7 @@ export class PortfolioClient {
     }
   }
 
-  async getPortfolio(
+  async get(
     handleOrCharacterId: HandleOrCharacterId,
     noteId: string,
   ): Promise<Portfolio> {

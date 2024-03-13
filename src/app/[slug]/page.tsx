@@ -19,7 +19,7 @@ export const revalidate = 3600
 
 export async function generateStaticParams() {
   // eslint-disable-next-line unicorn/no-await-expression-member
-  const slugs = (await client.post.getPostFull(env.HANDLE)).map(post => post.slug)
+  const slugs = (await client.post.getAll(env.HANDLE)).map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }
 
@@ -53,13 +53,13 @@ async function getImageDimensionByUri(uri: string, useFullSize = false): Promise
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const [post, site] = await Promise.all([
-    client.post.getPostBySlug(env.HANDLE, params.slug),
-    client.site.getSiteInfo(env.HANDLE),
+    client.post.getBySlug(env.HANDLE, params.slug),
+    client.site.getInfo(env.HANDLE),
   ])
   if (!post)
     return null
 
-  const comments = await client.comment.getCommentFull(env.HANDLE, post.noteId)
+  const comments = await client.comment.getAll(env.HANDLE, post.noteId)
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <article>
