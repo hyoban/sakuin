@@ -6,7 +6,7 @@ import { createContract, createIndexer } from 'crossbell'
 
 import type { HandleOrCharacterId, IndexerOptions, InteractionCount } from './types'
 
-export type XLogOptions = IndexerOptions
+export type XLogOptions = Omit<IndexerOptions, 'experimentalRequestDedupe'> & { xLogBase?: 'xlog.app' | 'xlog.page' }
 export type ClientContext = {
   client: Client
   indexer: Indexer
@@ -20,6 +20,7 @@ export class ClientBase {
   constructor(options?: XLogOptions) {
     const {
       endpoint = 'https://indexer.crossbell.io/v1',
+      xLogBase = 'xlog.app',
     } = options ?? {}
 
     this.context = {
@@ -27,9 +28,13 @@ export class ClientBase {
         url: `${endpoint}/graphql`,
         exchanges: [cacheExchange, fetchExchange],
       }),
-      indexer: createIndexer(options),
+      indexer: createIndexer({
+        endpoint,
+        fetchOptions: options?.fetchOptions,
+        experimentalRequestDedupe: false,
+      }),
       contract: createContract(),
-      xLogBase: 'xlog.app',
+      xLogBase,
     }
   }
 

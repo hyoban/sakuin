@@ -1,6 +1,6 @@
 import { env } from '../../env'
 import { client } from '../../lib/client'
-import { ListItem } from '../list-item'
+import { PostItem } from './post-item'
 
 export const revalidate = 3600
 
@@ -9,16 +9,9 @@ export default async function HomePage() {
 
   return (
     <>
-      {posts.map(blog => (
-        <ListItem
-          key={blog.slug}
-          title={blog.title}
-          description={blog.date.slice(0, 10)}
-          superscript={`${blog.views} views`}
-          link={blog.slug}
-        />
+      {posts.map(post => (
+        <PostItem key={post.slug} post={post} />
       ))}
     </>
-
   )
 }

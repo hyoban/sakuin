@@ -1,5 +1,4 @@
 import rehypeShiki from '@shikijs/rehype'
-import sizeOf from 'image-size'
 import type { ImageProps } from 'next/image'
 import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
@@ -13,6 +12,7 @@ import type { Comment, InteractionCount } from 'sakuin'
 import { env } from '../../env'
 import { client } from '../../lib/client'
 import { AppLink } from '../external-link'
+import { getImageDimensionByUri } from '../utils'
 import { rehypeEmbed, transformers } from './rehype-embed'
 
 export const revalidate = 3600
@@ -21,34 +21,6 @@ export async function generateStaticParams() {
   // eslint-disable-next-line unicorn/no-await-expression-member
   const slugs = (await client.post.getAll(env.HANDLE)).map(post => post.slug)
   return slugs.map(slug => ({ slug }))
-}
-
-async function getImageDimensionByUri(uri: string, useFullSize = false): Promise<{ width: number, height: number, uri: string } | null> {
-  const headers: Record<string, string> = {}
-
-  if (!useFullSize)
-    headers.Range = 'bytes=0-10240'
-
-  try {
-    const response = await fetch(uri, { headers })
-    const arrayBuffer = await response.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
-    const dimensions = sizeOf(buffer)
-    if (!(dimensions.width && dimensions.height))
-      throw new Error('Could not determine image dimensions.')
-
-    return {
-      width: dimensions.width,
-      height: dimensions.height,
-      uri,
-    }
-  }
-  catch {
-    if (!useFullSize)
-      return getImageDimensionByUri(uri, true)
-
-    return null
-  }
 }
 
 export default async function PostPage({ params }: { params: { slug: string } }) {

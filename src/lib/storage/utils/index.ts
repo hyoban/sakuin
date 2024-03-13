@@ -10,7 +10,11 @@ export function getXLogMeta(
 ): Navigation[]
 export function getXLogMeta(
   attributes: AttributesMetadata['attributes'],
-  type: Exclude<XLogTraitType, 'navigation'>,
+  type: 'disable_ai_summary'
+): boolean | undefined
+export function getXLogMeta(
+  attributes: AttributesMetadata['attributes'],
+  type: Exclude<XLogTraitType, 'navigation' | 'disable_ai_summary'>,
 ): string | undefined
 export function getXLogMeta(
   attributes: AttributesMetadata['attributes'],
@@ -25,14 +29,15 @@ export function getXLogMeta(
 
   if (type === 'navigation')
     return JSON.parse(attribute as string) as Navigation[]
-
+  if (type === 'disable_ai_summary')
+    return attribute as boolean
   return attribute as string
 }
 
 export function getFullXLogMeta(
   attributes: AttributesMetadata['attributes'],
 ) {
-  const xlogMeta: Record<Exclude<XLogTraitType, 'navigation'>, string> & { navigation: Navigation[] } = {
+  const xlogMeta: Record<Exclude<XLogTraitType, 'navigation' | 'disable_ai_summary'>, string> & { navigation: Navigation[] } & { disable_ai_summary: boolean } = {
     css: '',
     ga: '',
     ua: '',
@@ -43,6 +48,7 @@ export function getFullXLogMeta(
     footer: '',
 
     slug: '',
+    disable_ai_summary: false,
 
     sender_name: '',
     sender_email: '',
@@ -62,6 +68,12 @@ export function getFullXLogMeta(
       xlogMeta.navigation = JSON.parse(value as string) as Navigation[]
       continue
     }
+
+    if (key === 'disable_ai_summary') {
+      xlogMeta.disable_ai_summary = value as boolean
+      continue
+    }
+
     xlogMeta[key] = value as string
   }
   return xlogMeta

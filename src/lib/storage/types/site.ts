@@ -14,6 +14,7 @@ const XLogTrait = [
   'xlog_footer',
 
   'xlog_slug',
+  'xlog_disable_ai_summary',
 
   'xlog_sender_name',
   'xlog_sender_email',

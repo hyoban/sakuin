@@ -3,7 +3,7 @@ import type { NoteEntity, Numberish } from 'crossbell'
 import { graphql } from '../../gql'
 import type { ClientBase } from './context'
 import type { HandleOrCharacterId, NoteQueryOptions, Post, ResultMany } from './types'
-import { getXLogMeta, toGateway } from './utils'
+import { getXLogMeta, toCid, toGateway } from './utils'
 
 const noteQuery = graphql(`
 query getNotes($characterId: Int!, $slug: JSON!) {
@@ -123,8 +123,22 @@ export class PostClient {
     note: NoteEntity,
     characterId: number,
   ): Promise<Post> {
+    const { xLogBase } = this.base.context
     const { noteId } = note
     const interaction = await this.base.getNoteInteractionCount(characterId, noteId)
+
+    const content = toGateway(note.metadata?.content?.content) ?? ''
+    const match = content.match(/!\[.*?]\((.*?)\)/g)
+    const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
+
+    // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
+    let summary = note.metadata?.content?.summary as string | undefined ?? ''
+    const disableAISummary = getXLogMeta(note.metadata?.content?.attributes, 'disable_ai_summary')
+    if (!disableAISummary && !summary) {
+      const res = await fetch(`https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri!)}&lang=zh`)
+      const json = await res.json() as { summary: string | null }
+      summary = json.summary ?? ''
+    }
 
     return {
       ...note,
@@ -132,10 +146,9 @@ export class PostClient {
       slug: getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? '',
       date: note.metadata?.content?.date_published ?? '',
       tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
-      // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
-      summary: note.metadata?.content?.summary as string | undefined ?? '',
-      cover: toGateway(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? '',
-      content: toGateway(note.metadata?.content?.content) ?? '',
+      summary,
+      cover: toGateway(note.metadata?.content?.attachments?.find(att => att.name === 'cover')?.address) ?? imagesInContent.at(0) ?? '',
+      content,
       ...interaction,
     }
   }
