@@ -18,7 +18,7 @@ import { rehypeEmbed, transformers } from './rehype-embed'
 export const revalidate = 3600
 
 export async function generateStaticParams() {
-  const posts = await client.post.getAll(env.HANDLE)
+  const { list: posts } = await client.post.getMany(env.HANDLE, { orderBy: 'updatedAt' })
   const pages = await client.page.getAll(env.HANDLE)
   const slugs = [...posts, ...pages].map(post => post.slug)
   return slugs.map(slug => ({ slug }))
