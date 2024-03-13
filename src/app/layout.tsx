@@ -83,11 +83,13 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
     description,
     icon,
     banner,
+    xlogUrl,
   } = await client.site.getInfo(HANDLE)
+  const title = siteName ?? characterName
 
   return (
     <html lang="en" className={`dark:bg-neutral-900 dark:text-white ${snPro.variable}`}>
-      <title>{siteName ?? characterName}</title>
+      <title>{title}</title>
       <meta name="description" content={description} />
       {icon && <link rel="icon" type="image/png" href={icon} />}
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
@@ -105,6 +107,10 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
           <meta name="twitter:image" content={banner} />
         </>
       )}
+      <link rel="alternate" type="application/rss+xml" title={title} href={`${xlogUrl}/feed`} />
+      <link rel="alternate" type="application/rss+xml" title={`Comments on ${title}`} href={`${xlogUrl}/feed/comments`} />
+      <link rel="alternate" type="application/feed+json" title={title} href={`${xlogUrl}/feed?format=json`} />
+      <link rel="alternate" type="application/feed+json" title={`Comments on ${title}`} href={`${xlogUrl}/feed/comments?format=json`} />
       <body>
         {children}
       </body>
