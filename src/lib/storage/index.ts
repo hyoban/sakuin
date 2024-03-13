@@ -12,5 +12,6 @@ export class Client extends ClientBase {
   portfolio = new PortfolioClient(this)
   post = new PostClient(this)
   short = new PostClient(this, 'short')
+  page = new PostClient(this, 'page')
   comment = new CommentClient(this, this.site)
 }

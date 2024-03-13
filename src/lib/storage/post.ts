@@ -46,7 +46,7 @@ query getNotes($characterId: Int!, $slug: JSON!) {
 `)
 
 export class PostClient {
-  constructor(private base: ClientBase, private tag: 'post' | 'short' = 'post') {}
+  constructor(private base: ClientBase, private tag: 'post' | 'short' | 'page' = 'post') {}
 
   async getAll(
     handleOrCharacterId: HandleOrCharacterId,

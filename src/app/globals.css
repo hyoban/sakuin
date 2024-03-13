@@ -41,3 +41,7 @@
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }
+
+iframe {
+  max-width: 692px;
+}

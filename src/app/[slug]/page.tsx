@@ -69,7 +69,6 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 return <img {...props} />
               return (
                 <Image
-                  style={{ width: '100%', height: 'auto' }}
                   width={size.width}
                   height={size.height}
                   {...(props as ImageProps)}

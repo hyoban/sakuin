@@ -10,24 +10,27 @@ const navigation = [
   { href: '/shorts', label: 'Shorts' },
 ]
 
-export function Navigation() {
+export function Navigation(
+  { additionalNavigation }: { additionalNavigation?: Array<{ href: string, label: string }> },
+) {
   const pathname = usePathname()
   return (
-    <nav className="not-prose flex gap-4 my-6 text-xl">
-      {navigation.map(({ href, label }) => (
-        <Link
-          key={href}
-          href={href}
-          className={clsx(
-            pathname === href
-              ? 'font-semibold underline underline-offset-4'
-              : 'opacity-80',
-            'hover:opacity-100',
-          )}
-        >
-          {label}
-        </Link>
-      ))}
+    <nav className="not-prose flex flex-wrap gap-4 my-6 text-xl">
+      {[...navigation, ...(additionalNavigation ?? [])]
+        .map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className={clsx(
+              pathname === href
+                ? 'font-semibold underline underline-offset-4'
+                : 'opacity-80',
+              'hover:opacity-100',
+            )}
+          >
+            {label}
+          </Link>
+        ))}
     </nav>
   )
 }
