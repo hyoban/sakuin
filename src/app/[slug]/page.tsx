@@ -134,14 +134,16 @@ export default async function PostPage({ params }: { params: { slug: string } })
           }}
         />
       </article>
-      <section>
-        <h2>Comments</h2>
-        <ul>
-          {comments.map(comment => (
-            <CommentView key={comment.noteId} comment={comment} />
-          ))}
-        </ul>
-      </section>
+      {comments.length > 0 && (
+        <section>
+          <h2>Comments</h2>
+          <ul>
+            {comments.map(comment => (
+              <CommentView key={comment.noteId} comment={comment} />
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   )
 }
