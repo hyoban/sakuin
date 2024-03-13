@@ -94,8 +94,14 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
       {icon && <link rel="icon" type="image/png" href={icon} />}
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#171717" />
-      <meta property="og:title" content={siteName} />
-      <meta name="twitter:title" content={siteName} />
+
+      <link rel="alternate" type="application/rss+xml" title={title} href={`${xlogUrl}/feed`} />
+      <link rel="alternate" type="application/rss+xml" title={`Comments on ${title}`} href={`${xlogUrl}/feed/comments`} />
+      <link rel="alternate" type="application/feed+json" title={title} href={`${xlogUrl}/feed?format=json`} />
+      <link rel="alternate" type="application/feed+json" title={`Comments on ${title}`} href={`${xlogUrl}/feed/comments?format=json`} />
+
+      <meta property="og:title" content={title} />
+      <meta name="twitter:title" content={title} />
       <meta name="description" content={description} />
       <meta property="og:description" content={description} />
       <meta name="twitter:description" content={description} />
@@ -107,10 +113,7 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
           <meta name="twitter:image" content={banner} />
         </>
       )}
-      <link rel="alternate" type="application/rss+xml" title={title} href={`${xlogUrl}/feed`} />
-      <link rel="alternate" type="application/rss+xml" title={`Comments on ${title}`} href={`${xlogUrl}/feed/comments`} />
-      <link rel="alternate" type="application/feed+json" title={title} href={`${xlogUrl}/feed?format=json`} />
-      <link rel="alternate" type="application/feed+json" title={`Comments on ${title}`} href={`${xlogUrl}/feed/comments?format=json`} />
+
       <body>
         {children}
       </body>
