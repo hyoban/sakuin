@@ -18,8 +18,9 @@ import { rehypeEmbed, transformers } from './rehype-embed'
 export const revalidate = 3600
 
 export async function generateStaticParams() {
-  // eslint-disable-next-line unicorn/no-await-expression-member
-  const slugs = (await client.post.getAll(env.HANDLE)).map(post => post.slug)
+  const posts = await client.post.getAll(env.HANDLE)
+  const pages = await client.page.getAll(env.HANDLE)
+  const slugs = [...posts, ...pages].map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }
 
