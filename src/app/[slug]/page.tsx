@@ -43,6 +43,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
   return (
 
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
+      <title>{title}</title>
+      <meta name="description" content={summary} />
       <meta property="og:title" content={title} />
       <meta name="twitter:title" content={title} />
       <meta name="description" content={summary} />
