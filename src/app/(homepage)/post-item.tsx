@@ -2,9 +2,8 @@ import Image from 'next/image'
 import type { Post } from 'sakuin'
 
 import { AppLink } from '../external-link'
-import { getImageDimensionByUri } from '../utils'
 
-export async function PostItem({ post }: { post: Post }) {
+export function PostItem({ post }: { post: Post & { coverSize: { width: number, height: number } | null } }) {
   if (!post.cover) {
     return (
       <AppLink
@@ -16,7 +15,6 @@ export async function PostItem({ post }: { post: Post }) {
     )
   }
 
-  const size = await getImageDimensionByUri(post.cover)
   return (
     <div
       className="not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800"
@@ -27,8 +25,8 @@ export async function PostItem({ post }: { post: Post }) {
         <Image
           src={post.cover}
           alt={post.title}
-          width={size?.width}
-          height={size?.height}
+          width={post.coverSize?.width}
+          height={post.coverSize?.height}
           className="object-cover w-full h-32 sm:h-48"
         />
       </AppLink>

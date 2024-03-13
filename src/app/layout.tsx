@@ -84,6 +84,7 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
     icon,
     banner,
     xlogUrl,
+    footer,
   } = await client.site.getInfo(HANDLE)
   const title = siteName ?? characterName
 
@@ -113,9 +114,9 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
           <meta name="twitter:image" content={banner} />
         </>
       )}
-
       <body>
         {children}
+        {footer && <footer className="mx-auto max-w-[600px] opacity-80 text-sm my-6 text-center">{footer}</footer>}
       </body>
     </html>
   )
