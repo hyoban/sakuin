@@ -134,7 +134,7 @@ devDependencies:
     specifier: 4.0.0-beta.2
     version: 4.0.0-beta.2(release-it@17.1.1)
   remark-gfm:
-    specifier: ^3.0.1
+    specifier: 3.0.1
     version: 3.0.1
   remark-github-alerts:
     specifier: ^0.0.4

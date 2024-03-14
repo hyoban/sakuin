@@ -98,7 +98,7 @@
     "rehype-raw": "^7.0.0",
     "release-it": "^17.1.1",
     "release-it-pnpm": "4.0.0-beta.2",
-    "remark-gfm": "^3.0.1",
+    "remark-gfm": "3.0.1",
     "remark-github-alerts": "^0.0.4",
     "remark-parse": "^11.0.0",
     "simple-git-hooks": "^2.10.0",
