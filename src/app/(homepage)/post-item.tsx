@@ -8,7 +8,7 @@ export function PostItem({ post }: { post: Post & { coverSize: { width: number, 
   if (!post.cover) {
     return (
       <AppLink
-        href={post.slug}
+        href={`posts/${post.slug}`}
         className={(isLoading) => {
           return clsx(
             'not-prose my-6 p-4 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
@@ -24,7 +24,7 @@ export function PostItem({ post }: { post: Post & { coverSize: { width: number, 
 
   return (
     <AppLink
-      href={post.slug}
+      href={`posts/${post.slug}`}
       transition
       className={isLoading => clsx(
         'not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
