@@ -49,18 +49,13 @@ export function Markdown({ content }: { content: string }) {
         mdxOptions: {
           remarkRehypeOptions: { allowDangerousHtml: true },
           remarkPlugins: [
-            // @ts-expect-error I do not care
             remarkParse,
-            // @ts-expect-error I do not care
             remarkGithubAlerts,
             remarkGfm,
           ],
           rehypePlugins: [
-            // @ts-expect-error I do not care
             [rehypeEmbed, { transformers }],
-            // @ts-expect-error I do not care
             [rehypeRaw, { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }],
-            // @ts-expect-error I do not care
             [rehypeShiki, { themes: { light: 'vitesse-light', dark: 'vitesse-dark' } }],
           ],
           format: 'md',
