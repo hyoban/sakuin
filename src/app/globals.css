@@ -43,5 +43,5 @@
 }
 
 iframe {
-  max-width: calc(100% - 1rem);
+  max-width: 100%;
 }
