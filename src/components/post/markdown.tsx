@@ -3,7 +3,6 @@ import type { ImageProps } from 'next/image'
 import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { Tweet } from 'react-tweet'
-import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
@@ -47,7 +46,6 @@ export function Markdown({ content }: { content: string }) {
       }}
       options={{
         mdxOptions: {
-          remarkRehypeOptions: { allowDangerousHtml: true },
           remarkPlugins: [
             remarkParse,
             remarkGithubAlerts,
@@ -55,7 +53,6 @@ export function Markdown({ content }: { content: string }) {
           ],
           rehypePlugins: [
             [rehypeEmbed, { transformers }],
-            [rehypeRaw, { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement'] }],
             [rehypeShiki, { themes: { light: 'vitesse-light', dark: 'vitesse-dark' } }],
           ],
           format: 'md',
