@@ -6,21 +6,26 @@ import type { HandleOrCharacterId, NoteQueryOptions, Post, ResultMany } from './
 import { getXLogMeta, toCid, toGateway } from './utils'
 
 const noteQuery = graphql(`
-query getNotes($characterId: Int!, $slug: JSON!) {
+query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
   notes(
     where: {
       characterId: { equals: $characterId }
       deleted: { equals: false }
       metadata: {
         content: { path: ["sources"], array_contains: ["xlog"] }
-        OR: [
+        AND: [
           {
             content: {
               path: ["attributes"]
               array_contains: [{ trait_type: "xlog_slug", value: $slug }]
             }
           }
-          { content: { path: ["title"], equals: $slug } }
+          {
+            content: {
+              path: ["tags"]
+              array_contains: $tag
+            }
+          }
         ]
       }
     }
@@ -112,7 +117,7 @@ export class PostClient {
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const { client } = this.base.context
 
-    const note = await client.query(noteQuery, { characterId, slug })
+    const note = await client.query(noteQuery, { characterId, slug, tag: this.tag })
     const post = note.data?.notes.at(0)
     if (!post)
       return null
