@@ -50,21 +50,32 @@ function PostDetail({ post }: { post: Post }) {
     <>
       <h2 className="text-2xl font-medium my-4">{post.title}</h2>
       <p className="opacity-90 text-[0.9rem]">{post.summary.length > 100 ? `${post.summary.slice(0, 100)}...` : post.summary}</p>
-      <p className="opacity-70 mt-4 text-sm space-x-2">
+      <p className="opacity-80 mt-4 text-sm space-x-2">
         <span>{post.publishedAt.slice(0, 10)}</span>
         {post.tags.map(tag => (
           <span key={tag}>{tag}</span>
         ))}
-        <span>
-          {post.views}
-          {' '}
-          views
-        </span>
-        <span>
-          {post.comments}
-          {' '}
-          comments
-        </span>
+        {post.views > 0 && (
+          <span>
+            {post.views}
+            {' '}
+            views
+          </span>
+        )}
+        {post.likes > 0 && (
+          <span>
+            {post.likes}
+            {' '}
+            likes
+          </span>
+        )}
+        {post.comments > 0 && (
+          <span>
+            {post.comments}
+            {' '}
+            comments
+          </span>
+        )}
       </p>
     </>
   )
