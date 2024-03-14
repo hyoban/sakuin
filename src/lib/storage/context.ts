@@ -6,8 +6,8 @@ import { createContract, createIndexer } from 'crossbell'
 
 import type { HandleOrCharacterId, IndexerOptions, InteractionCount } from './types'
 
-export type XLogOptions = Omit<IndexerOptions, 'experimentalRequestDedupe'> & { xLogBase?: 'xlog.app' | 'xlog.page' }
-export type ClientContext = {
+type XLogOptions = Omit<IndexerOptions, 'experimentalRequestDedupe'> & { xLogBase?: 'xlog.app' | 'xlog.page' }
+type ClientContext = {
   client: Client
   indexer: Indexer
   contract: Contract

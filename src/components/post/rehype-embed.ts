@@ -4,17 +4,17 @@ import { match } from 'path-to-regexp'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 
-export type Transformer = {
+type Transformer = {
   name: string
   shouldTransform: (url: URL) => boolean
   getHTML: (url: URL) => string | undefined
 }
 
-export function isHostIncludes(domain: string, host: string) {
+function isHostIncludes(domain: string, host: string) {
   return [domain, `www.${domain}`].includes(host)
 }
 
-export const TweetTransformer: Transformer = {
+const TweetTransformer: Transformer = {
   name: 'Tweet',
   shouldTransform(url) {
     const { host, pathname } = url
@@ -33,7 +33,7 @@ export const TweetTransformer: Transformer = {
   },
 }
 
-export const GitHubRepoTransformer: Transformer = {
+const GitHubRepoTransformer: Transformer = {
   name: 'GithubRepo',
   shouldTransform(url) {
     const { host } = url

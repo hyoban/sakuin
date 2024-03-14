@@ -1,13 +1,11 @@
 // https://github.com/Crossbell-Box/xLog/blob/dev/src/lib/ipfs-parser.ts
 
-export const IPFS_GATEWAY = 'https://ipfs.4everland.xyz/ipfs/'
-export const IPFS_PREFIX = 'ipfs://'
+const IPFS_GATEWAY = 'https://ipfs.4everland.xyz/ipfs/'
+const IPFS_PREFIX = 'ipfs://'
 
-export type ToGatewayConfig = {
-  needRequestAtServerSide?: boolean
-  forceFallback?: boolean
-}
-
+/**
+ * @public
+ */
 export function toGateway(url?: string | URL, customGateway?: string) {
   if (!url)
     return
@@ -16,6 +14,9 @@ export function toGateway(url?: string | URL, customGateway?: string) {
   return ipfsUrl.replaceAll(IPFS_PREFIX, customGateway || IPFS_GATEWAY)
 }
 
+/**
+ * @public
+ */
 export function toIPFS(url: string) {
   return url
     .replaceAll(IPFS_GATEWAY, IPFS_PREFIX)
@@ -28,6 +29,9 @@ export function toIPFS(url: string) {
     .replaceAll('https://ipfs.xlog.app/ipfs/', IPFS_PREFIX)
 }
 
+/**
+ * @public
+ */
 export function toCid(url: string) {
   return url
     .replaceAll(IPFS_GATEWAY, '')
