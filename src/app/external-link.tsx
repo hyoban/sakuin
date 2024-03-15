@@ -4,21 +4,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 
-type AppLinkProps = React.PropsWithChildren<{
-  href: string
-  transition?: false
-  className?: string
-  title?: string
-} | {
-  href: string
-  transition: true
-  className?: (isLoading: boolean) => string
-  title?: string
-}>
+type AppLinkProps = React.PropsWithChildren<{ transition?: boolean, className?: ((isLoading: boolean) => string) | string } >
+  & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'className'>
 
-export function AppLink({ href, title, className, children, transition }: AppLinkProps) {
+export function AppLink({ href, className, children, transition, ...props }: AppLinkProps) {
   const router = useRouter()
   const [isLoading, startTransition] = useTransition()
+  const classNameFn = typeof className === 'function' ? className : () => className
+  const classNameStr = typeof className === 'function' ? className(isLoading) : className
 
   if (!href)
     return <>{children}</>
@@ -26,11 +19,11 @@ export function AppLink({ href, title, className, children, transition }: AppLin
   if (href.startsWith('http') && !transition) {
     return (
       <a
+        {...props}
         target="_blank"
         rel="noreferrer noopener"
         href={href}
-        className={className}
-        title={title}
+        className={classNameStr}
       >
         {children}
       </a>
@@ -40,9 +33,9 @@ export function AppLink({ href, title, className, children, transition }: AppLin
   if (!transition) {
     return (
       <Link
+        {...props}
         href={href}
-        className={className}
-        title={title}
+        className={classNameStr}
       >
         {children}
       </Link>
@@ -51,6 +44,7 @@ export function AppLink({ href, title, className, children, transition }: AppLin
 
   return (
     <a
+      {...props}
       href={href}
       onClick={(e) => {
         e.preventDefault()
@@ -58,8 +52,7 @@ export function AppLink({ href, title, className, children, transition }: AppLin
           router.push(href)
         })
       }}
-      className={typeof className === 'function' ? className(isLoading) : className}
-      title={title}
+      className={classNameFn(isLoading)}
     >
       {children}
     </a>

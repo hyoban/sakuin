@@ -16,6 +16,7 @@ export function Markdown({ content }: { content: string }) {
     <MDXRemote
       source={content}
       components={{
+        'a': AppLink,
         'img': async (props) => {
           if (!props.src)
             return null
