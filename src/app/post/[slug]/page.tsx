@@ -23,7 +23,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert break-all">
-      <PageMeta slug={params.slug} />
+      <PageMeta slug={params.slug} isPost />
       <article>
         <h1>{post.title}</h1>
         <PostMeta slug={params.slug} />

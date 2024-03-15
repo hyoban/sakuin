@@ -38,10 +38,10 @@ export async function PostMeta({ slug }: { slug: string }) {
   )
 }
 
-export async function PageMeta({ slug }: { slug: string }) {
+export async function PageMeta({ slug, isPost }: { slug: string, isPost?: boolean }) {
   const { HANDLE, SITE_URL } = env
   const [post, site] = await Promise.all([
-    client.post.getBySlug(HANDLE, slug),
+    isPost ? client.post.getBySlug(HANDLE, slug) : client.page.getBySlug(HANDLE, slug),
     client.site.getInfo(HANDLE),
   ])
   if (!post)
