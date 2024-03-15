@@ -29,6 +29,9 @@
     "paths": {
       "sakuin": [
         "./src/lib/storage/index.ts"
+      ],
+      "~/*": [
+        "./src/*"
       ]
     },
     "incremental": false,

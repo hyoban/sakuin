@@ -85,6 +85,8 @@
     "image-size": "^1.1.1",
     "jiti": "^1.21.0",
     "jotai": "^2.7.1",
+    "jotai-dark": "^0.3.0",
+    "jotai-effect": "^0.6.0",
     "knip": "^5.1.0",
     "lint-staged": "^15.2.2",
     "next": "^14.1.3",

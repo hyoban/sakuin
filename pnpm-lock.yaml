@@ -94,6 +94,12 @@ devDependencies:
   jotai:
     specifier: ^2.7.1
     version: 2.7.1(@types/react@18.2.66)(react@18.2.0)
+  jotai-dark:
+    specifier: ^0.3.0
+    version: 0.3.0(jotai-effect@0.6.0)(jotai@2.7.1)(react@18.2.0)
+  jotai-effect:
+    specifier: ^0.6.0
+    version: 0.6.0(jotai@2.7.1)
   knip:
     specifier: ^5.1.0
     version: 5.1.0(@types/node@20.11.28)(typescript@5.4.2)
@@ -7331,6 +7337,36 @@ packages:
 
   /jose@5.2.2:
     resolution: {integrity: sha512-/WByRr4jDcsKlvMd1dRJnPfS1GVO3WuKyaurJ/vvXcOaUQO8rnNObCQMlv/5uCceVQIq5Q4WLF44ohsdiTohdg==}
+    dev: true
+
+  /jotai-dark@0.3.0(jotai-effect@0.6.0)(jotai@2.7.1)(react@18.2.0):
+    resolution: {integrity: sha512-Vuhymer1VLaAjSW+hLowZBZa0FSKMamo3xajXubCr0Jdnp5P80vrh/5s29EQ2cp3eSa9weuUy+kdoMKEDdp/sA==}
+    peerDependencies:
+      foxact: ^0.2.33
+      jotai: '>=2.5.0'
+      jotai-effect: '*'
+      react: ^18.2.0
+    peerDependenciesMeta:
+      foxact:
+        optional: true
+      jotai:
+        optional: true
+      jotai-effect:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      jotai: 2.7.1(@types/react@18.2.66)(react@18.2.0)
+      jotai-effect: 0.6.0(jotai@2.7.1)
+      react: 18.2.0
+    dev: true
+
+  /jotai-effect@0.6.0(jotai@2.7.1):
+    resolution: {integrity: sha512-PCewL5ThH3MXYI6+sQwvkk3o+gje4K1qw2YnyqjRVnZbIxqX3zHZv11JXqXosRkT8p3a51gd3pLv7+cBfyXz7A==}
+    peerDependencies:
+      jotai: '>=2.5.0'
+    dependencies:
+      jotai: 2.7.1(@types/react@18.2.66)(react@18.2.0)
     dev: true
 
   /jotai@2.7.1(@types/react@18.2.66)(react@18.2.0):

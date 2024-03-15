@@ -4,6 +4,7 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./src/**/*.{ts,tsx}'],
   plugins: [typography(), iconsPlugin({ scale: 1.3 })],
   future: {

@@ -1,3 +1,4 @@
+/* eslint-disable @eslint-react/dom/no-dangerously-set-innerhtml */
 import 'remark-github-alerts/styles/github-base.css'
 import 'remark-github-alerts/styles/github-colors-dark-media.css'
 import 'remark-github-alerts/styles/github-colors-light.css'
@@ -91,7 +92,11 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
   const title = siteName ?? characterName
 
   return (
-    <html lang="en" className={`dark:bg-neutral-900 dark:text-white ${snPro.variable}`}>
+    <html
+      className={`dark:bg-neutral-900 dark:text-white ${snPro.variable}`}
+      lang="en"
+      suppressHydrationWarning
+    >
       <title>{title}</title>
       <meta name="description" content={description} />
       {icon && <link rel="icon" type="image/png" href={icon} />}
@@ -117,6 +122,11 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
         </>
       )}
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-dark")||'"system"';('"dark"'===t||e&&'"light"'!==t)&&document.documentElement.classList.toggle("dark",!0)}();`,
+          }}
+        />
         <Providers>
           {children}
         </Providers>

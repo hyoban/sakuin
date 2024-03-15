@@ -1,3 +1,5 @@
+import { AppearanceSwitch } from '~/components/appearance-switch'
+
 import { env } from '../../env'
 import { client } from '../../lib/client'
 import { AppLink } from '../external-link'
@@ -29,7 +31,10 @@ export default async function HomeLayout({ children }: React.PropsWithChildren) 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
-        <h3>{characterName}</h3>
+        <h3 className="flex items-center gap-3">
+          {characterName}
+          <AppearanceSwitch />
+        </h3>
         <p>{description}</p>
         {links.length > 0 && (
           <section className="flex gap-4 items-center">
