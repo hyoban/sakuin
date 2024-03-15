@@ -8,10 +8,10 @@ import type { HandleOrCharacterId, IndexerOptions, InteractionCount } from './ty
 
 type XLogOptions = Omit<IndexerOptions, 'experimentalRequestDedupe'> & { xLogBase?: 'xlog.app' | 'xlog.page' }
 type ClientContext = {
-  client: Client
-  indexer: Indexer
-  contract: Contract
-  xLogBase: string
+  client: Client,
+  indexer: Indexer,
+  contract: Contract,
+  xLogBase: string,
 }
 
 export class ClientBase {

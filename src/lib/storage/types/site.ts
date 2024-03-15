@@ -1,6 +1,6 @@
 export type SocialPlatform = {
-  platform: string
-  id: string
+  platform: string,
+  id: string,
 }
 
 const XLogTrait = [
@@ -26,32 +26,32 @@ type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
 export type XLogTraitType = RemovePrefix<typeof XLogTrait[number]>
 
 export type Navigation = {
-  id: string
-  label: string
-  url: string
+  id: string,
+  label: string,
+  url: string,
 }
 
 export type SiteInfo = {
-  handle: string
-  characterId: number
-  xlogUrl: string
+  handle: string,
+  characterId: number,
+  xlogUrl: string,
 
   // info from XLog Site Settings
-  icon?: string
-  banner?: string
-  characterName?: string
-  siteName?: string
-  description?: string
-  footer?: string
+  icon?: string,
+  banner?: string,
+  characterName?: string,
+  siteName?: string,
+  description?: string,
+  footer?: string,
   analytics: {
-    google?: string
+    google?: string,
     umamiCloud: {
-      url?: string
-      id?: string
-    }
-  }
-  socialPlatforms: SocialPlatform[]
-  navigation: Navigation[]
-  customDomain?: string
-  customCSS?: string
+      url?: string,
+      id?: string,
+    },
+  },
+  socialPlatforms: SocialPlatform[],
+  navigation: Navigation[],
+  customDomain?: string,
+  customCSS?: string,
 }

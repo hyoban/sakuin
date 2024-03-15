@@ -18,9 +18,9 @@ export function getSuperscript(portfolio: Portfolio) {
 }
 
 type Link = {
-  href: string
-  title: string
-  icon?: string
+  href: string,
+  title: string,
+  icon?: string,
 }
 
 export function getUniverseLinks(

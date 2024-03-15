@@ -1,10 +1,10 @@
 export const platforms: Record<string, {
-  name: string
+  name: string,
   // TODO: icon should not be pure string
-  icon?: string
-  url?: string
-  identityFormatTemplate?: string
-  portfolioDomain?: string
+  icon?: string,
+  url?: string,
+  identityFormatTemplate?: string,
+  portfolioDomain?: string,
 }> = {
   'telegram': {
     name: 'Telegram',

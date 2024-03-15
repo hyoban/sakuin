@@ -5,9 +5,9 @@ import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 
 type Transformer = {
-  name: string
-  shouldTransform: (url: URL) => boolean
-  getHTML: (url: URL) => string | undefined
+  name: string,
+  shouldTransform: (url: URL) => boolean,
+  getHTML: (url: URL) => string | undefined,
 }
 
 function isHostIncludes(domain: string, host: string) {

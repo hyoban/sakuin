@@ -14,8 +14,8 @@ export function PostList({
   posts,
   cursor,
 }: {
-  posts: Array<Post & { coverSize: { width: number, height: number } | null }>
-  cursor: string | null
+  posts: Array<Post & { coverSize: { width: number, height: number } | null }>,
+  cursor: string | null,
 }) {
   useHydrateAtoms([[currentPostsAtom, posts]])
   useHydrateAtoms([[currentCursorAtom, cursor]])
