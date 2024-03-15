@@ -1,6 +1,7 @@
 import { AppLink } from '../../app/external-link'
 import { env } from '../../env'
 import { client } from '../../lib/client'
+import { AppearanceSwitch } from '../appearance-switch'
 import { InteractionView } from './interaction'
 
 export async function PostMeta({ slug }: { slug: string }) {
@@ -32,6 +33,7 @@ export async function PostMeta({ slug }: { slug: string }) {
       >
         View on xLog
       </AppLink>
+      <AppearanceSwitch />
     </div>
   )
 }
