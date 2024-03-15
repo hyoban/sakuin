@@ -26,7 +26,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
       <PageMeta slug={params.slug} isPost />
       <article>
         <h1>{post.title}</h1>
-        <PostMeta slug={params.slug} />
+        <PostMeta slug={params.slug} isPost />
         <Markdown content={post.content} />
       </article>
       <Suspense fallback="Loading comments...">

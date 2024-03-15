@@ -4,10 +4,10 @@ import { client } from '../../lib/client'
 import { AppearanceSwitch } from '../appearance-switch'
 import { InteractionView } from './interaction'
 
-export async function PostMeta({ slug }: { slug: string }) {
+export async function PostMeta({ slug, isPost }: { slug: string, isPost?: boolean }) {
   const { HANDLE } = env
   const [post, site] = await Promise.all([
-    client.post.getBySlug(HANDLE, slug),
+    isPost ? client.post.getBySlug(HANDLE, slug) : client.page.getBySlug(HANDLE, slug),
     client.site.getInfo(HANDLE),
   ])
   if (!post)
@@ -33,7 +33,7 @@ export async function PostMeta({ slug }: { slug: string }) {
       >
         View on xLog
       </AppLink>
-      <AppearanceSwitch />
+      <AppearanceSwitch className="hidden" />
     </div>
   )
 }

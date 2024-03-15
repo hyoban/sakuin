@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 
 import { CommentList } from '../../../components/post/comment'
 import { Markdown } from '../../../components/post/markdown'
-import { PageMeta } from '../../../components/post/meta'
+import { PageMeta, PostMeta } from '../../../components/post/meta'
 import { env } from '../../../env'
 import { client } from '../../../lib/client'
 
@@ -25,6 +25,7 @@ export default async function PagePage({ params }: { params: { slug: string } })
     <main className="antialiased prose prose-neutral dark:prose-invert break-all">
       <PageMeta slug={params.slug} />
       <article>
+        <PostMeta slug={params.slug} />
         <Markdown content={post.content} />
       </article>
       <Suspense fallback="Loading comments...">
