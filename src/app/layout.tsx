@@ -1,6 +1,6 @@
 /* eslint-disable @eslint-react/dom/no-dangerously-set-innerhtml */
 import 'remark-github-alerts/styles/github-base.css'
-import 'remark-github-alerts/styles/github-colors-dark-media.css'
+import 'remark-github-alerts/styles/github-colors-dark-class.css'
 import 'remark-github-alerts/styles/github-colors-light.css'
 import './globals.css'
 
