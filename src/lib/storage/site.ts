@@ -1,6 +1,18 @@
+import { graphql } from '../../gql'
 import type { ClientBase } from './context'
 import type { HandleOrCharacterId, SiteInfo } from './types'
 import { getFullXLogMeta, parseConnectedAccount, toGateway } from './utils'
+
+const linkListCountQuery = graphql(`
+query getLinklistCount($characterId: Int!) {
+  linkCount(
+    where: {
+      linkType: { equals: "like" }
+      toCharacterId: { equals: $characterId }
+    }
+  )
+}
+`)
 
 export class SiteClient {
   constructor(private base: ClientBase) {}
@@ -62,6 +74,48 @@ export class SiteClient {
       navigation,
       customDomain,
       customCSS: css,
+    }
+  }
+
+  async getStat(handleOrCharacterId: HandleOrCharacterId) {
+    const { indexer, client } = this.base.context
+    const characterId = await this.base.getCharacterId(handleOrCharacterId)
+    const [stat, site, subscriptions, comments, notes, likes, achievement]
+      = await Promise.all([
+        indexer.stat.getForCharacter(characterId),
+        indexer.character.get(characterId),
+        indexer.link.getBacklinksOfCharacter(characterId, {
+          limit: 0,
+          linkType: 'follow',
+        }),
+        indexer.note.getMany({
+          limit: 0,
+          toCharacterId: characterId,
+        }),
+        indexer.note.getMany({
+          characterId,
+          sources: 'xlog',
+          limit: 0,
+        }),
+        await client
+          .query(linkListCountQuery, { characterId })
+          .toPromise(),
+        await indexer.achievement.getMany(characterId, {
+          status: ['MINTED'],
+        }),
+      ])
+
+    return {
+      viewsCount: stat.viewNoteCount,
+      createdAt: site?.createdAt,
+      createTx: site?.transactionHash,
+      subscriptionCount: subscriptions?.count,
+      commentsCount: comments?.count,
+      notesCount: notes?.count,
+      likesCount: likes?.data?.linkCount,
+      achievements: achievement?.list.reduce((acc, cur) => {
+        return acc + cur.groups.length
+      }, 0),
     }
   }
 }
