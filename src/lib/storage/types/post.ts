@@ -8,7 +8,7 @@ export type PostInput = {
   tags: string[],
   slug: string,
   disableAISummary: boolean,
-  cover?: {
+  cover: {
     address?: string,
     mimeType?: string,
   },

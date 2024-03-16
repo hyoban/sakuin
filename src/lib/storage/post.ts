@@ -54,7 +54,10 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 type CreateOptions = { convertUrlToGateway?: boolean }
 
 export class PostClient {
-  constructor(private base: ClientBase, private tag: Exclude<NoteType, 'portfolio'> = 'post') {}
+  constructor(
+    private base: ClientBase,
+    private tag: Exclude<NoteType, 'portfolio'> = 'post',
+  ) {}
 
   async getAll(
     handleOrCharacterId: HandleOrCharacterId,
@@ -130,44 +133,67 @@ export class PostClient {
     return this.createPostFromNote(post as NoteEntity, characterId, options)
   }
 
-  async put(
-    token: string,
-    handleOrCharacterId: HandleOrCharacterId,
-    post: PostInput,
-  ) {
+  private ensureToken(token: string) {
     const { indexer } = this.base.context
     if (!indexer.siwe.token && !token)
       throw new Error('Missing token')
     if (!indexer.siwe.token)
       indexer.siwe.token = token
+  }
+
+  async put({
+    token,
+    handleOrCharacterId,
+    post,
+  }: {
+    token: string,
+    handleOrCharacterId: HandleOrCharacterId,
+    post: PostInput,
+  }) {
+    this.ensureToken(token)
+    const { indexer } = this.base.context
+    const characterId = await this.base.getCharacterId(handleOrCharacterId)
+    const metadata = this.createNoteMetaFromPostInput({
+      values: post,
+      type: this.tag,
+      autofill: true,
+    })
 
     return indexer.siwe.putNote({
-      characterId: await this.base.getCharacterId(handleOrCharacterId),
-      metadata: this.createNoteMetaFromPostInput({ values: post, type: this.tag, autofill: true }),
+      characterId,
+      metadata,
     })
   }
 
-  async update(
+  async update({
+    token,
+    handleOrCharacterId,
+    noteId,
+    post,
+  }: {
     token: string,
     handleOrCharacterId: HandleOrCharacterId,
     noteId: number,
     post: Partial<PostInput>,
-  ) {
+  }) {
+    this.ensureToken(token)
     const { indexer } = this.base.context
-    if (!indexer.siwe.token && !token)
-      throw new Error('Missing token')
-    if (!indexer.siwe.token)
-      indexer.siwe.token = token
+    const characterId = await this.base.getCharacterId(handleOrCharacterId)
+    const postToUpdate = await this.get(characterId, noteId)
+    if (!postToUpdate)
+      throw new Error(`Note ${noteId} not found`)
+
+    const metadata = this.createNoteMetaFromPostInput({
+      values: { ...postToUpdate, ...post },
+      type: this.tag,
+    })
 
     return indexer.siwe.updateNote({
-      characterId: await this.base.getCharacterId(handleOrCharacterId),
+      characterId,
       noteId,
-      metadata: this.createNoteMetaFromPostInput({ values: post, type: this.tag }),
+      metadata,
     })
   }
-
-  private postFilter = (att: { name?: string }) => att.name === 'cover'
-  private shortFilter = (att: { name?: string }) => att.name === 'image'
 
   private createNoteMetaFromPostInput({
     values,
@@ -175,23 +201,10 @@ export class PostClient {
     autofill,
   }: {
     values: Partial<PostInput>,
-    type: string,
+    type: Exclude<NoteType, 'portfolio'>,
     autofill?: boolean,
   }): NoteMetadata & { summary?: string } {
     return {
-      title: values.title,
-      content: values.content,
-      date_published:
-        values.datePublishedAt
-        || (autofill ? new Date().toISOString() : undefined),
-      summary: values.summary,
-      tags: [
-        type,
-        ...(values.tags ?? [])
-          .map((tag: string) => tag.trim())
-          .filter(Boolean),
-      ],
-      sources: ['xlog'],
       attributes: [
         {
           trait_type: 'xlog_slug',
@@ -206,19 +219,18 @@ export class PostClient {
             ]
           : []),
       ],
-      attachments: [
-        ...(values.cover?.address
-          ? [
-              {
-                name: 'cover',
-                address: values.cover.address,
-                mime_type: values.cover.mimeType,
-              },
-            ]
-          : []),
-      ],
+      tags: [type, ...(values.tags ?? []).map((tag: string) => tag.trim()).filter(Boolean)],
+      title: values.title,
+      content: values.content,
+      attachments: values.cover?.address ? [{ name: 'cover', address: values.cover.address, mime_type: values.cover.mimeType }] : [],
+      sources: ['xlog'],
+      date_published: values.datePublishedAt || (autofill ? new Date().toISOString() : undefined),
+      summary: values.summary,
     }
   }
+
+  private postFilter = (att: { name?: string }) => att.name === 'cover'
+  private shortFilter = (att: { name?: string }) => att.name === 'image'
 
   private async createPostFromNote(
     note: NoteEntity,
