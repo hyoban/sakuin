@@ -147,6 +147,25 @@ export class PostClient {
     })
   }
 
+  async update(
+    token: string,
+    handleOrCharacterId: HandleOrCharacterId,
+    noteId: number,
+    post: Partial<PostInput>,
+  ) {
+    const { indexer } = this.base.context
+    if (!indexer.siwe.token && !token)
+      throw new Error('Missing token')
+    if (!indexer.siwe.token)
+      indexer.siwe.token = token
+
+    return indexer.siwe.updateNote({
+      characterId: await this.base.getCharacterId(handleOrCharacterId),
+      noteId,
+      metadata: this.createNoteMetaFromPostInput({ values: post, type: this.tag }),
+    })
+  }
+
   private postFilter = (att: { name?: string }) => att.name === 'cover'
   private shortFilter = (att: { name?: string }) => att.name === 'image'
 
@@ -155,7 +174,7 @@ export class PostClient {
     type,
     autofill,
   }: {
-    values: PostInput,
+    values: Partial<PostInput>,
     type: string,
     autofill?: boolean,
   }): NoteMetadata & { summary?: string } {
@@ -168,7 +187,7 @@ export class PostClient {
       summary: values.summary,
       tags: [
         type,
-        ...values.tags
+        ...(values.tags ?? [])
           .map((tag: string) => tag.trim())
           .filter(Boolean),
       ],
