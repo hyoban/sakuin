@@ -51,12 +51,14 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 }
 `)
 
+type CreateOptions = { convertUrlToGateway?: boolean }
+
 export class PostClient {
   constructor(private base: ClientBase, private tag: Exclude<NoteType, 'portfolio'> = 'post') {}
 
   async getAll(
     handleOrCharacterId: HandleOrCharacterId,
-    options?: Omit<NoteQueryOptions, 'cursor' | 'limit'>,
+    options?: Omit<NoteQueryOptions, 'cursor' | 'limit'> & CreateOptions,
   ): Promise<Post[]> {
     const result: Post[] = []
 
@@ -76,7 +78,7 @@ export class PostClient {
 
   async getMany(
     handleOrCharacterId: HandleOrCharacterId,
-    options?: NoteQueryOptions,
+    options?: NoteQueryOptions & CreateOptions,
   ): Promise<ResultMany<Post>> {
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const { indexer } = this.base.context
@@ -89,7 +91,7 @@ export class PostClient {
       ...options,
     })
 
-    const list = await Promise.all(notes.list.map(note => this.createPostFromNote(note, characterId)))
+    const list = await Promise.all(notes.list.map(note => this.createPostFromNote(note, characterId, options)))
 
     return {
       list,
@@ -101,6 +103,7 @@ export class PostClient {
   async get(
     handleOrCharacterId: HandleOrCharacterId,
     noteId: Numberish,
+    options?: CreateOptions,
   ): Promise<Post | null> {
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const { indexer } = this.base.context
@@ -109,12 +112,13 @@ export class PostClient {
     if (!note)
       return null
 
-    return this.createPostFromNote(note, characterId)
+    return this.createPostFromNote(note, characterId, options)
   }
 
   async getBySlug(
     handleOrCharacterId: HandleOrCharacterId,
     slug: string,
+    options?: CreateOptions,
   ): Promise<Post | null> {
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const { client } = this.base.context
@@ -123,7 +127,7 @@ export class PostClient {
     const post = note.data?.notes.at(0)
     if (!post)
       return null
-    return this.createPostFromNote(post as NoteEntity, characterId)
+    return this.createPostFromNote(post as NoteEntity, characterId, options)
   }
 
   async put(
@@ -200,17 +204,23 @@ export class PostClient {
   private async createPostFromNote(
     note: NoteEntity,
     characterId: number,
+    options?: CreateOptions,
   ): Promise<Post> {
+    const { convertUrlToGateway = true } = options ?? {}
     const { xLogBase } = this.base.context
     const { noteId } = note
     const interaction = await this.base.getNoteInteractionCount(characterId, noteId)
 
-    const content = toGateway(note.metadata?.content?.content) ?? ''
+    const content = convertUrlToGateway
+      ? toGateway(note.metadata?.content?.content) ?? ''
+      : note.metadata?.content?.content ?? ''
     const match = content.match(/!\[.*?]\((.*?)\)/g)
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
 
     const coverInAttachments = note.metadata?.content?.attachments?.find(this.tag === 'post' ? this.postFilter : this.shortFilter)
-    const cover = toGateway(coverInAttachments?.address) ?? imagesInContent.at(0)
+    const cover = convertUrlToGateway
+      ? toGateway(coverInAttachments?.address) ?? imagesInContent.at(0)
+      : coverInAttachments?.address ?? imagesInContent.at(0)
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
