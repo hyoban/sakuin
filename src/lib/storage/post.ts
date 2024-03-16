@@ -1,8 +1,9 @@
-import type { NoteEntity, Numberish } from 'crossbell'
+import type { NoteEntity, NoteMetadata, Numberish } from 'crossbell'
+import { nanoid } from 'nanoid'
 
 import { graphql } from '../../gql'
 import type { ClientBase } from './context'
-import type { HandleOrCharacterId, NoteQueryOptions, Post, ResultMany } from './types'
+import type { HandleOrCharacterId, NoteQueryOptions, NoteType, Post, PostInput, ResultMany } from './types'
 import { getXLogMeta, toCid, toGateway } from './utils'
 
 const noteQuery = graphql(`
@@ -51,7 +52,7 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 `)
 
 export class PostClient {
-  constructor(private base: ClientBase, private tag: 'post' | 'short' | 'page' = 'post') {}
+  constructor(private base: ClientBase, private tag: Exclude<NoteType, 'portfolio'> = 'post') {}
 
   async getAll(
     handleOrCharacterId: HandleOrCharacterId,
@@ -125,8 +126,76 @@ export class PostClient {
     return this.createPostFromNote(post as NoteEntity, characterId)
   }
 
+  async put(
+    token: string,
+    handleOrCharacterId: HandleOrCharacterId,
+    post: PostInput,
+  ) {
+    const { indexer } = this.base.context
+    if (!indexer.siwe.token && !token)
+      throw new Error('Missing token')
+    if (!indexer.siwe.token)
+      indexer.siwe.token = token
+
+    return indexer.siwe.putNote({
+      characterId: await this.base.getCharacterId(handleOrCharacterId),
+      metadata: this.createNoteMetaFromPostInput({ values: post, type: this.tag, autofill: true }),
+    })
+  }
+
   private postFilter = (att: { name?: string }) => att.name === 'cover'
   private shortFilter = (att: { name?: string }) => att.name === 'image'
+
+  private createNoteMetaFromPostInput({
+    values,
+    type,
+    autofill,
+  }: {
+    values: PostInput,
+    type: string,
+    autofill?: boolean,
+  }): NoteMetadata & { summary?: string } {
+    return {
+      title: values.title,
+      content: values.content,
+      date_published:
+        values.datePublishedAt
+        || (autofill ? new Date().toISOString() : undefined),
+      summary: values.summary,
+      tags: [
+        type,
+        ...values.tags
+          .map((tag: string) => tag.trim())
+          .filter(Boolean),
+      ],
+      sources: ['xlog'],
+      attributes: [
+        {
+          trait_type: 'xlog_slug',
+          value: values.slug || (autofill ? nanoid() : ''),
+        },
+        ...(values.disableAISummary
+          ? [
+              {
+                trait_type: 'xlog_disable_ai_summary',
+                value: values.disableAISummary,
+              },
+            ]
+          : []),
+      ],
+      attachments: [
+        ...(values.cover?.address
+          ? [
+              {
+                name: 'cover',
+                address: values.cover.address,
+                mime_type: values.cover.mimeType,
+              },
+            ]
+          : []),
+      ],
+    }
+  }
 
   private async createPostFromNote(
     note: NoteEntity,
@@ -140,17 +209,12 @@ export class PostClient {
     const match = content.match(/!\[.*?]\((.*?)\)/g)
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
 
-    const cover = toGateway(
-      note.metadata?.content?.attachments
-        ?.find(
-          this.tag === 'post' ? this.postFilter : this.shortFilter,
-        )
-        ?.address,
-    ) ?? imagesInContent.at(0)
+    const coverInAttachments = note.metadata?.content?.attachments?.find(this.tag === 'post' ? this.postFilter : this.shortFilter)
+    const cover = toGateway(coverInAttachments?.address) ?? imagesInContent.at(0)
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
-    const disableAISummary = getXLogMeta(note.metadata?.content?.attributes, 'disable_ai_summary')
+    const disableAISummary = !!getXLogMeta(note.metadata?.content?.attributes, 'disable_ai_summary')
     if (!disableAISummary && !summary && note.uri) {
       const res = await fetch(`https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri)}&lang=zh`)
       const json = await res.json() as { summary: string | null }
@@ -161,11 +225,12 @@ export class PostClient {
       ...note,
       title: note.metadata?.content?.title ?? '',
       slug: getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? '',
-      date: note.metadata?.content?.date_published ?? '',
+      datePublishedAt: note.metadata?.content?.date_published ?? '',
       tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
       summary,
-      cover,
+      cover: coverInAttachments ?? { address: cover },
       content,
+      disableAISummary,
       ...interaction,
     }
   }

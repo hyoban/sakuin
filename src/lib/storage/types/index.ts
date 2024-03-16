@@ -15,6 +15,7 @@ export type ResultMany<T> = {
   cursor: string | null,
 }
 
+export type NoteType = 'post' | 'page' | 'portfolio' | 'short'
 export type NoteBasic = Pick<NoteEntity, 'noteId' | 'characterId' | 'uri' | 'createdAt' | 'updatedAt' | 'publishedAt' | 'deletedAt'>
 
 export * from './comment'

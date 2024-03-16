@@ -55,7 +55,8 @@
   },
   "dependencies": {
     "@urql/core": "^4.3.0",
-    "crossbell": "^1.11.9"
+    "crossbell": "^1.11.9",
+    "nanoid": "^5.0.6"
   },
   "devDependencies": {
     "@egoist/tailwindcss-icons": "^1.7.4",

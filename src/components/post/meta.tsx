@@ -64,10 +64,10 @@ export async function PageMeta({ slug, isPost }: { slug: string, isPost?: boolea
       <meta name="twitter:description" content={summary} />
       <meta name="twitter:card" content="summary_large_image" />
       {SITE_URL && <meta property="og:url" content={SITE_URL} />}
-      {cover && (
+      {cover?.address && (
         <>
-          <meta property="og:image" content={cover} />
-          <meta name="twitter:image" content={cover} />
+          <meta property="og:image" content={cover.address} />
+          <meta name="twitter:image" content={cover.address} />
         </>
       )}
     </>

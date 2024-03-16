@@ -1,12 +1,17 @@
 import type { InteractionCount, NoteBasic } from '.'
 
-export type Post = {
-  noteId: number,
+export type PostInput = {
   title: string,
-  slug: string,
-  date: string,
-  tags: string[],
-  summary: string,
-  cover?: string,
   content: string,
-} & InteractionCount & NoteBasic
+  datePublishedAt: string,
+  summary: string,
+  tags: string[],
+  slug: string,
+  disableAISummary: boolean,
+  cover?: {
+    address?: string,
+    mimeType?: string,
+  },
+}
+
+export type Post = PostInput & InteractionCount & NoteBasic

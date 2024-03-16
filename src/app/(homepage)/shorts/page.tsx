@@ -21,17 +21,17 @@ export default async function ShortPage() {
 async function ShortItem(
   { short }: { short: Post },
 ) {
-  if (!short.cover)
+  if (!short.cover?.address)
     return null
   const { xlogUrl } = await client.site.getInfo(env.HANDLE)
-  const size = await getImageDimensionByUri(short.cover)
+  const size = await getImageDimensionByUri(short.cover.address)
   return (
     <AppLink
       href={`${xlogUrl}/${short.slug}`}
       key={short.slug}
       className="not-prose my-3 flex flex-col rounded-md overflow-hidden hover:bg-neutral-50 dark:hover:bg-neutral-800"
     >
-      <Image src={short.cover} alt={short.title} width={size?.width} height={size?.height} />
+      <Image src={short.cover.address} alt={short.title} width={size?.width} height={size?.height} />
       <div className="px-2 py-3 space-y-2">
         <p>{short.title}</p>
         <p>{short.content}</p>
