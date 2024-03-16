@@ -12,7 +12,6 @@ export async function fetchMorePost(cursor: string | null) {
     env.HANDLE,
     {
       cursor: cursor ?? undefined,
-      orderBy: 'publishedAt',
     },
   )
   const morePostsWithCoverSize = await Promise.all(morePosts.map(async (post) => {

@@ -6,7 +6,7 @@ import { capitalize, getSuperscript } from '../../utils'
 export const revalidate = 3600
 
 export default async function HomePage() {
-  const portfolios = await client.portfolio.getAll(env.HANDLE, { orderBy: 'publishedAt' })
+  const portfolios = await client.portfolio.getAll(env.HANDLE)
 
   return (
     <>

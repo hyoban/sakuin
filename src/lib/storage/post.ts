@@ -84,6 +84,7 @@ export class PostClient {
       characterId,
       tags: this.tag,
       sources: 'xlog',
+      orderBy: options?.orderBy ?? 'publishedAt',
       ...options,
     })
 

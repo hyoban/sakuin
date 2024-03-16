@@ -11,9 +11,9 @@ export default async function HomePage() {
   let posts: Post[] = []
   let cursor = null
   if (env.MODE === 'static')
-    posts = await client.post.getAll(env.HANDLE, { orderBy: 'publishedAt' })
+    posts = await client.post.getAll(env.HANDLE)
   else
-    ({ list: posts, cursor } = await client.post.getMany(env.HANDLE, { orderBy: 'publishedAt' }))
+    ({ list: posts, cursor } = await client.post.getMany(env.HANDLE))
 
   const postsWithCoverSize = await Promise.all(posts.map(async (post) => {
     if (!post.cover)

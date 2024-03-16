@@ -35,10 +35,11 @@ export class PortfolioClient {
     const { indexer } = this.base.context
 
     const notes = await indexer.note.getMany({
-      ...options,
       characterId,
       tags: 'portfolio',
       sources: 'xlog',
+      orderBy: options?.orderBy ?? 'publishedAt',
+      ...options,
     })
 
     const list = await Promise.all(notes.list.map(note => this.createPortfolioFromNote(note)))

@@ -13,9 +13,9 @@ export const revalidate = 3600
 export async function generateStaticParams() {
   let posts: Post[] = []
   if (env.MODE === 'static')
-    posts = await client.post.getAll(env.HANDLE, { orderBy: 'publishedAt' })
+    posts = await client.post.getAll(env.HANDLE)
   else
-    ({ list: posts } = await client.post.getMany(env.HANDLE, { orderBy: 'publishedAt' }))
+    ({ list: posts } = await client.post.getMany(env.HANDLE))
   const slugs = posts.map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }
