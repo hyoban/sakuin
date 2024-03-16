@@ -11,7 +11,7 @@ test('get post list', async () => {
     'noteId',
     'title',
     'slug',
-    'date',
+    'datePublishedAt',
     'tags',
     'summary',
     'cover',
