@@ -269,7 +269,7 @@ export class PostClient {
       datePublishedAt: note.metadata?.content?.date_published ?? '',
       tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
       summary,
-      cover: coverInAttachments ?? { address: cover },
+      cover: { address: cover, mimeType: coverInAttachments?.mime_type },
       content,
       disableAISummary,
       ...interaction,

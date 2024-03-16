@@ -21,7 +21,7 @@ export default async function ShortPage() {
 async function ShortItem(
   { short }: { short: Post },
 ) {
-  if (!short.cover?.address)
+  if (!short.cover.address)
     return null
   const { xlogUrl } = await client.site.getInfo(env.HANDLE)
   const size = await getImageDimensionByUri(short.cover.address)

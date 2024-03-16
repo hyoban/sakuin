@@ -9,7 +9,7 @@ export default async function HomePage() {
   const { list: posts, cursor } = await client.post.getMany(env.HANDLE)
 
   const postsWithCoverSize = await Promise.all(posts.map(async (post) => {
-    if (!post.cover?.address)
+    if (!post.cover.address)
       return { ...post, coverSize: null }
 
     const size = await getImageDimensionByUri(post.cover.address)
