@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import type { Post } from 'sakuin'
 
 import { CommentList } from '../../../components/post/comment'
 import { Markdown } from '../../../components/post/markdown'
@@ -10,7 +11,11 @@ import { client } from '../../../lib/client'
 export const revalidate = 3600
 
 export async function generateStaticParams() {
-  const { list: posts } = await client.post.getMany(env.HANDLE, { orderBy: 'updatedAt' })
+  let posts: Post[] = []
+  if (env.MODE === 'static')
+    posts = await client.post.getAll(env.HANDLE, { orderBy: 'publishedAt' })
+  else
+    ({ list: posts } = await client.post.getMany(env.HANDLE, { orderBy: 'publishedAt' }))
   const slugs = posts.map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }

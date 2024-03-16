@@ -109,10 +109,10 @@ export class SiteClient {
       viewsCount: stat.viewNoteCount,
       createdAt: site?.createdAt,
       createTx: site?.transactionHash,
-      subscriptionCount: subscriptions?.count,
-      commentsCount: comments?.count,
-      notesCount: notes?.count,
-      likesCount: likes?.data?.linkCount,
+      subscriptionCount: subscriptions.count,
+      commentsCount: comments.count,
+      notesCount: notes.count,
+      likesCount: likes.data?.linkCount,
       achievements: achievement?.list.reduce((acc, cur) => {
         return acc + cur.groups.length
       }, 0),
