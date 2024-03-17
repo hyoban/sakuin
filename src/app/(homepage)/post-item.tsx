@@ -25,7 +25,7 @@ export function PostItem({ post }: PostItemProps) {
         }}
         transition
       >
-        <PostDetail post={post} />
+        <PostDetail post={post} fullSummary />
       </AppLink>
     )
   }
@@ -54,11 +54,11 @@ export function PostItem({ post }: PostItemProps) {
   )
 }
 
-function PostDetail({ post }: { post: Post }) {
+function PostDetail({ post, fullSummary }: { post: Post, fullSummary?: boolean }) {
   return (
     <>
       <h2 className="text-2xl font-medium my-4">{post.title}</h2>
-      <p className="opacity-90 text-[0.9rem]">{post.summary.length > 100 ? `${post.summary.slice(0, 100)}...` : post.summary}</p>
+      <p className="opacity-90 text-[0.9rem]">{post.summary.length > 100 && !fullSummary ? `${post.summary.slice(0, 100)}...` : post.summary}</p>
       <p className="opacity-80 mt-4 text-sm space-x-2">
         <span>{post.publishedAt.slice(0, 10)}</span>
         {post.tags.map(tag => (
