@@ -51,7 +51,7 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 }
 `)
 
-type CreateOptions = { convertUrlToGateway?: boolean }
+type CreateOptions = { raw?: boolean }
 
 type UpdateOptions = {
   token: string,
@@ -264,33 +264,39 @@ export class PostClient {
     characterId: number,
     options?: CreateOptions,
   ): Promise<Post> {
-    const { convertUrlToGateway = true } = options ?? {}
+    const { raw = false } = options ?? {}
     const { xLogBase } = this.base.context
     const { noteId } = note
     const interaction = await this.base.getNoteInteractionCount(characterId, noteId)
 
-    const content = convertUrlToGateway
-      ? toGateway(note.metadata?.content?.content) ?? ''
-      : note.metadata?.content?.content ?? ''
+    const content = raw
+      ? note.metadata?.content?.content ?? ''
+      : toGateway(note.metadata?.content?.content) ?? ''
     const match = content.match(/!\[.*?]\((.*?)\)/g)
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
 
     const coverInAttachments = note.metadata?.content?.attachments?.find(this.tag === 'post' ? this.postFilter : this.shortFilter)
-    const cover = (convertUrlToGateway
-      ? toGateway(coverInAttachments?.address) ?? imagesInContent.at(0)
-      : coverInAttachments?.address ?? imagesInContent.at(0)) ?? ''
+    const cover = (raw
+      ? coverInAttachments?.address
+      : toGateway(coverInAttachments?.address ?? imagesInContent.at(0))) ?? ''
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
     const disableAISummary = !!getXLogMeta(note.metadata?.content?.attributes, 'disable_ai_summary')
-    if (!disableAISummary && !summary && note.uri) {
+    if (!disableAISummary && !raw && !summary && note.uri) {
       const res = await fetch(`https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri)}&lang=zh`)
       const json = await res.json() as { summary: string | null }
       summary = json.summary ?? ''
     }
 
     return {
-      ...note,
+      characterId: note.characterId,
+      noteId: note.noteId,
+      createdAt: note.createdAt,
+      updatedAt: note.updatedAt,
+      publishedAt: note.publishedAt,
+      deletedAt: note.deletedAt,
+      uri: note.uri,
       title: note.metadata?.content?.title ?? '',
       slug: getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? '',
       datePublishedAt: note.metadata?.content?.date_published ?? '',
