@@ -8,7 +8,7 @@ export const revalidate = 3600
 export default async function HomePage() {
   const { list: posts, cursor } = await client.post.getMany(env.HANDLE)
 
-  const postsWithCoverSize = await Promise.all(posts.map(async (post) => {
+  const postsWithCoverSize = await Promise.all(posts.map(async (post, index) => {
     if (!post.cover)
       return { ...post, coverSize: null }
 
@@ -16,6 +16,7 @@ export default async function HomePage() {
     return {
       ...post,
       coverSize: size,
+      priority: index < 3,
     }
   }))
 

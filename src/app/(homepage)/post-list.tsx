@@ -2,19 +2,19 @@
 import { atom, useAtom } from 'jotai'
 import { useHydrateAtoms } from 'jotai/utils'
 import { useTransition } from 'react'
-import type { Post } from 'sakuin'
 
 import { fetchMorePost } from './action'
+import type { PostWithCoverInfo } from './post-item'
 import { PostItem } from './post-item'
 
-const currentPostsAtom = atom<Array<Post & { coverSize: { width: number, height: number } | null }>>([])
+const currentPostsAtom = atom<PostWithCoverInfo[]>([])
 const currentCursorAtom = atom<string | null>(null)
 
 export function PostList({
   posts,
   cursor,
 }: {
-  posts: Array<Post & { coverSize: { width: number, height: number } | null }>,
+  posts: PostWithCoverInfo[],
   cursor: string | null,
 }) {
   useHydrateAtoms([[currentPostsAtom, posts]])

@@ -278,7 +278,7 @@ export class PostClient {
     const coverInAttachments = note.metadata?.content?.attachments?.find(this.tag === 'post' ? this.postFilter : this.shortFilter)
     const cover = (raw
       ? coverInAttachments?.address
-      : toGateway(coverInAttachments?.address ?? imagesInContent.at(0))) ?? ''
+      : toGateway(coverInAttachments?.address) ?? imagesInContent.at(0)) ?? ''
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''

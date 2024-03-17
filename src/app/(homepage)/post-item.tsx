@@ -4,7 +4,15 @@ import type { Post } from 'sakuin'
 
 import { AppLink } from '../external-link'
 
-export function PostItem({ post }: { post: Post & { coverSize: { width: number, height: number } | null } }) {
+export type PostWithCoverInfo = Post & {
+  coverSize: { width: number, height: number } | null,
+  priority?: boolean,
+}
+type PostItemProps = {
+  post: PostWithCoverInfo,
+}
+
+export function PostItem({ post }: PostItemProps) {
   if (!post.cover) {
     return (
       <AppLink
@@ -37,6 +45,7 @@ export function PostItem({ post }: { post: Post & { coverSize: { width: number, 
         width={post.coverSize?.width}
         height={post.coverSize?.height}
         className="object-cover w-full h-32 sm:h-48"
+        priority={post.priority}
       />
       <div className="px-4 pb-4">
         <PostDetail post={post} />
