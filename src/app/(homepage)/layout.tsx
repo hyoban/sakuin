@@ -31,10 +31,10 @@ export default async function HomeLayout({ children }: React.PropsWithChildren) 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
       <section>
-        <h3 className="flex items-center gap-3">
+        <h2 className="flex items-center gap-3">
           {characterName}
-          <AppearanceSwitch />
-        </h3>
+          <AppearanceSwitch className="scale-75" />
+        </h2>
         <p>{description}</p>
         {links.length > 0 && (
           <section className="flex gap-4 items-center">
