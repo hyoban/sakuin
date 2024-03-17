@@ -8,10 +8,7 @@ export type PostInput = {
   tags: string[],
   slug: string,
   disableAISummary: boolean,
-  cover: {
-    address?: string,
-    mimeType?: string,
-  },
+  cover: string,
 }
 
 export type Post = PostInput & InteractionCount & NoteBasic

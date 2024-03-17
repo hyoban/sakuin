@@ -5,7 +5,7 @@ import type { Post } from 'sakuin'
 import { AppLink } from '../external-link'
 
 export function PostItem({ post }: { post: Post & { coverSize: { width: number, height: number } | null } }) {
-  if (!post.cover.address) {
+  if (!post.cover) {
     return (
       <AppLink
         href={`post/${post.slug}`}
@@ -32,7 +32,7 @@ export function PostItem({ post }: { post: Post & { coverSize: { width: number, 
       )}
     >
       <Image
-        src={post.cover.address}
+        src={post.cover}
         alt={post.title}
         width={post.coverSize?.width}
         height={post.coverSize?.height}

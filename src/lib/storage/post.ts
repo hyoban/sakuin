@@ -53,6 +53,12 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 
 type CreateOptions = { convertUrlToGateway?: boolean }
 
+type UpdateOptions = {
+  token: string,
+  handleOrCharacterId: HandleOrCharacterId,
+  post: Partial<PostInput>,
+} & ({ noteId: number } | { slug: string })
+
 export class PostClient {
   constructor(
     private base: ClientBase,
@@ -168,23 +174,21 @@ export class PostClient {
   async update({
     token,
     handleOrCharacterId,
-    noteId,
     post,
-  }: {
-    token: string,
-    handleOrCharacterId: HandleOrCharacterId,
-    noteId: number,
-    post: Partial<PostInput>,
-  }) {
+    ...options
+  }: UpdateOptions) {
     this.ensureToken(token)
     const { indexer } = this.base.context
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
-    const postToUpdate = await this.get(characterId, noteId)
+    const postToUpdate = ('noteId' in options)
+      ? await this.get(characterId, options.noteId)
+      : await this.getBySlug(characterId, options.slug)
     if (!postToUpdate)
-      throw new Error(`Note ${noteId} not found`)
+      throw new Error('Post not found')
 
+    const { noteId } = postToUpdate
     const metadata = this.createNoteMetaFromPostInput({
-      values: { ...postToUpdate, ...post },
+      values: { ...postToUpdate, ...this.clearUnknownAttributes(post) },
       type: this.tag,
     })
 
@@ -193,6 +197,29 @@ export class PostClient {
       noteId,
       metadata,
     })
+  }
+
+  private clearUnknownAttributes(input?: Record<string, unknown> | null): Partial<PostInput> {
+    if (typeof input !== 'object' || !input)
+      return {}
+    const keys = Object.keys(input)
+    const result: Partial<PostInput> = {}
+    for (const key of keys) {
+      if (
+        [
+          'title',
+          'content',
+          'datePublishedAt',
+          'summary',
+          'tags',
+          'slug',
+          'disableAISummary',
+          'cover',
+        ].includes(key)
+      )
+        result[key as keyof PostInput] = input[key] as never
+    }
+    return result
   }
 
   private createNoteMetaFromPostInput({
@@ -222,7 +249,7 @@ export class PostClient {
       tags: [type, ...(values.tags ?? []).map((tag: string) => tag.trim()).filter(Boolean)],
       title: values.title,
       content: values.content,
-      attachments: values.cover?.address ? [{ name: 'cover', address: values.cover.address, mime_type: values.cover.mimeType }] : [],
+      attachments: values.cover ? [{ name: 'cover', address: values.cover }] : [],
       sources: ['xlog'],
       date_published: values.datePublishedAt || (autofill ? new Date().toISOString() : undefined),
       summary: values.summary,
@@ -249,9 +276,9 @@ export class PostClient {
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
 
     const coverInAttachments = note.metadata?.content?.attachments?.find(this.tag === 'post' ? this.postFilter : this.shortFilter)
-    const cover = convertUrlToGateway
+    const cover = (convertUrlToGateway
       ? toGateway(coverInAttachments?.address) ?? imagesInContent.at(0)
-      : coverInAttachments?.address ?? imagesInContent.at(0)
+      : coverInAttachments?.address ?? imagesInContent.at(0)) ?? ''
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
@@ -269,7 +296,7 @@ export class PostClient {
       datePublishedAt: note.metadata?.content?.date_published ?? '',
       tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
       summary,
-      cover: { address: cover, mimeType: coverInAttachments?.mime_type },
+      cover,
       content,
       disableAISummary,
       ...interaction,
