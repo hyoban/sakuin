@@ -13,16 +13,15 @@ import { SubmitButton } from './submit-button'
 export function CommentListClient({ comments, noteId }: { comments: Comment[], noteId: number }) {
   const [optimisticComments, addOptimisticComment] = useOptimistic<Comment[], Comment>(comments, (state, newComment) => [newComment, ...state])
 
-  if (optimisticComments.length === 0)
-    return null
-
   return (
     <>
-      <ul>
-        {optimisticComments.map(comment => (
-          <CommentView key={comment.noteId} comment={comment} />
-        ))}
-      </ul>
+      {optimisticComments.length > 0 && (
+        <ul>
+          {optimisticComments.map(comment => (
+            <CommentView key={comment.noteId} comment={comment} />
+          ))}
+        </ul>
+      )}
       <CommentForm noteId={noteId} addOptimisticComment={addOptimisticComment} />
     </>
   )
