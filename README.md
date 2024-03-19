@@ -30,3 +30,4 @@ For more details, please refer to the [SDK documentation](https://sakuin-docs.ve
 ## See also
 
 - [xLog](https://xlog.app) An open-source creative community written on the blockchain.
+- [crossbell.js](https://github.com/Crossbell-Box/crossbell.js) A JavaScript SDK to interact with Crossbell.
