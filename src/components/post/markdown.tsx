@@ -3,6 +3,7 @@ import type { ImageProps } from 'next/image'
 import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { Tweet } from 'react-tweet'
+import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
@@ -53,6 +54,7 @@ export function Markdown({ content }: { content: string }) {
             remarkGfm,
           ],
           rehypePlugins: [
+            rehypeRaw,
             [rehypeEmbed, { transformers }],
             [rehypeShiki, { themes: { light: 'vitesse-light', dark: 'vitesse-dark' } }],
           ],
