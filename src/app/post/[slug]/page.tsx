@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
 
-import { CommentList } from '../../../components/post/comment'
+import { Comment } from '../../../components/post/comment'
 import { Markdown } from '../../../components/post/markdown'
 import { PageMeta, PostMeta } from '../../../components/post/meta'
 import { env } from '../../../env'
@@ -29,9 +28,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
         <PostMeta slug={params.slug} isPost />
         <Markdown content={post.content} />
       </article>
-      <Suspense fallback="Loading comments...">
-        <CommentList noteId={post.noteId} />
-      </Suspense>
+      <Comment noteId={post.noteId} />
     </main>
   )
 }

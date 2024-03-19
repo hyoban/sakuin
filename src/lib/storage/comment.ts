@@ -2,7 +2,7 @@ import type { Numberish } from 'crossbell'
 
 import type { ClientBase } from './context'
 import type { SiteClient } from './site'
-import type { Comment, HandleOrCharacterId, NoteQueryOptions, ResultMany } from './types'
+import type { Comment, CommentInput, HandleOrCharacterId, NoteQueryOptions, ResultMany } from './types'
 import { getXLogMeta } from './utils'
 
 export class CommentClient {
@@ -96,5 +96,20 @@ export class CommentClient {
       count: res.count,
       cursor: res.cursor,
     }
+  }
+
+  async putAnonymous(commentInput: CommentInput) {
+    const { xLogBase } = this.base.context
+    const result = await fetch(
+      `https://${xLogBase}/api/anonymous/comment`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(commentInput),
+      },
+    )
+    return await result.json() as { error: string } | { data: { noteId: string } }
   }
 }
