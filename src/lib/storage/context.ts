@@ -3,6 +3,7 @@
 import { cacheExchange, Client, fetchExchange } from '@urql/core'
 import type { Contract, Indexer } from 'crossbell'
 import { createContract, createIndexer } from 'crossbell'
+import { ipfsUploadFile } from 'crossbell/ipfs'
 
 import type { ClientOptions, HandleOrCharacterId, InteractionCount } from './types'
 
@@ -122,4 +123,26 @@ export class ClientBase {
     }
     return decimals
   }
+
+  /**
+   * Upload files to IPFS.
+   * @param urls remote file urls
+   * @returns
+   */
+  async uploadFileFromUrl(urls: string[]) {
+    return await Promise.all(
+      urls.map(async (url) => {
+        const response = await fetch(url)
+        const arrayBuffer = await response.arrayBuffer()
+        const file = new File([arrayBuffer], url.split('/').pop() ?? 'media-file')
+        return await ipfsUploadFile(file)
+      }),
+    )
+  }
+
+  /**
+   * Upload a file to IPFS.
+   * equivalent to `ipfsUploadFile` from `crossbell/ipfs`
+   */
+  uploadFile = ipfsUploadFile
 }
