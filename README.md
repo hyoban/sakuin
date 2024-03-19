@@ -9,18 +9,23 @@ Here is a [demo site](https://sakuin-diygod.vercel.app) for [diygod](https://diy
 
 ## SDK Usage
 
+Install dependencies, recommended use [ni](https://github.com/antfu/ni).
+
 ```sh
 ni sakuin
 ```
 
-```js
+Create a client and you can use the SDK to get the data you need.
+Most of functions take `HandleOrCharacterId` and `NoteId` as the arguments.
+
+```ts
 import { Client } from "sakuin";
 
 const client = new Client();
 const site = = await client.site.getInfo(HANDLE)
 ```
 
-Most of functions take `HandleOrCharacterId` and `NoteId` as the arguments, and return what you need to build your site.
+For more details, please refer to the [SDK documentation](https://sakuin-docs.vercel.app).
 
 ## See also
 
