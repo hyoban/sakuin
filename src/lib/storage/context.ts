@@ -4,9 +4,8 @@ import { cacheExchange, Client, fetchExchange } from '@urql/core'
 import type { Contract, Indexer } from 'crossbell'
 import { createContract, createIndexer } from 'crossbell'
 
-import type { HandleOrCharacterId, IndexerOptions, InteractionCount } from './types'
+import type { ClientOptions, HandleOrCharacterId, InteractionCount } from './types'
 
-type XLogOptions = Omit<IndexerOptions, 'experimentalRequestDedupe'> & { xLogBase?: 'xlog.app' | 'xlog.page' }
 type ClientContext = {
   client: Client,
   indexer: Indexer,
@@ -15,9 +14,12 @@ type ClientContext = {
 }
 
 export class ClientBase {
+  /**
+   * @ignore
+   */
   context: ClientContext
 
-  constructor(options?: XLogOptions) {
+  constructor(options?: ClientOptions) {
     const {
       endpoint = 'https://indexer.crossbell.io/v1',
       xLogBase = 'xlog.app',
@@ -38,6 +40,11 @@ export class ClientBase {
     }
   }
 
+  /**
+   * Get the character ID from a handle or character ID.
+   * If the input is a number, it will be treated as a character ID and returned directly.
+   * Otherwise, it will be treated as a handle and the character ID will be looked up.
+   */
   async getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
     if (typeof handleOrCharacterId === 'number')
       return handleOrCharacterId
@@ -50,6 +57,10 @@ export class ClientBase {
     return character.characterId
   }
 
+  /**
+   * Get the interaction count for a note.
+   * This includes views, likes, comments, and tips.
+   */
   async getNoteInteractionCount(
     characterId: number,
     noteId: number,

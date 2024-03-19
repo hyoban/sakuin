@@ -7,6 +7,16 @@ import { SiteClient } from './site'
 export { platforms } from './platforms'
 export * from './types'
 
+/**
+ * The main client for interacting with the xLog API.
+ *
+ * @example
+ *
+ * ```ts
+ * import { Client } from 'sakuin'
+ * const client = new Client()
+ * ```
+ */
 export class Client extends ClientBase {
   site = new SiteClient(this)
   portfolio = new PortfolioClient(this)
