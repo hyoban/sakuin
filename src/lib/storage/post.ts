@@ -59,7 +59,7 @@ type UpdateOptions = {
   post: Partial<PostInput>,
 } & ({ noteId: number } | { slug: string })
 
-export class PostClient {
+export class NoteClient {
   constructor(
     private base: ClientBase,
     private tag: Exclude<NoteType, 'portfolio'> = 'post',
