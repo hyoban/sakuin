@@ -1,13 +1,12 @@
 import type { InteractionCount, NoteBasic } from '.'
 
-export type Comment = {
-  characterId: number,
-  noteId: number,
+export type CommentInput = {
+  targetCharacterId: number,
+  targetNoteId: number,
   content: string,
-  replies: Comment[],
-  sender: {
-    name: string,
-    email: string,
-    url: string,
-  },
-} & InteractionCount & NoteBasic
+  name: string,
+  email: string,
+  url: string,
+}
+
+export type Comment = CommentInput & InteractionCount & NoteBasic & { replies: Comment[] }

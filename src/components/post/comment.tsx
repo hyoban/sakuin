@@ -25,8 +25,8 @@ function CommentView({ comment }: { comment: Comment }) {
   return (
     <li>
       <p>
-        <AppLink href={comment.sender.url} className="font-bold">
-          {comment.sender.name}
+        <AppLink href={comment.url} className="font-bold">
+          {comment.name}
         </AppLink>
         {' '}
         :

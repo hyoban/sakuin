@@ -54,14 +54,20 @@ export class CommentClient {
       const senderUrl = getXLogMeta(note.metadata?.content?.attributes, 'sender_url')
 
       return {
-        ...note,
+        characterId: note.characterId,
+        noteId: note.noteId,
+        createdAt: note.createdAt,
+        updatedAt: note.updatedAt,
+        publishedAt: note.publishedAt,
+        deletedAt: note.deletedAt,
+        uri: note.uri,
+        targetCharacterId: note.toCharacterId!,
+        targetNoteId: note.toNoteId!,
         content: note.metadata?.content?.content ?? '',
         replies: [],
-        sender: {
-          name: senderName ?? '',
-          email: senderEmail ?? '',
-          url: senderUrl ?? '',
-        },
+        name: senderName ?? '',
+        email: senderEmail ?? '',
+        url: senderUrl ?? '',
         comments: 0,
         likes: 0,
         views: 0,
@@ -71,10 +77,10 @@ export class CommentClient {
 
     const commentsWithReplies: Comment[] = await Promise.all(
       comments.map(async (comment) => {
-        if (comment.sender.name === '') {
+        if (comment.name === '') {
           const siteInfo = await this.siteClient.getInfo(comment.characterId)
-          comment.sender.name = siteInfo.characterName ?? ''
-          comment.sender.url = siteInfo.xlogUrl
+          comment.name = siteInfo.characterName ?? ''
+          comment.url = siteInfo.xlogUrl
         }
         const interaction = await this.base.getNoteInteractionCount(comment.characterId, comment.noteId)
         if (interaction.comments === 0)
