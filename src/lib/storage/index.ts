@@ -20,7 +20,7 @@ export * from './types'
 export class Client extends ClientBase {
   site = new SiteClient(this)
   portfolio = new PortfolioClient(this)
-  post = new NoteClient(this)
+  post = new NoteClient(this, 'post')
   short = new NoteClient(this, 'short')
   page = new NoteClient(this, 'page')
   comment = new CommentClient(this, this.site)

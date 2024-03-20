@@ -1,9 +1,9 @@
-import type { NoteEntity, NoteMetadata, Numberish } from 'crossbell'
+import type { NoteEntity, NoteMetadata, NoteMetadataAttachmentBase, Numberish } from 'crossbell'
 import { nanoid } from 'nanoid'
 
 import { graphql } from '../../gql'
 import type { ClientBase } from './context'
-import type { HandleOrCharacterId, NoteQueryOptions, NoteType, Post, PostInput, ResultMany } from './types'
+import type { HandleOrCharacterId, NoteQueryOptions, NoteType, Post, PostInput, ResultMany, Short, ShortInput } from './types'
 import { getXLogMeta, toCid, toGateway } from './utils'
 
 const noteQuery = graphql(`
@@ -53,23 +53,24 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 
 type CreateOptions = { raw?: boolean }
 
-type UpdateOptions = {
+type UpdateOptions<Tag extends Exclude<NoteType, 'portfolio'>> = {
   token: string,
   handleOrCharacterId: HandleOrCharacterId,
-  post: Partial<PostInput>,
+  note: Partial<Tag extends 'short' ? ShortInput : PostInput>,
 } & ({ noteId: number } | { slug: string })
 
-export class NoteClient {
-  constructor(
-    private base: ClientBase,
-    private tag: Exclude<NoteType, 'portfolio'> = 'post',
-  ) {}
+export class NoteClient<
+  Tag extends Exclude<NoteType, 'portfolio'>,
+  Input = Tag extends 'short' ? ShortInput : PostInput,
+  Output = Tag extends 'short' ? Short : Post,
+> {
+  constructor(private base: ClientBase, private tag: Tag) {}
 
   async getAll(
     handleOrCharacterId: HandleOrCharacterId,
     options?: Omit<NoteQueryOptions, 'cursor' | 'limit'> & CreateOptions,
-  ): Promise<Post[]> {
-    const result: Post[] = []
+  ): Promise<Output[]> {
+    const result: Output[] = []
 
     let currentCursor: string | null = null
     const { list, count, cursor } = await this.getMany(handleOrCharacterId, options)
@@ -88,7 +89,7 @@ export class NoteClient {
   async getMany(
     handleOrCharacterId: HandleOrCharacterId,
     options?: NoteQueryOptions & CreateOptions,
-  ): Promise<ResultMany<Post>> {
+  ): Promise<ResultMany<Output>> {
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const { indexer } = this.base.context
 
@@ -100,7 +101,7 @@ export class NoteClient {
       ...options,
     })
 
-    const list = await Promise.all(notes.list.map(note => this.createPostFromNote(note, characterId, options)))
+    const list = await Promise.all(notes.list.map(note => this.createFromNote(note, characterId, options)))
 
     return {
       list,
@@ -113,7 +114,7 @@ export class NoteClient {
     handleOrCharacterId: HandleOrCharacterId,
     noteId: Numberish,
     options?: CreateOptions,
-  ): Promise<Post | null> {
+  ): Promise<Output | null> {
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const { indexer } = this.base.context
 
@@ -121,14 +122,14 @@ export class NoteClient {
     if (!note)
       return null
 
-    return this.createPostFromNote(note, characterId, options)
+    return this.createFromNote(note, characterId, options)
   }
 
   async getBySlug(
     handleOrCharacterId: HandleOrCharacterId,
     slug: string,
     options?: CreateOptions,
-  ): Promise<Post | null> {
+  ): Promise<Output | null> {
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const { client } = this.base.context
 
@@ -136,7 +137,7 @@ export class NoteClient {
     const post = note.data?.notes.at(0)
     if (!post)
       return null
-    return this.createPostFromNote(post as NoteEntity, characterId, options)
+    return this.createFromNote(post as NoteEntity, characterId, options)
   }
 
   private ensureToken(token: string) {
@@ -150,20 +151,16 @@ export class NoteClient {
   async put({
     token,
     handleOrCharacterId,
-    post,
+    note,
   }: {
     token: string,
     handleOrCharacterId: HandleOrCharacterId,
-    post: PostInput,
+    note: Input,
   }) {
     this.ensureToken(token)
     const { indexer } = this.base.context
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
-    const metadata = this.createNoteMetaFromPostInput({
-      values: post,
-      type: this.tag,
-      autofill: true,
-    })
+    const metadata = this.createNoteMetaFromInput({ values: note, autofill: true })
 
     return indexer.siwe.putNote({
       characterId,
@@ -174,22 +171,21 @@ export class NoteClient {
   async update({
     token,
     handleOrCharacterId,
-    post,
+    note,
     ...options
-  }: UpdateOptions) {
+  }: UpdateOptions<Tag>) {
     this.ensureToken(token)
     const { indexer } = this.base.context
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
-    const postToUpdate = ('noteId' in options)
+    const noteToUpdate = ('noteId' in options)
       ? await this.get(characterId, options.noteId)
       : await this.getBySlug(characterId, options.slug)
-    if (!postToUpdate)
+    if (!noteToUpdate)
       throw new Error('Post not found')
 
-    const { noteId } = postToUpdate
-    const metadata = this.createNoteMetaFromPostInput({
-      values: { ...postToUpdate, ...this.clearUnknownAttributes(post) },
-      type: this.tag,
+    const { noteId } = noteToUpdate as unknown as NoteEntity
+    const metadata = this.createNoteMetaFromInput({
+      values: { ...noteToUpdate, ...this.clearUnknownAttributes(note) },
     })
 
     return indexer.siwe.updateNote({
@@ -199,11 +195,11 @@ export class NoteClient {
     })
   }
 
-  private clearUnknownAttributes(input?: Record<string, unknown> | null): Partial<PostInput> {
+  private clearUnknownAttributes(input?: Record<string, unknown> | null): Partial<Input> {
     if (typeof input !== 'object' || !input)
       return {}
     const keys = Object.keys(input)
-    const result: Partial<PostInput> = {}
+    const result: Partial<Input> = {}
     for (const key of keys) {
       if (
         [
@@ -217,53 +213,69 @@ export class NoteClient {
           'cover',
         ].includes(key)
       )
-        result[key as keyof PostInput] = input[key] as never
+        result[key as keyof Input] = input[key] as never
     }
     return result
   }
 
-  private createNoteMetaFromPostInput({
+  private createNoteMetaFromInput({
     values,
-    type,
     autofill,
   }: {
-    values: Partial<PostInput>,
-    type: Exclude<NoteType, 'portfolio'>,
+    values: Partial<Input>,
     autofill?: boolean,
   }): NoteMetadata & { summary?: string } {
+    if (this.tag === 'short') {
+      const short = values as unknown as Partial<ShortInput>
+      return {
+        attributes: [
+          {
+            trait_type: 'xlog_slug',
+            value: short.slug || (autofill ? nanoid() : ''),
+          },
+        ],
+        tags: [this.tag],
+        title: '',
+        content: short.content,
+        attachments: short.attachments,
+        sources: ['xlog'],
+        date_published: short.datePublishedAt || (autofill ? new Date().toISOString() : undefined),
+      }
+    }
+
+    const post = values as unknown as Partial<PostInput>
     return {
       attributes: [
         {
           trait_type: 'xlog_slug',
-          value: values.slug || (autofill ? nanoid() : ''),
+          value: post.slug || (autofill ? nanoid() : ''),
         },
-        ...(values.disableAISummary
+        ...(post.disableAISummary
           ? [
               {
                 trait_type: 'xlog_disable_ai_summary',
-                value: values.disableAISummary,
+                value: post.disableAISummary,
               },
             ]
           : []),
       ],
-      tags: [type, ...(values.tags ?? []).map((tag: string) => tag.trim()).filter(Boolean)],
-      title: values.title,
-      content: values.content,
-      attachments: values.cover ? [{ name: 'cover', address: values.cover }] : [],
+      tags: [this.tag, ...(post.tags ?? []).map((tag: string) => tag.trim()).filter(Boolean)],
+      title: post.title,
+      content: post.content,
+      attachments: post.cover ? [{ name: 'cover', address: post.cover }] : [],
       sources: ['xlog'],
-      date_published: values.datePublishedAt || (autofill ? new Date().toISOString() : undefined),
-      summary: values.summary,
+      date_published: post.datePublishedAt || (autofill ? new Date().toISOString() : undefined),
+      summary: post.summary,
     }
   }
 
   private postFilter = (att: { name?: string }) => att.name === 'cover'
-  private shortFilter = (att: { name?: string }) => att.name === 'image'
 
-  private async createPostFromNote(
+  private async createFromNote(
     note: NoteEntity,
     characterId: number,
     options?: CreateOptions,
-  ): Promise<Post> {
+  ): Promise<Output> {
     const { raw = false } = options ?? {}
     const { xLogBase } = this.base.context
     const { noteId } = note
@@ -275,10 +287,13 @@ export class NoteClient {
     const match = content.match(/!\[.*?]\((.*?)\)/g)
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
 
-    const coverInAttachments = note.metadata?.content?.attachments?.find(this.tag === 'post' ? this.postFilter : this.shortFilter)
-    const cover = (raw
-      ? coverInAttachments?.address
-      : toGateway(coverInAttachments?.address) ?? imagesInContent.at(0)) ?? ''
+    const rawAttachments = (note.metadata?.content?.attachments ?? []) as Array<NoteMetadataAttachmentBase<'address'>>
+    const attachments = rawAttachments.map(att => ({
+      ...att,
+      address: raw ? att.address : toGateway(att.address),
+    }))
+    const coverInAttachments = attachments.find(element => this.postFilter(element))
+    const cover = coverInAttachments?.address ?? imagesInContent.at(0) ?? ''
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
@@ -289,6 +304,31 @@ export class NoteClient {
       summary = json.summary ?? ''
     }
 
+    const datePublishedAt = note.metadata?.content?.date_published ?? ''
+    const slug = getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? ''
+    const title = note.metadata?.content?.title ?? ''
+    const tags = note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? []
+
+    if (this.tag === 'short') {
+      return {
+        characterId: note.characterId,
+        noteId: note.noteId,
+        createdAt: note.createdAt,
+        updatedAt: note.updatedAt,
+        publishedAt: note.publishedAt,
+        deletedAt: note.deletedAt,
+        uri: note.uri,
+        views: interaction.views,
+        likes: interaction.likes,
+        comments: interaction.comments,
+        tips: interaction.tips,
+        content,
+        datePublishedAt,
+        slug,
+        attachments,
+      } satisfies Short as Output
+    }
+
     return {
       characterId: note.characterId,
       noteId: note.noteId,
@@ -297,15 +337,18 @@ export class NoteClient {
       publishedAt: note.publishedAt,
       deletedAt: note.deletedAt,
       uri: note.uri,
-      title: note.metadata?.content?.title ?? '',
-      slug: getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? '',
-      datePublishedAt: note.metadata?.content?.date_published ?? '',
-      tags: note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? [],
+      views: interaction.views,
+      likes: interaction.likes,
+      comments: interaction.comments,
+      tips: interaction.tips,
+      title,
+      slug,
+      datePublishedAt,
+      tags,
       summary,
       cover,
       content,
       disableAISummary,
-      ...interaction,
-    }
+    } satisfies Post as Output
   }
 }

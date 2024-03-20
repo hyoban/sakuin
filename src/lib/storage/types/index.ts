@@ -42,4 +42,5 @@ export type NoteBasic = Pick<NoteEntity, 'noteId' | 'characterId' | 'uri' | 'cre
 export * from './comment'
 export * from './portfolio'
 export * from './post'
+export * from './short'
 export * from './site'
