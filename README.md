@@ -15,8 +15,8 @@ Install dependencies, recommended use [ni](https://github.com/antfu/ni).
 ni sakuin
 ```
 
-Create a client and you can use the SDK to get the data you need.
-Most of functions take `HandleOrCharacterId` and `NoteId` as the arguments.
+Create a client and use the SDK to get the data you need.
+Most functions take `HandleOrCharacterId` and `NoteId` as the arguments.
 
 ```ts
 import { Client } from "sakuin";
@@ -25,7 +25,7 @@ const client = new Client();
 const site = = await client.site.getInfo(HANDLE)
 ```
 
-For more details, please refer to the [SDK documentation](https://sakuin-docs.vercel.app).
+For more details, please take a look at the [SDK documentation](https://sakuin-docs.vercel.app).
 
 ## See also
 
