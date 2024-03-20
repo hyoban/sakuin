@@ -36,7 +36,7 @@ async function ShortItem(
     >
       <Image src={photos} alt={short.content} width={size?.width} height={size?.height} />
       <div className="px-2 py-3 space-y-2">
-        <p>{short.content}</p>
+        <p>{short.title || short.content}</p>
       </div>
     </AppLink>
   )

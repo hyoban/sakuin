@@ -286,10 +286,12 @@ export class NoteClient<
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
 
     const rawAttachments = (note.metadata?.content?.attachments ?? []) as Array<NoteMetadataAttachmentBase<'address'>>
-    const attachments = rawAttachments.map(att => ({
-      ...att,
-      address: raw ? att.address : toGateway(att.address),
-    }))
+    const attachments = rawAttachments
+      .filter(att => att.address)
+      .map(att => ({
+        ...att,
+        address: raw ? att.address : toGateway(att.address),
+      }))
     const coverInAttachments = attachments.find(att => att.name === 'cover')
     const cover = coverInAttachments?.address ?? (raw ? '' : imagesInContent.at(0) ?? '')
 
@@ -320,6 +322,7 @@ export class NoteClient<
         likes: interaction.likes,
         comments: interaction.comments,
         tips: interaction.tips,
+        title,
         content,
         datePublishedAt,
         slug,
