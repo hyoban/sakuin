@@ -11,6 +11,6 @@ export function useDark() {
   return {
     isDark,
     toggleDark: setIsDark as () => void,
-    theme: (isDark ? 'dark' : 'light'),
+    theme: (isDark ? 'dark' : 'light') as 'dark' | 'light',
   }
 }
