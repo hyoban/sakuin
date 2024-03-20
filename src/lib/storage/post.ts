@@ -3,7 +3,8 @@ import { nanoid } from 'nanoid'
 
 import { graphql } from '../../gql'
 import type { ClientBase } from './context'
-import type { HandleOrCharacterId, NoteQueryOptions, NoteType, Post, PostInput, ResultMany, Short, ShortInput } from './types'
+import type { HandleOrCharacterId, NoteType, Post, PostInput, Short, ShortInput } from './types'
+import type { NoteQueryOptions, ResultMany } from './types/utils'
 import { getXLogMeta, toCid, toGateway } from './utils'
 
 const noteQuery = graphql(`

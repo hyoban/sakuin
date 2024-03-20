@@ -1,8 +1,30 @@
 import type { AttributesMetadata } from 'crossbell'
 
-import type { Navigation, SocialPlatform, XLogTraitType } from '../types'
+import type { Navigation, SocialPlatform } from '../types'
 
 export * from './ipfs-parser'
+
+const XLogTrait = [
+  'xlog_css',
+  'xlog_ga',
+  'xlog_ua',
+  'xlog_uh',
+  'xlog_site_name',
+  'xlog_navigation',
+  'xlog_custom_domain',
+  'xlog_footer',
+
+  'xlog_slug',
+  'xlog_disable_ai_summary',
+
+  'xlog_sender_name',
+  'xlog_sender_email',
+  'xlog_sender_url',
+] as const
+
+type RemovePrefix<T extends string> = T extends `xlog_${infer U}` ? U : never
+
+type XLogTraitType = RemovePrefix<typeof XLogTrait[number]>
 
 export function getXLogMeta(
   attributes: AttributesMetadata['attributes'],

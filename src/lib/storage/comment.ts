@@ -2,7 +2,8 @@ import type { Numberish } from 'crossbell'
 
 import type { ClientBase } from './context'
 import type { SiteClient } from './site'
-import type { Comment, CommentInput, HandleOrCharacterId, NoteQueryOptions, ResultMany } from './types'
+import type { Comment, CommentInput, HandleOrCharacterId } from './types'
+import type { NoteQueryOptions, ResultMany } from './types/utils'
 import { getXLogMeta } from './utils'
 
 export class CommentClient {

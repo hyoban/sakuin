@@ -1,4 +1,4 @@
-import type { createIndexer, Indexer, NoteEntity } from 'crossbell'
+import type { createIndexer, NoteEntity } from 'crossbell'
 
 type IndexerOptions = Omit<Exclude<Parameters<typeof createIndexer>[0], undefined | string>, 'experimentalRequestDedupe'>
 /**
@@ -27,13 +27,6 @@ export type InteractionCount = {
   likes: number,
   comments: number,
   tips: number,
-}
-
-export type NoteQueryOptions = Parameters<Indexer['note']['getMany']>[0]
-export type ResultMany<T> = {
-  list: T[],
-  count: number,
-  cursor: string | null,
 }
 
 export type NoteType = 'post' | 'page' | 'portfolio' | 'short'

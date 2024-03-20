@@ -1,7 +1,8 @@
 import type { NoteEntity } from 'crossbell'
 
 import type { ClientBase } from './context'
-import type { HandleOrCharacterId, NoteQueryOptions, Portfolio, PortfolioStats, ResultMany } from './types'
+import type { HandleOrCharacterId, Portfolio, PortfolioStats } from './types'
+import type { NoteQueryOptions, ResultMany } from './types/utils'
 import { toGateway } from './utils'
 
 export class PortfolioClient {
