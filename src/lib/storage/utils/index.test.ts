@@ -9,7 +9,7 @@ test('get character id', async () => {
   expect(await client.getCharacterId('diygod')).toBe(10)
   expect(await client.getCharacterId(10)).toBe(10)
   await expect(() => client.getCharacterId('thisCharacterDoesNotExist')).rejects
-    .toThrowErrorMatchingInlineSnapshot(`[Error: Character not found]`)
+    .toThrowErrorMatchingInlineSnapshot('[Error: Character not found]')
 
   await expect(() => client.getCharacterId('$')).rejects
     .toThrowErrorMatchingInlineSnapshot(`

@@ -19,7 +19,7 @@ export const platforms: Record<string, {
   'twitter': {
     name: 'Twitter',
     url: 'https://twitter.com/{username}',
-    portfolioDomain: `https://twitter.com/`,
+    portfolioDomain: 'https://twitter.com/',
     icon: 'i-simple-icons-twitter',
   },
   'twitter_id': {
@@ -30,7 +30,7 @@ export const platforms: Record<string, {
   'x': {
     name: 'X',
     url: 'https://x.com/{username}',
-    portfolioDomain: `https://x.com/`,
+    portfolioDomain: 'https://x.com/',
     icon: 'i-simple-icons-x',
   },
   'x_id': {
@@ -41,7 +41,7 @@ export const platforms: Record<string, {
   'pixiv': {
     name: 'Pixiv',
     url: 'https://www.pixiv.net/users/{username}',
-    portfolioDomain: `https://www.pixiv.net/`,
+    portfolioDomain: 'https://www.pixiv.net/',
     icon: 'i-simple-icons-pixiv',
   },
   'substack': {
@@ -57,7 +57,7 @@ export const platforms: Record<string, {
   'github': {
     name: 'GitHub',
     url: 'https://github.com/{username}',
-    portfolioDomain: `https://github.com/`,
+    portfolioDomain: 'https://github.com/',
     icon: 'i-simple-icons-github',
   },
   'jike': {
@@ -68,7 +68,7 @@ export const platforms: Record<string, {
     name: 'bilibili',
     icon: 'i-simple-icons-bilibili',
     url: 'https://space.bilibili.com/{username}',
-    portfolioDomain: `https://www.bilibili.com/`,
+    portfolioDomain: 'https://www.bilibili.com/',
   },
   'zhihu': {
     name: '知乎',
@@ -92,7 +92,7 @@ export const platforms: Record<string, {
   'xiaoyuzhou': {
     name: '小宇宙播客',
     url: 'https://www.xiaoyuzhoufm.com/podcast/{username}',
-    portfolioDomain: `https://www.xiaoyuzhoufm.com/`,
+    portfolioDomain: 'https://www.xiaoyuzhoufm.com/',
   },
   'steam': {
     name: 'Steam',
@@ -117,7 +117,7 @@ export const platforms: Record<string, {
   'youtube': {
     name: 'Youtube',
     url: 'https://youtube.com/@{username}',
-    portfolioDomain: `https://youtube.com/`,
+    portfolioDomain: 'https://youtube.com/',
     icon: 'i-simple-icons-youtube',
   },
   'facebook': {
