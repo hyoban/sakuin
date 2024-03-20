@@ -291,7 +291,7 @@ export class NoteClient<
       address: raw ? att.address : toGateway(att.address),
     }))
     const coverInAttachments = attachments.find(att => att.name === 'cover')
-    const cover = (raw ? coverInAttachments?.address : imagesInContent.at(0)) ?? ''
+    const cover = coverInAttachments?.address ?? (raw ? '' : imagesInContent.at(0) ?? '')
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
