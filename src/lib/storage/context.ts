@@ -133,8 +133,7 @@ export class ClientBase {
     return await Promise.all(
       urls.map(async (url) => {
         const response = await fetch(url)
-        const arrayBuffer = await response.arrayBuffer()
-        const file = new File([arrayBuffer], url.split('/').pop() ?? 'media-file')
+        const file = new Blob([await response.blob()])
         return await ipfsUploadFile(file)
       }),
     )
