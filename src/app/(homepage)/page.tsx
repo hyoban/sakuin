@@ -3,8 +3,6 @@ import { client } from '../../lib/client'
 import { getImageDimensionByUri } from '../utils'
 import { PostList } from './post-list'
 
-export const revalidate = 3600
-
 export default async function HomePage() {
   const { list: posts, cursor } = await client.post.getMany(env.HANDLE)
 

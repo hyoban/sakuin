@@ -16,7 +16,7 @@ export function ListItem(
   return (
     <AppLink
       href={link}
-      className="-mx-3 px-3 py-3 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
+      className="-mx-3 px-3 py-3 my-2 flex flex-col font-normal no-underline rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800"
     >
       <div className="flex gap-2">
         <span>{title}</span>

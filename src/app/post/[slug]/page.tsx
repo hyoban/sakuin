@@ -6,8 +6,6 @@ import { PageMeta, PostMeta } from '../../../components/post/meta'
 import { env } from '../../../env'
 import { client } from '../../../lib/client'
 
-export const revalidate = 3600
-
 export async function generateStaticParams() {
   const { list: posts } = await client.post.getMany(env.HANDLE)
   const slugs = posts.map(post => post.slug)

@@ -6,8 +6,6 @@ import { client } from '../../../lib/client'
 import { AppLink } from '../../external-link'
 import { getImageDimensionByUri } from '../../utils'
 
-export const revalidate = 3600
-
 export default async function ShortPage() {
   const { list: shorts } = await client.short.getMany(env.HANDLE)
 
