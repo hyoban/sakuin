@@ -74,8 +74,8 @@ devDependencies:
     specifier: ^18.2.22
     version: 18.2.22
   autoprefixer:
-    specifier: ^10.4.18
-    version: 10.4.18(postcss@8.4.37)
+    specifier: ^10.4.19
+    version: 10.4.19(postcss@8.4.37)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -3983,15 +3983,15 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /autoprefixer@10.4.18(postcss@8.4.37):
-    resolution: {integrity: sha512-1DKbDfsr6KUElM6wg+0zRNkB/Q7WcKYAaK+pzXn+Xqmszm/5Xa9coeNdtP88Vi+dPzZnMjhge8GIV49ZQkDa+g==}
+  /autoprefixer@10.4.19(postcss@8.4.37):
+    resolution: {integrity: sha512-BaENR2+zBZ8xXhM4pUaKUxlVdxZ0EZhjvbopwnXmxRUfqDmwSpC2lAi/QXvx7NRdPCo1WKEcEF6mV64si1z4Ew==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001591
+      caniuse-lite: 1.0.30001599
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -4200,7 +4200,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001591
+      caniuse-lite: 1.0.30001599
       electron-to-chromium: 1.4.690
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
@@ -4353,6 +4353,10 @@ packages:
 
   /caniuse-lite@1.0.30001591:
     resolution: {integrity: sha512-PCzRMei/vXjJyL5mJtzNiUCKP59dm8Apqc3PH8gJkMnMXZGox93RbE76jHsmLwmIo6/3nsYIpJtx0O7u5PqFuQ==}
+    dev: true
+
+  /caniuse-lite@1.0.30001599:
+    resolution: {integrity: sha512-LRAQHZ4yT1+f9LemSMeqdMpMxZcc4RMWdj4tiFe3G8tNkWK+E58g+/tzotb5cU6TbcVJLr4fySiAW7XmxQvZQA==}
     dev: true
 
   /capital-case@1.0.4:
@@ -5056,6 +5060,17 @@ packages:
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.0.0
+    dev: true
+
+  /debug@3.1.0:
+    resolution: {integrity: sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==}
     peerDependencies:
       supports-color: '*'
     peerDependenciesMeta:
@@ -8536,7 +8551,7 @@ packages:
       object-assign: 4.1.1
       opn: 6.0.0
       proxy-middleware: 0.15.0
-      send: 0.18.0
+      send: 1.0.0-beta.2
       serve-index: 1.9.1
     transitivePeerDependencies:
       - supports-color
@@ -9423,12 +9438,6 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.52.0
-    dev: true
-
-  /mime@1.6.0:
-    resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
-    engines: {node: '>=4'}
-    hasBin: true
     dev: true
 
   /mimic-fn@2.1.0:
@@ -11366,19 +11375,18 @@ packages:
       lru-cache: 6.0.0
     dev: true
 
-  /send@0.18.0:
-    resolution: {integrity: sha512-qqWzuOjSFOuqPjFe4NOsMLafToQQwBSOEpS+FwEt3A2V3vKubTquT3vmLTQpFgMXp8AlFWFuP1qKaJZOtPpVXg==}
-    engines: {node: '>= 0.8.0'}
+  /send@1.0.0-beta.2:
+    resolution: {integrity: sha512-k1yHu/FNK745PULKdsGpQ+bVSXYNwSk+bWnYzbxGZbt5obZc0JKDVANsCRuJD1X/EG15JtP9eZpwxkhUxIYEcg==}
+    engines: {node: '>= 0.10'}
     dependencies:
-      debug: 2.6.9
-      depd: 2.0.0
+      debug: 3.1.0
       destroy: 1.2.0
       encodeurl: 1.0.2
       escape-html: 1.0.3
       etag: 1.8.1
       fresh: 0.5.2
       http-errors: 2.0.0
-      mime: 1.6.0
+      mime-types: 2.1.35
       ms: 2.1.3
       on-finished: 2.4.1
       range-parser: 1.2.1
