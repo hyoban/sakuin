@@ -85,7 +85,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "eslint": "^8.57.0",
-    "eslint-config-hyoban": "^0.2.7",
+    "eslint-config-hyoban": "^0.2.8",
     "eslint-plugin-react-hooks": "^4.6.0",
     "graphql": "^16.8.1",
     "hast-util-from-html": "^2.0.1",
