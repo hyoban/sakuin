@@ -6,7 +6,7 @@ import './globals.css'
 
 import localFont from 'next/font/local'
 import Balancer from 'react-wrap-balancer'
-import type { Language } from 'sakuin'
+import { type Language, languages } from 'sakuin'
 
 import { LanguageSwitch } from '~/components/language-switch'
 
@@ -80,6 +80,10 @@ const snPro = localFont({
     },
   ],
 })
+
+export function generateStaticParams() {
+  return languages.map(locale => ({ locale }))
+}
 
 export default async function RootLayout({ children, params }: React.PropsWithChildren<{ params: { locale: Language } }>) {
   const { HANDLE, SITE_URL } = env
