@@ -134,10 +134,10 @@ export default async function RootLayout({ children, params }: React.PropsWithCh
           {children}
         </Providers>
         <footer
-          className="mx-6 flex justify-center opacity-80 text-sm my-6 text-center"
+          className="mx-6 flex flex-col gap-4 items-center opacity-80 text-sm mb-6 text-center"
         >
-          <LanguageSwitch currentLocale={params.locale} />
           {footer && (<Balancer className="max-w-[670px]">{footer}</Balancer>)}
+          <LanguageSwitch currentLocale={params.locale} />
         </footer>
       </body>
     </html>
