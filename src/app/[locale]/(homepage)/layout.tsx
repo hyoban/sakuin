@@ -1,3 +1,5 @@
+import type { Language } from 'sakuin'
+
 import { AppearanceSwitch } from '~/components/appearance-switch'
 
 import { env } from '../../../env'
@@ -6,7 +8,7 @@ import { AppLink } from '../external-link'
 import { Navigation } from '../navigation'
 import { getUniverseLinks } from '../utils'
 
-export default async function HomeLayout({ children }: React.PropsWithChildren) {
+export default async function HomeLayout({ children, params }: React.PropsWithChildren<{ params: { locale: Language } }>) {
   const { HANDLE } = env
   const {
     characterName,
@@ -51,7 +53,7 @@ export default async function HomeLayout({ children }: React.PropsWithChildren) 
           </section>
         )}
       </section>
-      <Navigation additionalNavigation={navigations} />
+      <Navigation additionalNavigation={navigations} locale={params.locale} />
       {children}
     </main>
   )
