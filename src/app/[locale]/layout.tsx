@@ -6,6 +6,9 @@ import './globals.css'
 
 import localFont from 'next/font/local'
 import Balancer from 'react-wrap-balancer'
+import type { Language } from 'sakuin'
+
+import { LanguageSwitch } from '~/components/language-switch'
 
 import { env } from '../../env'
 import { client } from '../../lib/client'
@@ -78,7 +81,7 @@ const snPro = localFont({
   ],
 })
 
-export default async function RootLayout({ children }: React.PropsWithChildren) {
+export default async function RootLayout({ children, params }: React.PropsWithChildren<{ params: { locale: Language } }>) {
   const { HANDLE, SITE_URL } = env
   const {
     siteName,
@@ -130,14 +133,12 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
         <Providers>
           {children}
         </Providers>
-        {footer
-        && (
-          <footer
-            className="mx-6 flex justify-center opacity-80 text-sm my-6 text-center"
-          >
-            <Balancer className="max-w-[670px]">{footer}</Balancer>
-          </footer>
-        )}
+        <footer
+          className="mx-6 flex justify-center opacity-80 text-sm my-6 text-center"
+        >
+          <LanguageSwitch currentLocale={params.locale} />
+          {footer && (<Balancer className="max-w-[670px]">{footer}</Balancer>)}
+        </footer>
       </body>
     </html>
   )
