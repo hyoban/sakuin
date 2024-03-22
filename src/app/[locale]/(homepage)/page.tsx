@@ -6,7 +6,7 @@ import { getImageDimensionByUri } from '../utils'
 import { PostList } from './post-list'
 
 export default async function HomePage({ params }: { params: { locale: Language } }) {
-  const { list: posts, cursor } = await client.post.getMany(env.HANDLE, { translate: { to: params.locale, from: 'zh' } })
+  const { list: posts, cursor } = await client.post.getMany(env.HANDLE, { translate: { to: params.locale, from: env.LANGUAGE } })
 
   const postsWithCoverSize = await Promise.all(posts.map(async (post, index) => {
     if (!post.cover)

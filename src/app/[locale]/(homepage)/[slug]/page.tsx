@@ -12,14 +12,14 @@ export async function generateStaticParams({
 }: {
   params: { locale: Language },
 }) {
-  const pages = await client.page.getAll(env.HANDLE, { translate: { to: locale, from: 'zh' } })
-  const slugs = pages.map(post => post.slug)
+  const pages = await client.page.getAll(env.HANDLE, { translate: { to: locale, from: env.LANGUAGE } })
+  const slugs = pages.map(page => page.slug)
   return slugs.map(slug => ({ slug }))
 }
 
 export default async function PagePage({ params }: { params: { slug: string, locale: Language } }) {
   const { HANDLE } = env
-  const post = await client.page.getBySlug(HANDLE, params.slug, { translate: { to: params.locale, from: 'zh' } })
+  const post = await client.page.getBySlug(HANDLE, params.slug, { translate: { to: params.locale, from: env.LANGUAGE } })
   if (!post)
     notFound()
 

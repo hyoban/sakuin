@@ -12,14 +12,14 @@ export async function generateStaticParams({
 }: {
   params: { locale: Language },
 }) {
-  const { list: posts } = await client.post.getMany(env.HANDLE, { translate: { to: locale, from: 'zh' } })
+  const { list: posts } = await client.post.getMany(env.HANDLE, { translate: { to: locale, from: env.LANGUAGE } })
   const slugs = posts.map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }
 
 export default async function PostPage({ params }: { params: { slug: string, locale: Language } }) {
   const { HANDLE } = env
-  const post = await client.post.getBySlug(HANDLE, params.slug, { translate: { to: params.locale, from: 'zh' } })
+  const post = await client.post.getBySlug(HANDLE, params.slug, { translate: { to: params.locale, from: env.LANGUAGE } })
   if (!post)
     notFound()
 
