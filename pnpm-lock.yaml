@@ -32,8 +32,8 @@ devDependencies:
     specifier: ^3.2.0
     version: 3.2.0(graphql@16.8.1)
   '@iconify-json/lucide':
-    specifier: ^1.1.176
-    version: 1.1.176
+    specifier: ^1.1.177
+    version: 1.1.177
   '@iconify-json/simple-icons':
     specifier: ^1.1.96
     version: 1.1.96
@@ -2000,8 +2000,8 @@ packages:
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
     dev: true
 
-  /@iconify-json/lucide@1.1.176:
-    resolution: {integrity: sha512-qO2TsQ+9WhfJgdGaW5J1Is2OxpMjcx1C1E86caWftKXv2B6APSSlw4A8mXn/aOJLhYiv4adjYKNha71TD+FE/Q==}
+  /@iconify-json/lucide@1.1.177:
+    resolution: {integrity: sha512-SQbHei3LEBDR+7O8odUWWWncIovVfJ1oulG9+MaLysNU/7BwjsEuALnGPH3mIYS57mZ2MlLvPr5yj3TILTLU/Q==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true

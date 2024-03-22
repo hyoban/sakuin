@@ -67,7 +67,7 @@
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.4",
     "@graphql-typed-document-node/core": "^3.2.0",
-    "@iconify-json/lucide": "^1.1.176",
+    "@iconify-json/lucide": "^1.1.177",
     "@iconify-json/simple-icons": "^1.1.96",
     "@next/eslint-plugin-next": "^14.1.4",
     "@parcel/watcher": "^2.4.1",
