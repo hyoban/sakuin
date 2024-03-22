@@ -12,4 +12,4 @@ export type ShortInput = {
   attachments?: Array<NoteMetadataAttachmentBase<'address'>>,
 }
 
-export type Short = ShortInput & { lang: Language } & InteractionCount & NoteBasic
+export type Short = ShortInput & { lang?: Language } & InteractionCount & NoteBasic

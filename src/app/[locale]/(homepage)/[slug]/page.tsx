@@ -15,7 +15,7 @@ export async function generateStaticParams() {
 
 export default async function PagePage({ params }: { params: { slug: string, locale: Language } }) {
   const { HANDLE } = env
-  const post = await client.page.getBySlug(HANDLE, params.slug, { translateTo: params.locale })
+  const post = await client.page.getBySlug(HANDLE, params.slug, { translate: { to: params.locale, from: 'zh' } })
   if (!post)
     notFound()
 

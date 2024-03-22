@@ -12,4 +12,4 @@ export type PostInput = {
   cover: string,
 }
 
-export type Post = PostInput & { lang: Language } & InteractionCount & NoteBasic
+export type Post = PostInput & { lang?: Language } & InteractionCount & NoteBasic

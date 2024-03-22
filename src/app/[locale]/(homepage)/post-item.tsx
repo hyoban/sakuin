@@ -16,7 +16,7 @@ export function PostItem({ post }: PostItemProps) {
   if (!post.cover) {
     return (
       <AppLink
-        href={`${post.lang}/post/${post.slug}`}
+        href={`${post.lang ?? 'zh'}/post/${post.slug}`}
         className={(isLoading) => {
           return clsx(
             'not-prose my-6 p-4 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
@@ -32,7 +32,7 @@ export function PostItem({ post }: PostItemProps) {
 
   return (
     <AppLink
-      href={`${post.lang}/post/${post.slug}`}
+      href={`${post.lang ?? 'zh'}/post/${post.slug}`}
       transition
       className={isLoading => clsx(
         'not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
