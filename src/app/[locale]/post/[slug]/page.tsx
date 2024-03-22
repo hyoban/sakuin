@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
 import type { Language } from 'sakuin'
-import { languages } from 'sakuin'
 
 import { Comment } from '../../../../components/post/comment'
 import { Markdown } from '../../../../components/post/markdown'
@@ -8,14 +7,14 @@ import { PageMeta, PostMeta } from '../../../../components/post/meta'
 import { env } from '../../../../env'
 import { client } from '../../../../lib/client'
 
-export async function generateStaticParams() {
-  const params: Array<{ slug: string, locale: Language }> = []
-  for (const locale of languages) {
-    const { list: posts } = await client.page.getMany(env.HANDLE, { translate: { to: locale, from: 'zh' } })
-    const slugs = posts.map(post => post.slug)
-    params.push(...slugs.map(slug => ({ slug, locale })))
-  }
-  return params
+export async function generateStaticParams({
+  params: { locale },
+}: {
+  params: { locale: Language },
+}) {
+  const { list: posts } = await client.page.getMany(env.HANDLE, { translate: { to: locale, from: 'zh' } })
+  const slugs = posts.map(post => post.slug)
+  return slugs.map(slug => ({ slug }))
 }
 
 export default async function PostPage({ params }: { params: { slug: string, locale: Language } }) {
