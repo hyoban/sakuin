@@ -12,7 +12,7 @@ export async function generateStaticParams({
 }: {
   params: { locale: Language },
 }) {
-  const { list: posts } = await client.page.getMany(env.HANDLE, { translate: { to: locale, from: 'zh' } })
+  const { list: posts } = await client.post.getMany(env.HANDLE, { translate: { to: locale, from: 'zh' } })
   const slugs = posts.map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }

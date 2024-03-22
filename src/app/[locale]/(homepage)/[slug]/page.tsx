@@ -7,8 +7,12 @@ import { PageMeta, PostMeta } from '../../../../components/post/meta'
 import { env } from '../../../../env'
 import { client } from '../../../../lib/client'
 
-export async function generateStaticParams() {
-  const pages = await client.page.getAll(env.HANDLE)
+export async function generateStaticParams({
+  params: { locale },
+}: {
+  params: { locale: Language },
+}) {
+  const pages = await client.page.getAll(env.HANDLE, { translate: { to: locale, from: 'zh' } })
   const slugs = pages.map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }
