@@ -1,7 +1,7 @@
 'use server'
 
-import { env } from '../../env'
-import { client } from '../../lib/client'
+import { env } from '../../../env'
+import { client } from '../../../lib/client'
 import { getImageDimensionByUri } from '../utils'
 
 export async function fetchMorePost(cursor: string | null) {

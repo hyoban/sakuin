@@ -8,8 +8,8 @@ import remarkGfm from 'remark-gfm'
 import remarkGithubAlerts from 'remark-github-alerts'
 import remarkParse from 'remark-parse'
 
-import { AppLink } from '../../app/external-link'
-import { getImageDimensionByUri } from '../../app/utils'
+import { AppLink } from '../../app/[locale]/external-link'
+import { getImageDimensionByUri } from '../../app/[locale]/utils'
 import { rehypeEmbed, transformers } from './rehype-embed'
 
 export function Markdown({ content }: { content: string }) {

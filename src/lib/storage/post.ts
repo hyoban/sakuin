@@ -2,10 +2,17 @@ import type { NoteEntity, NoteMetadata, NoteMetadataAttachmentBase, Numberish } 
 import { nanoid } from 'nanoid'
 
 import { graphql } from '../../gql'
+import type { Language } from '.'
 import type { ClientBase } from './context'
 import type { HandleOrCharacterId, NoteType, Post, PostInput, Short, ShortInput } from './types'
 import type { NoteQueryOptions, ResultMany } from './types/utils'
 import { getXLogMeta, toCid, toGateway } from './utils'
+import { detectLanguage } from './utils/detect-lang'
+
+type ContentTranslation = {
+  title?: string,
+  content?: string,
+}
 
 const noteQuery = graphql(`
 query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
@@ -36,6 +43,7 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
   ) {
     characterId
     noteId
+    uri
     metadata {
       uri
       content
@@ -52,7 +60,7 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 }
 `)
 
-type CreateOptions = { raw?: boolean }
+type CreateOptions = { raw?: boolean, translateTo?: Language }
 
 type UpdateOptions<Tag extends Exclude<NoteType, 'portfolio'>> = {
   token: string,
@@ -275,14 +283,21 @@ export class NoteClient<
     characterId: number,
     options?: CreateOptions,
   ): Promise<Output> {
-    const { raw = false } = options ?? {}
+    const { raw = false, translateTo } = options ?? {}
     const { xLogBase } = this.base.context
     const { noteId } = note
     const interaction = await this.base.getNoteInteractionCount(characterId, noteId)
 
-    const content = raw
-      ? note.metadata?.content?.content ?? ''
-      : toGateway(note.metadata?.content?.content) ?? ''
+    const detectedLang = detectLanguage(note.metadata?.content?.content ?? '')
+    let translate: ContentTranslation | undefined = undefined
+    if (options?.translateTo && note.uri) {
+      const response = await fetch(`https://${xLogBase}/api/translate-note?cid=${toCid(note.uri)}&fromLang=${detectedLang}&toLang=${options.translateTo}`)
+      const json = await response.json() as { data: ContentTranslation }
+      translate = json.data
+    }
+
+    const rawContent = translate?.content ?? note.metadata?.content?.content ?? ''
+    const content = raw ? rawContent : toGateway(rawContent)!
     const match = content.match(/!\[.*?]\((.*?)\)/g)
     const imagesInContent = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
 
@@ -300,15 +315,16 @@ export class NoteClient<
     let summary = note.metadata?.content?.summary as string | undefined ?? ''
     const disableAISummary = !!getXLogMeta(note.metadata?.content?.attributes, 'disable_ai_summary')
     if (!disableAISummary && !raw && !summary && note.uri) {
-      const res = await fetch(`https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri)}&lang=zh`)
+      const res = await fetch(`https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri)}&lang=${translateTo ?? detectedLang}`)
       const json = await res.json() as { summary: string | null }
       summary = json.summary ?? ''
     }
 
     const datePublishedAt = note.metadata?.content?.date_published ?? ''
     const slug = getXLogMeta(note.metadata?.content?.attributes, 'slug') ?? ''
-    const title = note.metadata?.content?.title ?? ''
+    const title = translate?.title ?? note.metadata?.content?.title ?? ''
     const tags = note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post') ?? []
+    const lang = options?.translateTo ?? detectedLang
 
     if (this.tag === 'short') {
       return {
@@ -328,6 +344,7 @@ export class NoteClient<
         datePublishedAt,
         slug,
         attachments,
+        lang,
       } satisfies Short as Output
     }
 
@@ -351,6 +368,7 @@ export class NoteClient<
       cover,
       content,
       disableAISummary,
+      lang,
     } satisfies Post as Output
   }
 }

@@ -7,8 +7,8 @@ import './globals.css'
 import localFont from 'next/font/local'
 import Balancer from 'react-wrap-balancer'
 
-import { env } from '../env'
-import { client } from '../lib/client'
+import { env } from '../../env'
+import { client } from '../../lib/client'
 import Providers from './providers'
 
 const snPro = localFont({
@@ -16,62 +16,62 @@ const snPro = localFont({
   preload: false,
   src: [
     {
-      path: '../font/SNPro-Thin.otf',
+      path: '../../font/SNPro-Thin.otf',
       weight: '100',
       style: 'normal',
     },
     {
-      path: '../font/SNPro-ThinItalic.otf',
+      path: '../../font/SNPro-ThinItalic.otf',
       weight: '100',
       style: 'italic',
     },
     {
-      path: '../font/SNPro-Light.otf',
+      path: '../../font/SNPro-Light.otf',
       weight: '300',
       style: 'normal',
     },
     {
-      path: '../font/SNPro-LightItalic.otf',
+      path: '../../font/SNPro-LightItalic.otf',
       weight: '300',
       style: 'italic',
     },
     {
-      path: '../font/SNPro-Regular.otf',
+      path: '../../font/SNPro-Regular.otf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../font/SNPro-RegularItalic.otf',
+      path: '../../font/SNPro-RegularItalic.otf',
       weight: '400',
       style: 'italic',
     },
     {
-      path: '../font/SNPro-Medium.otf',
+      path: '../../font/SNPro-Medium.otf',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../font/SNPro-MediumItalic.otf',
+      path: '../../font/SNPro-MediumItalic.otf',
       weight: '500',
       style: 'italic',
     },
     {
-      path: '../font/SNPro-Semibold.otf',
+      path: '../../font/SNPro-Semibold.otf',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../font/SNPro-SemiboldItalic.otf',
+      path: '../../font/SNPro-SemiboldItalic.otf',
       weight: '600',
       style: 'italic',
     },
     {
-      path: '../font/SNPro-Bold.otf',
+      path: '../../font/SNPro-Bold.otf',
       weight: '700',
       style: 'normal',
     },
     {
-      path: '../font/SNPro-BoldItalic.otf',
+      path: '../../font/SNPro-BoldItalic.otf',
       weight: '700',
       style: 'italic',
     },

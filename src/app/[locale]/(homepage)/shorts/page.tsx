@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import type { Short } from 'sakuin'
 
-import { env } from '../../../env'
-import { client } from '../../../lib/client'
+import { env } from '../../../../env'
+import { client } from '../../../../lib/client'
 import { AppLink } from '../../external-link'
 import { getImageDimensionByUri } from '../../utils'
 

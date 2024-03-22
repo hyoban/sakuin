@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
-import { env } from '../env'
-import { client } from '../lib/client'
+import { env } from '../../env'
+import { client } from '../../lib/client'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { HANDLE, SITE_URL } = env

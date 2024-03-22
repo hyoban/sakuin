@@ -1,3 +1,4 @@
+import type { Language } from '../'
 import type { InteractionCount, NoteBasic } from '.'
 
 export type PostInput = {
@@ -11,4 +12,4 @@ export type PostInput = {
   cover: string,
 }
 
-export type Post = PostInput & InteractionCount & NoteBasic
+export type Post = PostInput & { lang: Language } & InteractionCount & NoteBasic

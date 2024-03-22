@@ -1,7 +1,7 @@
 import { AppearanceSwitch } from '~/components/appearance-switch'
 
-import { env } from '../../env'
-import { client } from '../../lib/client'
+import { env } from '../../../env'
+import { client } from '../../../lib/client'
 import { AppLink } from '../external-link'
 import { Navigation } from '../navigation'
 import { getUniverseLinks } from '../utils'

@@ -7,6 +7,9 @@ import { SiteClient } from './site'
 export { platforms } from './platforms'
 export * from './types'
 
+export const languages = ['en', 'zh', 'zh-TW', 'ja'] as const
+export type Language = typeof languages[number]
+
 /**
  * The main client for interacting with the xLog API.
  *

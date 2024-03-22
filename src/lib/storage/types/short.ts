@@ -1,5 +1,6 @@
 import type { NoteMetadataAttachmentBase } from 'crossbell'
 
+import type { Language } from '../'
 import type { InteractionCount, NoteBasic } from '.'
 
 export type ShortInput = {
@@ -11,4 +12,4 @@ export type ShortInput = {
   attachments?: Array<NoteMetadataAttachmentBase<'address'>>,
 }
 
-export type Short = ShortInput & InteractionCount & NoteBasic
+export type Short = ShortInput & { lang: Language } & InteractionCount & NoteBasic
