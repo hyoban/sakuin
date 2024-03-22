@@ -20,8 +20,8 @@ export function Navigation(
       {navigation
         .map(({ href, label }) => (
           <Link
-            key={`${locale}/${href}`}
-            href={`${locale}/${href}`}
+            key={`/${locale}${href}`}
+            href={`/${locale}${href}`}
             className={clsx(
               pathname === href
                 ? 'font-semibold underline underline-offset-4'
