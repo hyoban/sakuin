@@ -288,7 +288,7 @@ export class NoteClient<
     const interaction = await this.base.getNoteInteractionCount(characterId, noteId)
 
     let translation: ContentTranslation | undefined = undefined
-    if (options?.translate && note.uri) {
+    if (options?.translate && note.uri && options.translate.from !== options.translate.to) {
       const response = await fetch(`https://${xLogBase}/api/translate-note?cid=${toCid(note.uri)}&fromLang=${options.translate.from}&toLang=${options.translate.to}`)
       const json = await response.json() as { data: ContentTranslation }
       translation = json.data
