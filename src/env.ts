@@ -1,6 +1,7 @@
 import { createEnv } from '@t3-oss/env-nextjs'
-import { languages } from 'sakuin'
 import { z } from 'zod'
+
+import { languages } from './lib/storage'
 
 export const env = createEnv({
   server: {
