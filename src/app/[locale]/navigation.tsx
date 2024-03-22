@@ -23,7 +23,7 @@ export function Navigation(
             key={`/${locale}${href}`}
             href={`/${locale}${href}`}
             className={clsx(
-              pathname === href
+              pathname === `/${locale}${href.length === 1 ? '' : href}`
                 ? 'font-semibold underline underline-offset-4'
                 : 'opacity-80',
               'hover:opacity-100',
