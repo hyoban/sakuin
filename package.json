@@ -52,7 +52,6 @@
     "dev:docs": "pnpm run build:docs --watch",
     "knip": "knip",
     "lint": "eslint .",
-    "prepare": "simple-git-hooks",
     "prepublishOnly": "pnpm run build:lib",
     "start": "next start",
     "start:docs": "live-server docs",
@@ -89,7 +88,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "eslint": "^8.57.0",
-    "eslint-config-hyoban": "^0.2.11",
+    "eslint-config-hyoban": "^0.2.12",
     "eslint-plugin-react-hooks": "^4.6.0",
     "graphql": "^16.8.1",
     "hast-util-from-html": "^2.0.1",
@@ -98,8 +97,7 @@
     "jotai": "^2.7.1",
     "jotai-dark": "^0.3.0",
     "jotai-effect": "^0.6.0",
-    "knip": "^5.2.2",
-    "lint-staged": "^15.2.2",
+    "knip": "^5.4.0",
     "live-server": "^1.2.2",
     "lucide-react": "^0.363.0",
     "next": "^14.1.4",
@@ -117,7 +115,6 @@
     "remark-gfm": "^4.0.0",
     "remark-github-alerts": "^0.1.0-beta.3",
     "remark-parse": "^11.0.0",
-    "simple-git-hooks": "^2.11.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
@@ -129,11 +126,5 @@
     "unist-util-visit": "^5.0.0",
     "vitest": "^1.4.0",
     "zod": "^3.22.4"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
   }
 }
