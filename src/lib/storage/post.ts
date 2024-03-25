@@ -8,7 +8,7 @@ import type { HandleOrCharacterId, NoteType, Post, PostInput, Short, ShortInput 
 import type { NoteQueryOptions, ResultMany } from './types/utils'
 import { getXLogMeta, toCid, toGateway } from './utils'
 
-type ContentTranslation = {
+interface ContentTranslation {
   title?: string,
   content?: string,
 }
@@ -59,7 +59,7 @@ query getNotes($characterId: Int!, $slug: JSON!, $tag: JSON!) {
 }
 `)
 
-type CreateOptions = { raw?: boolean, translate?: { from: Language, to: Language } }
+interface CreateOptions { raw?: boolean, translate?: { from: Language, to: Language } }
 
 type UpdateOptions<Tag extends Exclude<NoteType, 'portfolio'>> = {
   token: string,

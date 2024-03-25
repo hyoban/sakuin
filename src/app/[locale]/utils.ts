@@ -17,7 +17,7 @@ export function getSuperscript(portfolio: Portfolio) {
   return ''
 }
 
-type Link = {
+interface Link {
   href: string,
   title: string,
   icon?: string,

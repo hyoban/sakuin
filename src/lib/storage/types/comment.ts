@@ -1,6 +1,6 @@
 import type { InteractionCount, NoteBasic } from '.'
 
-export type CommentInput = {
+export interface CommentInput {
   targetCharacterId: number,
   targetNoteId: number,
   content: string,

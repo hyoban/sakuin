@@ -4,7 +4,7 @@ import { match } from 'path-to-regexp'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 
-type Transformer = {
+interface Transformer {
   name: string,
   shouldTransform: (url: URL) => boolean,
   getHTML: (url: URL) => string | undefined,

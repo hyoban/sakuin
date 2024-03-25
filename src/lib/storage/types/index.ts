@@ -22,7 +22,7 @@ export type HandleOrCharacterId = string | number
 /**
  * The interaction count for a note.
  */
-export type InteractionCount = {
+export interface InteractionCount {
   views: number,
   likes: number,
   comments: number,

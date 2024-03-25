@@ -7,7 +7,7 @@ import { ipfsUploadFile } from 'crossbell/ipfs'
 
 import type { ClientOptions, HandleOrCharacterId, InteractionCount } from './types'
 
-type ClientContext = {
+interface ClientContext {
   client: Client,
   indexer: Indexer,
   contract: Contract,

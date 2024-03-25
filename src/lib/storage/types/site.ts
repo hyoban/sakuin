@@ -1,15 +1,15 @@
-export type SocialPlatform = {
+export interface SocialPlatform {
   platform: string,
   id: string,
 }
 
-export type Navigation = {
+export interface Navigation {
   id: string,
   label: string,
   url: string,
 }
 
-export type SiteInfo = {
+export interface SiteInfo {
   handle: string,
   characterId: number,
   xlogUrl: string,

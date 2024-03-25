@@ -1,4 +1,4 @@
-export type PortfolioStats = {
+export interface PortfolioStats {
   videoViewsCount?: number,
   audioListensCount?: number,
   projectStarsCount?: number,
