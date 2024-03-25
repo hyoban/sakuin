@@ -10,7 +10,7 @@ export type PostWithCoverInfo = Post & {
   coverSize: { width: number, height: number } | null,
   priority?: boolean,
 }
-type PostItemProps = {
+interface PostItemProps {
   post: PostWithCoverInfo,
 }
 

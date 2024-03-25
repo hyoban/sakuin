@@ -89,8 +89,8 @@ devDependencies:
     specifier: ^8.57.0
     version: 8.57.0
   eslint-config-hyoban:
-    specifier: ^0.2.10
-    version: 0.2.10(@eslint-react/eslint-plugin@1.5.6)(@next/eslint-plugin-next@14.1.4)(eslint-plugin-react-hooks@4.6.0)(eslint@8.57.0)(typescript@5.4.3)
+    specifier: ^0.2.11
+    version: 0.2.11(@eslint-react/eslint-plugin@1.5.6)(@next/eslint-plugin-next@14.1.4)(eslint-plugin-react-hooks@4.6.0)(eslint@8.57.0)(typescript@5.4.3)
   eslint-plugin-react-hooks:
     specifier: ^4.6.0
     version: 4.6.0(eslint@8.57.0)
@@ -3616,10 +3616,6 @@ packages:
     resolution: {integrity: sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A==}
     dev: true
 
-  /@types/semver@7.5.6:
-    resolution: {integrity: sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==}
-    dev: true
-
   /@types/semver@7.5.8:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
     dev: true
@@ -3935,7 +3931,7 @@ packages:
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.57.0)
       '@types/json-schema': 7.0.15
-      '@types/semver': 7.5.6
+      '@types/semver': 7.5.8
       '@typescript-eslint/scope-manager': 7.2.0
       '@typescript-eslint/types': 7.2.0
       '@typescript-eslint/typescript-estree': 7.2.0(typescript@5.4.3)
@@ -6039,8 +6035,8 @@ packages:
       parse-gitignore: 2.0.0
     dev: true
 
-  /eslint-config-hyoban@0.2.10(@eslint-react/eslint-plugin@1.5.6)(@next/eslint-plugin-next@14.1.4)(eslint-plugin-react-hooks@4.6.0)(eslint@8.57.0)(typescript@5.4.3):
-    resolution: {integrity: sha512-65dW05t1sVegIwZoFVZ/suEd3+Dt3UAOhRLZFC85ZusO76ecL/X7SgiAzNFV3uoFMHXLDGtaed5UCUYAOQ8K0w==}
+  /eslint-config-hyoban@0.2.11(@eslint-react/eslint-plugin@1.5.6)(@next/eslint-plugin-next@14.1.4)(eslint-plugin-react-hooks@4.6.0)(eslint@8.57.0)(typescript@5.4.3):
+    resolution: {integrity: sha512-YXwIJEzGYmo8WpokIUCxwFNsQZzO/vXbkQZmVLETq8K2IOD6k1XCCJqYigb8HbTN90KZ51jnsXNGbVFlqjcwDg==}
     hasBin: true
     peerDependencies:
       '@eslint-react/eslint-plugin': '>=1.5.3'
@@ -6065,7 +6061,7 @@ packages:
       eslint-plugin-antfu: 2.1.2(eslint@8.57.0)
       eslint-plugin-format: 0.1.0(eslint@8.57.0)
       eslint-plugin-hyoban: 0.2.7(eslint@8.57.0)(typescript@5.4.3)
-      eslint-plugin-import-x: 0.4.1(eslint@8.57.0)(typescript@5.4.3)
+      eslint-plugin-import-x: 0.4.3(eslint@8.57.0)(typescript@5.4.3)
       eslint-plugin-jsonc: 2.14.1(eslint@8.57.0)
       eslint-plugin-react-hooks: 4.6.0(eslint@8.57.0)
       eslint-plugin-simple-import-sort: 12.0.0(eslint@8.57.0)
@@ -6152,16 +6148,17 @@ packages:
       - typescript
     dev: true
 
-  /eslint-plugin-import-x@0.4.1(eslint@8.57.0)(typescript@5.4.3):
-    resolution: {integrity: sha512-UqbL8DEewDKdCQZmSsm9lzdzyyDhWmWo//HQTnbLkNW7nIWukluuc6IaE5dAFQSa9mK/M8IHTywvOvMMaX25XQ==}
+  /eslint-plugin-import-x@0.4.3(eslint@8.57.0)(typescript@5.4.3):
+    resolution: {integrity: sha512-5nfy/FjvhH16fu4p7/8uOUYEQ+yMqROhW1g3q4zYzfZHeGDt3Ckl2H1P5ihnXxBUeBW5Vx20gLe58SUUh2oEVQ==}
     engines: {node: '>=16'}
     peerDependencies:
-      eslint: ^7.2.0 || ^8
+      eslint: ^7.2.0 || ^8 || ^9.0.0-0
     dependencies:
       '@typescript-eslint/utils': 5.62.0(eslint@8.57.0)(typescript@5.4.3)
       debug: 4.3.4
       doctrine: 3.0.0
       eslint: 8.57.0
+      eslint-compat-utils: 0.5.0(eslint@8.57.0)
       eslint-import-resolver-node: 0.3.9
       get-tsconfig: 4.7.3
       is-glob: 4.0.3

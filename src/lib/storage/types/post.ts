@@ -1,7 +1,7 @@
 import type { Language } from '../'
 import type { InteractionCount, NoteBasic } from '.'
 
-export type PostInput = {
+export interface PostInput {
   title: string,
   content: string,
   datePublishedAt: string,
