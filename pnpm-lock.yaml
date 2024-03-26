@@ -158,8 +158,8 @@ devDependencies:
     specifier: ^17.1.1
     version: 17.1.1(typescript@5.4.3)
   release-it-pnpm:
-    specifier: ^4.1.5
-    version: 4.1.5(release-it@17.1.1)
+    specifier: ^4.1.6
+    version: 4.1.6(release-it@17.1.1)
   remark-gfm:
     specifier: ^4.0.0
     version: 4.0.0
@@ -10986,8 +10986,8 @@ packages:
       - encoding
     dev: true
 
-  /release-it-pnpm@4.1.5(release-it@17.1.1):
-    resolution: {integrity: sha512-o0XE3wdm8dS3WJ9dFX5N+DlZBkf8wFtyrZMFBB1NgG3mO2R78uMxBHGu5I2nyABTb9DGxIynCWG+u7S22TjM0Q==}
+  /release-it-pnpm@4.1.6(release-it@17.1.1):
+    resolution: {integrity: sha512-hDewi/V8yrOPd9WiZ6ZcH/8QqhC9ZhYwgrU59JZTvCtN34VTYorpYO9/sEb2VyiVnqFFnGuffoCPnAhjIUvXmQ==}
     hasBin: true
     peerDependencies:
       release-it: ^17.0.0
