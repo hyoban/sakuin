@@ -53,8 +53,8 @@ devDependencies:
     specifier: ^1.0.2
     version: 1.0.2(@types/react@18.2.69)(react@18.2.0)
   '@shikijs/rehype':
-    specifier: ^1.2.0
-    version: 1.2.0
+    specifier: ^1.2.1
+    version: 1.2.1
   '@t3-oss/env-nextjs':
     specifier: ^0.9.2
     version: 0.9.2(typescript@5.4.3)(zod@3.22.4)
@@ -3326,25 +3326,25 @@ packages:
       '@scure/base': 1.1.5
     dev: false
 
-  /@shikijs/core@1.2.0:
-    resolution: {integrity: sha512-OlFvx+nyr5C8zpcMBnSGir0YPD6K11uYhouqhNmm1qLiis4GA7SsGtu07r9gKS9omks8RtQqHrJL4S+lqWK01A==}
+  /@shikijs/core@1.2.1:
+    resolution: {integrity: sha512-KaIS0H4EQ3KI2d++TjYqRNgwp8E3M/68e9veR4QtInzA7kKFgcjeiJqb80fuXW+blDy5fmd11PN9g9soz/3ANQ==}
     dev: true
 
-  /@shikijs/rehype@1.2.0:
-    resolution: {integrity: sha512-k6LARhiQEufC2TR7Jb3mFgGSHil/vYnrqInTq1goEWRCCm+88GlysE4KwC6lyOjigKTlaV1thVfFXP2+LD2bKw==}
+  /@shikijs/rehype@1.2.1:
+    resolution: {integrity: sha512-9ncncKvutFfZBB2qlciMRjcqNmeO2fNHseZDFNWNGfSf5qEi5TDZLW5PDsAV7Z61xcc1puZ51LigVucknvF5Fw==}
     dependencies:
-      '@shikijs/transformers': 1.2.0
+      '@shikijs/transformers': 1.2.1
       '@types/hast': 3.0.4
       hast-util-to-string: 3.0.0
-      shiki: 1.2.0
+      shiki: 1.2.1
       unified: 11.0.4
       unist-util-visit: 5.0.0
     dev: true
 
-  /@shikijs/transformers@1.2.0:
-    resolution: {integrity: sha512-xKn7DtA65DQV4FOfYsrvqM80xOy2xuXnxWWKsZmHv1VII/IOuDUDsWDu3KnpeLH6wqNJWp1GRoNUsHR1aw/VhQ==}
+  /@shikijs/transformers@1.2.1:
+    resolution: {integrity: sha512-H7cVtrdv6BW2kx83t2IQgP5ri1IA50mE3QnzgJ0AvOKCGtCEieXu0JIP3245cgjNLrL+LBwb8DtTXdky1iQL9Q==}
     dependencies:
-      shiki: 1.2.0
+      shiki: 1.2.1
     dev: true
 
   /@sinclair/typebox@0.27.8:
@@ -11545,10 +11545,10 @@ packages:
       vscode-textmate: 8.0.0
     dev: true
 
-  /shiki@1.2.0:
-    resolution: {integrity: sha512-xLhiTMOIUXCv5DqJ4I70GgQCtdlzsTqFLZWcMHHG3TAieBUbvEGthdrlPDlX4mL/Wszx9C6rEcxU6kMlg4YlxA==}
+  /shiki@1.2.1:
+    resolution: {integrity: sha512-u+XW6o0vCkUNlneZb914dLO+AayEIwK5tI62WeS//R5HIXBFiYaj/Hc5xcq27Yh83Grr4JbNtUBV8W6zyK4hWg==}
     dependencies:
-      '@shikijs/core': 1.2.0
+      '@shikijs/core': 1.2.1
     dev: true
 
   /short-unique-id@5.0.3:
