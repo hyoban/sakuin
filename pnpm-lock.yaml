@@ -128,8 +128,8 @@ devDependencies:
     specifier: ^14.1.4
     version: 14.1.4(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
   next-intl:
-    specifier: ^3.9.5
-    version: 3.9.5(next@14.1.4)(react@18.2.0)
+    specifier: ^3.10.0
+    version: 3.10.0(next@14.1.4)(react@18.2.0)
   next-mdx-remote:
     specifier: 0.0.0-canary-20240314011020
     version: 0.0.0-canary-20240314011020(@types/react@18.2.69)(react-dom@18.2.0)(react@18.2.0)
@@ -9723,8 +9723,8 @@ packages:
       type-fest: 2.19.0
     dev: true
 
-  /next-intl@3.9.5(next@14.1.4)(react@18.2.0):
-    resolution: {integrity: sha512-tsp4N433WgTAbbyZdMlcsLGHFM88wv2a7ZpF/od8X9+qAlO1TrajZrNrGBpIg6nA9EGZyMbQPzZD7XZrqYIv7g==}
+  /next-intl@3.10.0(next@14.1.4)(react@18.2.0):
+    resolution: {integrity: sha512-kqQvOxLvI3ZjvcMFwOBjh71ufNWxHEMaEgxhFZGIXYAvkRI//9zbqeQJkQMwEpI6mDBM+6n+SJd0+pLt0t5GVw==}
     peerDependencies:
       next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -9733,7 +9733,7 @@ packages:
       negotiator: 0.6.3
       next: 14.1.4(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      use-intl: 3.9.5(react@18.2.0)
+      use-intl: 3.10.0(react@18.2.0)
     dev: true
 
   /next-mdx-remote@0.0.0-canary-20240314011020(@types/react@18.2.69)(react-dom@18.2.0)(react@18.2.0):
@@ -12771,8 +12771,8 @@ packages:
       tslib: 2.6.2
     dev: true
 
-  /use-intl@3.9.5(react@18.2.0):
-    resolution: {integrity: sha512-1g+f/pKEeXqOXrd+QBvwnIN5kzM56PHsorbVWzNvlnGk2fo/eRwuuT/S0jTuzKLRW4uNybpHvRs6U06rP31iKw==}
+  /use-intl@3.10.0(react@18.2.0):
+    resolution: {integrity: sha512-rKCDbszyUP88477VP6DBCN3t3xdTta2o5GwgN1Rlquctm4PErO1YPDY+UI8DgfkVAWNt6X9gfF7ntQZ20H2ivg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
