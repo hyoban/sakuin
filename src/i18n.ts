@@ -11,7 +11,7 @@ export default getRequestConfig(async ({ locale }) => {
     notFound()
 
   return {
-    // eslint-disable-next-line unicorn/no-await-expression-member
+
     messages: (await import(`../messages/${locale}.json`)).default,
   }
 })
