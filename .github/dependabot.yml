@@ -15,6 +15,7 @@ updates:
       - dependency-name: '@types/node'
       - dependency-name: 'vscode'
       - dependency-name: '@types/vscode'
+      - dependency-name: 'next-mdx-remote'
     groups:
       minor-and-patch:
         update-types:
