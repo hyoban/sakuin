@@ -5,7 +5,7 @@ import { languages } from './lib/storage'
 
 export const env = createEnv({
   server: {
-    HANDLE: z.string(),
+    HANDLE: z.string().default('hyoban'),
     SITE_URL: z.string().optional(),
     LANGUAGE: z.enum(languages).optional().default('zh'),
   },
