@@ -24,7 +24,6 @@ export function Markdown({ content }: { content: string }) {
 
           const size = await getImageDimensionByUri(props.src)
           if (!size)
-          // eslint-disable-next-line @next/next/no-img-element
             return <img {...props} />
           return (
             <Image
