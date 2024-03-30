@@ -5,8 +5,6 @@ All you need to do is click the button below and fill in your `HANDLE` in the en
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhyoban%2Fsakuin&env=HANDLE)
 
-Here is a [demo site](https://sakuin-diygod.vercel.app) for [diygod](https://diygod.cc).
-
 ## SDK Usage
 
 Install dependencies, recommended use [ni](https://github.com/antfu/ni).
