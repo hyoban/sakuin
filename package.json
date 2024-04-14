@@ -110,8 +110,6 @@
 		"react-tweet": "^3.2.1",
 		"react-wrap-balancer": "^1.1.0",
 		"rehype-raw": "^7.0.0",
-		"release-it": "^17.2.0",
-		"release-it-pnpm": "^4.1.9",
 		"remark-gfm": "^4.0.0",
 		"remark-github-alerts": "^0.1.0-beta.3",
 		"remark-parse": "^11.0.0",
