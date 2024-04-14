@@ -20,8 +20,8 @@
 		"types": ["react/experimental", "node"],
 		"jsx": "preserve",
 		"paths": {
-			"sakuin": ["./src/lib/storage/index.ts"],
-			"~/*": ["./src/*"]
+			"sakuin": ["./src/index.ts"],
+			"~/*": ["./*"]
 		},
 		"incremental": false,
 		"plugins": [

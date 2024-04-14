@@ -1,4 +1,4 @@
-import { graphql } from "../../gql";
+import { graphql } from "../gql";
 import type { ClientBase } from "./context";
 import type { HandleOrCharacterId, SiteInfo } from "./types";
 import { getFullXLogMeta, parseConnectedAccount, toGateway } from "./utils";

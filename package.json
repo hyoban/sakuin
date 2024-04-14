@@ -45,8 +45,8 @@
 	],
 	"scripts": {
 		"build": "next build",
-		"build:docs": "typedoc src/lib/storage/index.ts --plugin typedoc-plugin-missing-exports --excludeExternals",
-		"build:lib": "tsup src/lib/storage/index.ts --dts --format esm,cjs -d out",
+		"build:docs": "typedoc src/index.ts --plugin typedoc-plugin-missing-exports --excludeExternals",
+		"build:lib": "tsup src/index.ts --dts --format esm,cjs -d out",
 		"codegen": "graphql-codegen",
 		"dev": "next dev",
 		"dev:docs": "pnpm run build:docs --watch",

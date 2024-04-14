@@ -7,7 +7,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const jiti = createJiti(fileURLToPath(import.meta.url));
 
 // Import env here to validate during build. Using jiti we can import .ts files :)
-jiti("./src/env");
+jiti("./env");
 
 const withNextIntl = createNextIntlPlugin();
 

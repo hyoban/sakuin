@@ -6,7 +6,7 @@ import type {
 } from "crossbell";
 import { nanoid } from "nanoid";
 
-import { graphql } from "../../gql";
+import { graphql } from "../gql";
 import type { Language } from ".";
 import type { ClientBase } from "./context";
 import type {
