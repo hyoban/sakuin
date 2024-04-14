@@ -21,6 +21,7 @@ dist-ssr
 next-env.d.ts
 node_modules
 out
+output
 temp
 
 # Logs

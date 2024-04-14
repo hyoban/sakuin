@@ -20,33 +20,33 @@
 	"exports": {
 		".": {
 			"import": {
-				"types": "./out/index.d.ts",
-				"default": "./out/index.js"
+				"types": "./output/index.d.ts",
+				"default": "./output/index.js"
 			},
 			"require": {
-				"types": "./out/index.d.cts",
-				"default": "./out/index.cjs"
+				"types": "./output/index.d.cts",
+				"default": "./output/index.cjs"
 			}
 		}
 	},
-	"main": "./out/index.cjs",
-	"module": "./out/index.js",
-	"types": "./out/index.d.ts",
+	"main": "./output/index.cjs",
+	"module": "./output/index.js",
+	"types": "./output/index.d.ts",
 	"typesVersions": {
 		"*": {
 			"*": [
-				"./out/*",
-				"./out/index.d.ts"
+				"./output/*",
+				"./output/index.d.ts"
 			]
 		}
 	},
 	"files": [
-		"out"
+		"output"
 	],
 	"scripts": {
 		"build": "next build",
 		"build:docs": "typedoc src/index.ts --plugin typedoc-plugin-missing-exports --excludeExternals",
-		"build:lib": "tsup src/index.ts --dts --format esm,cjs -d out",
+		"build:lib": "bunchee",
 		"codegen": "graphql-codegen",
 		"dev": "next dev",
 		"dev:docs": "pnpm run build:docs --watch",
@@ -84,6 +84,7 @@
 		"@types/react": "^18.2.78",
 		"@types/react-dom": "^18.2.25",
 		"autoprefixer": "^10.4.19",
+		"bunchee": "^5.1.2",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"eslint": "^9.0.0",
@@ -116,7 +117,6 @@
 		"tailwind-merge": "^2.2.2",
 		"tailwindcss": "^3.4.3",
 		"tailwindcss-animate": "^1.0.7",
-		"tsup": "^8.0.2",
 		"typedoc": "^0.25.13",
 		"typedoc-plugin-missing-exports": "^2.2.0",
 		"typescript": "^5.4.5",
