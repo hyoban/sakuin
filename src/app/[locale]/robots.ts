@@ -1,17 +1,16 @@
-import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next";
 
-import { env } from '../../env'
+import { env } from "../../env";
 
 export default function robots(): MetadataRoute.Robots {
-  const { SITE_URL } = env
-  if (!SITE_URL)
-    return { rules: [] }
+	const { SITE_URL } = env;
+	if (!SITE_URL) return { rules: [] };
 
-  return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-    },
-    sitemap: `${SITE_URL}/sitemap.xml`,
-  }
+	return {
+		rules: {
+			userAgent: "*",
+			allow: "/",
+		},
+		sitemap: `${SITE_URL}/sitemap.xml`,
+	};
 }

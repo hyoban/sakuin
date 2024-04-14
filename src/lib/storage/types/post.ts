@@ -1,15 +1,16 @@
-import type { Language } from '../'
-import type { InteractionCount, NoteBasic } from '.'
+import type { Language } from "../";
+import type { InteractionCount, NoteBasic } from ".";
 
 export interface PostInput {
-  title: string,
-  content: string,
-  datePublishedAt: string,
-  summary: string,
-  tags: string[],
-  slug: string,
-  disableAISummary: boolean,
-  cover: string,
+	title: string;
+	content: string;
+	datePublishedAt: string;
+	summary: string;
+	tags: string[];
+	slug: string;
+	disableAISummary: boolean;
+	cover: string;
 }
 
-export type Post = PostInput & { lang?: Language } & InteractionCount & NoteBasic
+export type Post = PostInput & { lang?: Language } & InteractionCount &
+	NoteBasic;

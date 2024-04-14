@@ -1,7 +1,7 @@
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
-  "ignore": ["src/gql/**/*.ts"],
-  "entry": ["src/lib/storage/**/*.test.ts"],
-  "ignoreDependencies": ["@iconify-json/.*", "lint-staged"],
-  "ignoreBinaries": ["should-semantic-release"]
+	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"ignore": ["src/gql/**/*.ts"],
+	"entry": ["src/lib/storage/**/*.test.ts"],
+	"ignoreDependencies": ["@iconify-json/.*", "lint-staged"],
+	"ignoreBinaries": ["should-semantic-release"]
 }

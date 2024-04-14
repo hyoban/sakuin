@@ -1,5 +1,3 @@
-import hyoban from 'eslint-config-hyoban'
+import hyoban from "eslint-config-hyoban";
 
-export default hyoban(
-  { ignores: ['src/gql/**'] },
-)
+export default hyoban({ ignores: ["src/gql/**"], react: true });

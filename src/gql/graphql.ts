@@ -370,25 +370,13 @@ export type CharacterMinOrderByAggregateInput = {
   uri?: InputMaybe<SortOrder>;
 };
 
-export type CharacterOrderByRelationAggregateInput = {
-  _count?: InputMaybe<SortOrder>;
+export type CharacterNullableRelationFilter = {
+  is?: InputMaybe<CharacterWhereInput>;
+  isNot?: InputMaybe<CharacterWhereInput>;
 };
 
-export enum CharacterOrderByRelevanceFieldEnum {
-  FromAddress = 'fromAddress',
-  Handle = 'handle',
-  Operator = 'operator',
-  Owner = 'owner',
-  SocialToken = 'socialToken',
-  TransactionHash = 'transactionHash',
-  UpdatedTransactionHash = 'updatedTransactionHash',
-  Uri = 'uri'
-}
-
-export type CharacterOrderByRelevanceInput = {
-  fields: Array<CharacterOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
+export type CharacterOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
 };
 
 export type CharacterOrderByWithAggregationInput = {
@@ -416,8 +404,7 @@ export type CharacterOrderByWithAggregationInput = {
   uri?: InputMaybe<SortOrderInput>;
 };
 
-export type CharacterOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<CharacterOrderByRelevanceInput>;
+export type CharacterOrderByWithRelationInput = {
   blockNumber?: InputMaybe<SortOrder>;
   characterId?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
@@ -431,7 +418,7 @@ export type CharacterOrderByWithRelationAndSearchRelevanceInput = {
   handle?: InputMaybe<SortOrder>;
   linklists?: InputMaybe<LinklistOrderByRelationAggregateInput>;
   logIndex?: InputMaybe<SortOrder>;
-  metadata?: InputMaybe<MetadataOrderByWithRelationAndSearchRelevanceInput>;
+  metadata?: InputMaybe<MetadataOrderByWithRelationInput>;
   notes?: InputMaybe<NoteOrderByRelationAggregateInput>;
   notifications?: InputMaybe<NotificationOrderByRelationAggregateInput>;
   operator?: InputMaybe<SortOrder>;
@@ -452,6 +439,11 @@ export type CharacterOrderByWithRelationAndSearchRelevanceInput = {
   updatedLogIndex?: InputMaybe<SortOrder>;
   updatedTransactionHash?: InputMaybe<SortOrder>;
   uri?: InputMaybe<SortOrderInput>;
+};
+
+export type CharacterRelationFilter = {
+  is?: InputMaybe<CharacterWhereInput>;
+  isNot?: InputMaybe<CharacterWhereInput>;
 };
 
 export enum CharacterScalarFieldEnum {
@@ -642,7 +634,43 @@ export type CharacterWhereInput = {
 };
 
 export type CharacterWhereUniqueInput = {
+  AND?: InputMaybe<Array<CharacterWhereInput>>;
+  NOT?: InputMaybe<Array<CharacterWhereInput>>;
+  OR?: InputMaybe<Array<CharacterWhereInput>>;
+  blockNumber?: InputMaybe<IntFilter>;
   characterId?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  feeds?: InputMaybe<FeedListRelationFilter>;
+  fromAddress?: InputMaybe<StringFilter>;
+  fromLinks?: InputMaybe<LinkListRelationFilter>;
+  fromMintedNotes?: InputMaybe<MintedNoteListRelationFilter>;
+  fromNestedNotes?: InputMaybe<NoteListRelationFilter>;
+  fromNotes?: InputMaybe<NoteListRelationFilter>;
+  handle?: InputMaybe<StringFilter>;
+  linklists?: InputMaybe<LinklistListRelationFilter>;
+  logIndex?: InputMaybe<IntFilter>;
+  metadata?: InputMaybe<MetadataNullableRelationFilter>;
+  notes?: InputMaybe<NoteListRelationFilter>;
+  notifications?: InputMaybe<NotificationListRelationFilter>;
+  operator?: InputMaybe<StringFilter>;
+  owner?: InputMaybe<StringFilter>;
+  primary?: InputMaybe<BoolFilter>;
+  receivedTipConfigs?: InputMaybe<TipConfigListRelationFilter>;
+  receivedTips?: InputMaybe<TipListRelationFilter>;
+  sentTips?: InputMaybe<TipListRelationFilter>;
+  socialToken?: InputMaybe<StringNullableFilter>;
+  stat?: InputMaybe<CharacterStatListRelationFilter>;
+  tipConfigs?: InputMaybe<TipConfigListRelationFilter>;
+  toLinkModules?: InputMaybe<LinkModuleListRelationFilter>;
+  toLinks?: InputMaybe<LinkListRelationFilter>;
+  toMintModules?: InputMaybe<MintModuleListRelationFilter>;
+  transactionHash?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  updatedBlockNumber?: InputMaybe<IntFilter>;
+  updatedLogIndex?: InputMaybe<IntFilter>;
+  updatedTransactionHash?: InputMaybe<StringFilter>;
+  uri?: InputMaybe<StringNullableFilter>;
 };
 
 export type CsbTransferAvgAggregate = {
@@ -2290,10 +2318,6 @@ export type JsonNullableFilter = {
   array_ends_with?: InputMaybe<Scalars['JSON']['input']>;
   array_starts_with?: InputMaybe<Scalars['JSON']['input']>;
   equals?: InputMaybe<Scalars['JSON']['input']>;
-  gt?: InputMaybe<Scalars['JSON']['input']>;
-  gte?: InputMaybe<Scalars['JSON']['input']>;
-  lt?: InputMaybe<Scalars['JSON']['input']>;
-  lte?: InputMaybe<Scalars['JSON']['input']>;
   not?: InputMaybe<Scalars['JSON']['input']>;
   path?: InputMaybe<Array<Scalars['String']['input']>>;
   string_contains?: InputMaybe<Scalars['String']['input']>;
@@ -2847,24 +2871,6 @@ export type LinkOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export enum LinkOrderByRelevanceFieldEnum {
-  LinkType = 'linkType',
-  LinkValue = 'linkValue',
-  Operator = 'operator',
-  Owner = 'owner',
-  ToAddress = 'toAddress',
-  ToContractAddress = 'toContractAddress',
-  ToUri = 'toUri',
-  TransactionHash = 'transactionHash',
-  UpdatedTransactionHash = 'updatedTransactionHash'
-}
-
-export type LinkOrderByRelevanceInput = {
-  fields: Array<LinkOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
-};
-
 export type LinkOrderByWithAggregationInput = {
   _avg?: InputMaybe<LinkAvgOrderByAggregateInput>;
   _count?: InputMaybe<LinkCountOrderByAggregateInput>;
@@ -2896,29 +2902,28 @@ export type LinkOrderByWithAggregationInput = {
   updatedTransactionHash?: InputMaybe<SortOrder>;
 };
 
-export type LinkOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<LinkOrderByRelevanceInput>;
+export type LinkOrderByWithRelationInput = {
   blockNumber?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   deletedAt?: InputMaybe<SortOrderInput>;
   feeds?: InputMaybe<FeedOrderByRelationAggregateInput>;
-  fromCharacter?: InputMaybe<CharacterOrderByWithRelationAndSearchRelevanceInput>;
+  fromCharacter?: InputMaybe<CharacterOrderByWithRelationInput>;
   fromCharacterId?: InputMaybe<SortOrderInput>;
   linkItemType?: InputMaybe<SortOrder>;
   linkType?: InputMaybe<SortOrder>;
   linkValue?: InputMaybe<SortOrder>;
-  linklist?: InputMaybe<LinklistOrderByWithRelationAndSearchRelevanceInput>;
+  linklist?: InputMaybe<LinklistOrderByWithRelationInput>;
   linklistId?: InputMaybe<SortOrder>;
   logIndex?: InputMaybe<SortOrder>;
   operator?: InputMaybe<SortOrder>;
   owner?: InputMaybe<SortOrder>;
   toAddress?: InputMaybe<SortOrderInput>;
-  toCharacter?: InputMaybe<CharacterOrderByWithRelationAndSearchRelevanceInput>;
+  toCharacter?: InputMaybe<CharacterOrderByWithRelationInput>;
   toCharacterId?: InputMaybe<SortOrderInput>;
   toContractAddress?: InputMaybe<SortOrderInput>;
-  toLinklist?: InputMaybe<LinklistOrderByWithRelationAndSearchRelevanceInput>;
+  toLinklist?: InputMaybe<LinklistOrderByWithRelationInput>;
   toLinklistId?: InputMaybe<SortOrderInput>;
-  toNote?: InputMaybe<NoteOrderByWithRelationAndSearchRelevanceInput>;
+  toNote?: InputMaybe<NoteOrderByWithRelationInput>;
   toNoteId?: InputMaybe<SortOrderInput>;
   toTokenId?: InputMaybe<SortOrderInput>;
   toUri?: InputMaybe<SortOrderInput>;
@@ -3060,8 +3065,40 @@ export type LinkWhereInput = {
 };
 
 export type LinkWhereUniqueInput = {
+  AND?: InputMaybe<Array<LinkWhereInput>>;
+  NOT?: InputMaybe<Array<LinkWhereInput>>;
+  OR?: InputMaybe<Array<LinkWhereInput>>;
+  blockNumber?: InputMaybe<IntFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  feeds?: InputMaybe<FeedListRelationFilter>;
+  fromCharacter?: InputMaybe<CharacterNullableRelationFilter>;
+  fromCharacterId?: InputMaybe<IntNullableFilter>;
+  linkItemType?: InputMaybe<EnumLinkItemTypeFilter>;
+  linkType?: InputMaybe<StringFilter>;
+  linkValue?: InputMaybe<StringFilter>;
   link_linklistId_linkValue_unique?: InputMaybe<LinkLink_LinklistId_LinkValue_UniqueCompoundUniqueInput>;
+  linklist?: InputMaybe<LinklistRelationFilter>;
+  linklistId?: InputMaybe<IntFilter>;
   linklistId_linkValue?: InputMaybe<LinkLinklistIdLinkValueCompoundUniqueInput>;
+  logIndex?: InputMaybe<IntFilter>;
+  operator?: InputMaybe<StringFilter>;
+  owner?: InputMaybe<StringFilter>;
+  toAddress?: InputMaybe<StringNullableFilter>;
+  toCharacter?: InputMaybe<CharacterNullableRelationFilter>;
+  toCharacterId?: InputMaybe<IntNullableFilter>;
+  toContractAddress?: InputMaybe<StringNullableFilter>;
+  toLinklist?: InputMaybe<LinklistNullableRelationFilter>;
+  toLinklistId?: InputMaybe<IntNullableFilter>;
+  toNote?: InputMaybe<NoteNullableRelationFilter>;
+  toNoteId?: InputMaybe<IntNullableFilter>;
+  toTokenId?: InputMaybe<IntNullableFilter>;
+  toUri?: InputMaybe<StringNullableFilter>;
+  transactionHash?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  updatedBlockNumber?: InputMaybe<IntFilter>;
+  updatedLogIndex?: InputMaybe<IntFilter>;
+  updatedTransactionHash?: InputMaybe<StringFilter>;
 };
 
 export type Linklist = {
@@ -3327,24 +3364,13 @@ export type LinklistMinOrderByAggregateInput = {
   uri?: InputMaybe<SortOrder>;
 };
 
-export type LinklistOrderByRelationAggregateInput = {
-  _count?: InputMaybe<SortOrder>;
+export type LinklistNullableRelationFilter = {
+  is?: InputMaybe<LinklistWhereInput>;
+  isNot?: InputMaybe<LinklistWhereInput>;
 };
 
-export enum LinklistOrderByRelevanceFieldEnum {
-  FromAddress = 'fromAddress',
-  LinkType = 'linkType',
-  Operator = 'operator',
-  Owner = 'owner',
-  TransactionHash = 'transactionHash',
-  UpdatedTransactionHash = 'updatedTransactionHash',
-  Uri = 'uri'
-}
-
-export type LinklistOrderByRelevanceInput = {
-  fields: Array<LinklistOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
+export type LinklistOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
 };
 
 export type LinklistOrderByWithAggregationInput = {
@@ -3372,15 +3398,14 @@ export type LinklistOrderByWithAggregationInput = {
   uri?: InputMaybe<SortOrderInput>;
 };
 
-export type LinklistOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<LinklistOrderByRelevanceInput>;
+export type LinklistOrderByWithRelationInput = {
   attached?: InputMaybe<SortOrder>;
   blockNumber?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   deletedAt?: InputMaybe<SortOrderInput>;
   feeds?: InputMaybe<FeedOrderByRelationAggregateInput>;
   fromAddress?: InputMaybe<SortOrder>;
-  fromCharacter?: InputMaybe<CharacterOrderByWithRelationAndSearchRelevanceInput>;
+  fromCharacter?: InputMaybe<CharacterOrderByWithRelationInput>;
   fromCharacterId?: InputMaybe<SortOrderInput>;
   fromLinks?: InputMaybe<LinkOrderByRelationAggregateInput>;
   fromNotes?: InputMaybe<NoteOrderByRelationAggregateInput>;
@@ -3388,7 +3413,7 @@ export type LinklistOrderByWithRelationAndSearchRelevanceInput = {
   linklistId?: InputMaybe<SortOrder>;
   links?: InputMaybe<LinkOrderByRelationAggregateInput>;
   logIndex?: InputMaybe<SortOrder>;
-  metadata?: InputMaybe<MetadataOrderByWithRelationAndSearchRelevanceInput>;
+  metadata?: InputMaybe<MetadataOrderByWithRelationInput>;
   operator?: InputMaybe<SortOrder>;
   owner?: InputMaybe<SortOrder>;
   toLinkModules?: InputMaybe<LinkModuleOrderByRelationAggregateInput>;
@@ -3398,6 +3423,11 @@ export type LinklistOrderByWithRelationAndSearchRelevanceInput = {
   updatedLogIndex?: InputMaybe<SortOrder>;
   updatedTransactionHash?: InputMaybe<SortOrder>;
   uri?: InputMaybe<SortOrderInput>;
+};
+
+export type LinklistRelationFilter = {
+  is?: InputMaybe<LinklistWhereInput>;
+  isNot?: InputMaybe<LinklistWhereInput>;
 };
 
 export enum LinklistScalarFieldEnum {
@@ -3502,7 +3532,33 @@ export type LinklistWhereInput = {
 };
 
 export type LinklistWhereUniqueInput = {
+  AND?: InputMaybe<Array<LinklistWhereInput>>;
+  NOT?: InputMaybe<Array<LinklistWhereInput>>;
+  OR?: InputMaybe<Array<LinklistWhereInput>>;
+  attached?: InputMaybe<BoolFilter>;
+  blockNumber?: InputMaybe<IntFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  feeds?: InputMaybe<FeedListRelationFilter>;
+  fromAddress?: InputMaybe<StringFilter>;
+  fromCharacter?: InputMaybe<CharacterNullableRelationFilter>;
+  fromCharacterId?: InputMaybe<IntNullableFilter>;
+  fromLinks?: InputMaybe<LinkListRelationFilter>;
+  fromNotes?: InputMaybe<NoteListRelationFilter>;
+  linkType?: InputMaybe<StringFilter>;
   linklistId?: InputMaybe<Scalars['Int']['input']>;
+  links?: InputMaybe<LinkListRelationFilter>;
+  logIndex?: InputMaybe<IntFilter>;
+  metadata?: InputMaybe<MetadataNullableRelationFilter>;
+  operator?: InputMaybe<StringFilter>;
+  owner?: InputMaybe<StringFilter>;
+  toLinkModules?: InputMaybe<LinkModuleListRelationFilter>;
+  transactionHash?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  updatedBlockNumber?: InputMaybe<IntFilter>;
+  updatedLogIndex?: InputMaybe<IntFilter>;
+  updatedTransactionHash?: InputMaybe<StringFilter>;
+  uri?: InputMaybe<StringNullableFilter>;
 };
 
 export type Metadata = {
@@ -3559,18 +3615,12 @@ export type MetadataMinAggregate = {
   uri?: Maybe<Scalars['String']['output']>;
 };
 
-export enum MetadataOrderByRelevanceFieldEnum {
-  Uri = 'uri'
-}
-
-export type MetadataOrderByRelevanceInput = {
-  fields: Array<MetadataOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
+export type MetadataNullableRelationFilter = {
+  is?: InputMaybe<MetadataWhereInput>;
+  isNot?: InputMaybe<MetadataWhereInput>;
 };
 
-export type MetadataOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<MetadataOrderByRelevanceInput>;
+export type MetadataOrderByWithRelationInput = {
   content?: InputMaybe<SortOrderInput>;
   fromCharacters?: InputMaybe<CharacterOrderByRelationAggregateInput>;
   fromHistoryCharacters?: InputMaybe<HistoryCharacterOrderByRelationAggregateInput>;
@@ -4046,21 +4096,6 @@ export type MintedNoteOrderByRelationAggregateInput = {
   _count?: InputMaybe<SortOrder>;
 };
 
-export enum MintedNoteOrderByRelevanceFieldEnum {
-  ContractAddress = 'contractAddress',
-  FromAddress = 'fromAddress',
-  Operator = 'operator',
-  Owner = 'owner',
-  TransactionHash = 'transactionHash',
-  UpdatedTransactionHash = 'updatedTransactionHash'
-}
-
-export type MintedNoteOrderByRelevanceInput = {
-  fields: Array<MintedNoteOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
-};
-
 export type MintedNoteOrderByWithAggregationInput = {
   _avg?: InputMaybe<MintedNoteAvgOrderByAggregateInput>;
   _count?: InputMaybe<MintedNoteCountOrderByAggregateInput>;
@@ -4084,16 +4119,15 @@ export type MintedNoteOrderByWithAggregationInput = {
   updatedTransactionHash?: InputMaybe<SortOrder>;
 };
 
-export type MintedNoteOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<MintedNoteOrderByRelevanceInput>;
+export type MintedNoteOrderByWithRelationInput = {
   blockNumber?: InputMaybe<SortOrder>;
   contractAddress?: InputMaybe<SortOrder>;
   createdAt?: InputMaybe<SortOrder>;
   feeds?: InputMaybe<FeedOrderByRelationAggregateInput>;
   fromAddress?: InputMaybe<SortOrder>;
   logIndex?: InputMaybe<SortOrder>;
-  note?: InputMaybe<NoteOrderByWithRelationAndSearchRelevanceInput>;
-  noteCharacter?: InputMaybe<CharacterOrderByWithRelationAndSearchRelevanceInput>;
+  note?: InputMaybe<NoteOrderByWithRelationInput>;
+  noteCharacter?: InputMaybe<CharacterOrderByWithRelationInput>;
   noteCharacterId?: InputMaybe<SortOrder>;
   noteId?: InputMaybe<SortOrder>;
   operator?: InputMaybe<SortOrder>;
@@ -4201,8 +4235,29 @@ export type MintedNoteWhereInput = {
 };
 
 export type MintedNoteWhereUniqueInput = {
+  AND?: InputMaybe<Array<MintedNoteWhereInput>>;
+  NOT?: InputMaybe<Array<MintedNoteWhereInput>>;
+  OR?: InputMaybe<Array<MintedNoteWhereInput>>;
+  blockNumber?: InputMaybe<IntFilter>;
+  contractAddress?: InputMaybe<StringFilter>;
   contractAddress_tokenId?: InputMaybe<MintedNoteContractAddressTokenIdCompoundUniqueInput>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  feeds?: InputMaybe<FeedListRelationFilter>;
+  fromAddress?: InputMaybe<StringFilter>;
+  logIndex?: InputMaybe<IntFilter>;
   minted_note_contractAddress_tokenId_unique?: InputMaybe<MintedNoteMinted_Note_ContractAddress_TokenId_UniqueCompoundUniqueInput>;
+  note?: InputMaybe<NoteNullableRelationFilter>;
+  noteCharacter?: InputMaybe<CharacterRelationFilter>;
+  noteCharacterId?: InputMaybe<IntFilter>;
+  noteId?: InputMaybe<IntFilter>;
+  operator?: InputMaybe<StringFilter>;
+  owner?: InputMaybe<StringFilter>;
+  tokenId?: InputMaybe<IntFilter>;
+  transactionHash?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  updatedBlockNumber?: InputMaybe<IntFilter>;
+  updatedLogIndex?: InputMaybe<IntFilter>;
+  updatedTransactionHash?: InputMaybe<StringFilter>;
 };
 
 export type NestedBoolFilter = {
@@ -4445,7 +4500,6 @@ export type NestedStringFilter = {
   lte?: InputMaybe<Scalars['String']['input']>;
   not?: InputMaybe<NestedStringFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4460,7 +4514,6 @@ export type NestedStringNullableFilter = {
   lte?: InputMaybe<Scalars['String']['input']>;
   not?: InputMaybe<NestedStringNullableFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4478,7 +4531,6 @@ export type NestedStringNullableWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['String']['input']>;
   not?: InputMaybe<NestedStringNullableWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4496,7 +4548,6 @@ export type NestedStringWithAggregatesFilter = {
   lte?: InputMaybe<Scalars['String']['input']>;
   not?: InputMaybe<NestedStringWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4939,27 +4990,13 @@ export type NoteNote_CharacterId_NoteId_UniqueCompoundUniqueInput = {
   noteId: Scalars['Int']['input'];
 };
 
-export type NoteOrderByRelationAggregateInput = {
-  _count?: InputMaybe<SortOrder>;
+export type NoteNullableRelationFilter = {
+  is?: InputMaybe<NoteWhereInput>;
+  isNot?: InputMaybe<NoteWhereInput>;
 };
 
-export enum NoteOrderByRelevanceFieldEnum {
-  ContractAddress = 'contractAddress',
-  LinkKey = 'linkKey',
-  Operator = 'operator',
-  Owner = 'owner',
-  ToAddress = 'toAddress',
-  ToContractAddress = 'toContractAddress',
-  ToUri = 'toUri',
-  TransactionHash = 'transactionHash',
-  UpdatedTransactionHash = 'updatedTransactionHash',
-  Uri = 'uri'
-}
-
-export type NoteOrderByRelevanceInput = {
-  fields: Array<NoteOrderByRelevanceFieldEnum>;
-  search: Scalars['String']['input'];
-  sort: SortOrder;
+export type NoteOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>;
 };
 
 export type NoteOrderByWithAggregationInput = {
@@ -4999,10 +5036,9 @@ export type NoteOrderByWithAggregationInput = {
   uri?: InputMaybe<SortOrderInput>;
 };
 
-export type NoteOrderByWithRelationAndSearchRelevanceInput = {
-  _relevance?: InputMaybe<NoteOrderByRelevanceInput>;
+export type NoteOrderByWithRelationInput = {
   blockNumber?: InputMaybe<SortOrder>;
-  character?: InputMaybe<CharacterOrderByWithRelationAndSearchRelevanceInput>;
+  character?: InputMaybe<CharacterOrderByWithRelationInput>;
   characterId?: InputMaybe<SortOrder>;
   contractAddress?: InputMaybe<SortOrderInput>;
   createdAt?: InputMaybe<SortOrder>;
@@ -5015,7 +5051,7 @@ export type NoteOrderByWithRelationAndSearchRelevanceInput = {
   links?: InputMaybe<LinkOrderByRelationAggregateInput>;
   locked?: InputMaybe<SortOrder>;
   logIndex?: InputMaybe<SortOrder>;
-  metadata?: InputMaybe<MetadataOrderByWithRelationAndSearchRelevanceInput>;
+  metadata?: InputMaybe<MetadataOrderByWithRelationInput>;
   mintedNotes?: InputMaybe<MintedNoteOrderByRelationAggregateInput>;
   noteId?: InputMaybe<SortOrder>;
   notes?: InputMaybe<NoteOrderByRelationAggregateInput>;
@@ -5023,20 +5059,20 @@ export type NoteOrderByWithRelationAndSearchRelevanceInput = {
   owner?: InputMaybe<SortOrder>;
   publishedAt?: InputMaybe<SortOrderInput>;
   receivedTips?: InputMaybe<TipOrderByRelationAggregateInput>;
-  stat?: InputMaybe<NoteStatOrderByWithRelationAndSearchRelevanceInput>;
+  stat?: InputMaybe<NoteStatOrderByWithRelationInput>;
   toAddress?: InputMaybe<SortOrderInput>;
-  toCharacter?: InputMaybe<CharacterOrderByWithRelationAndSearchRelevanceInput>;
+  toCharacter?: InputMaybe<CharacterOrderByWithRelationInput>;
   toCharacterId?: InputMaybe<SortOrderInput>;
   toContractAddress?: InputMaybe<SortOrderInput>;
-  toHeadCharacter?: InputMaybe<CharacterOrderByWithRelationAndSearchRelevanceInput>;
+  toHeadCharacter?: InputMaybe<CharacterOrderByWithRelationInput>;
   toHeadCharacterId?: InputMaybe<SortOrderInput>;
-  toHeadNote?: InputMaybe<NoteOrderByWithRelationAndSearchRelevanceInput>;
+  toHeadNote?: InputMaybe<NoteOrderByWithRelationInput>;
   toHeadNoteId?: InputMaybe<SortOrderInput>;
   toLinkModules?: InputMaybe<LinkModuleOrderByRelationAggregateInput>;
-  toLinklist?: InputMaybe<LinklistOrderByWithRelationAndSearchRelevanceInput>;
+  toLinklist?: InputMaybe<LinklistOrderByWithRelationInput>;
   toLinklistId?: InputMaybe<SortOrderInput>;
   toMintModules?: InputMaybe<MintModuleOrderByRelationAggregateInput>;
-  toNote?: InputMaybe<NoteOrderByWithRelationAndSearchRelevanceInput>;
+  toNote?: InputMaybe<NoteOrderByWithRelationInput>;
   toNoteId?: InputMaybe<SortOrderInput>;
   toTokenId?: InputMaybe<SortOrderInput>;
   toUri?: InputMaybe<SortOrderInput>;
@@ -5163,9 +5199,14 @@ export type NoteStatMinAggregate = {
   viewInListCount?: Maybe<Scalars['Int']['output']>;
 };
 
-export type NoteStatOrderByWithRelationAndSearchRelevanceInput = {
+export type NoteStatNullableRelationFilter = {
+  is?: InputMaybe<NoteStatWhereInput>;
+  isNot?: InputMaybe<NoteStatWhereInput>;
+};
+
+export type NoteStatOrderByWithRelationInput = {
   characterId?: InputMaybe<SortOrder>;
-  note?: InputMaybe<NoteOrderByWithRelationAndSearchRelevanceInput>;
+  note?: InputMaybe<NoteOrderByWithRelationInput>;
   noteId?: InputMaybe<SortOrder>;
   viewCount?: InputMaybe<SortOrder>;
   viewDetailCount?: InputMaybe<SortOrder>;
@@ -5291,8 +5332,56 @@ export type NoteWhereInput = {
 };
 
 export type NoteWhereUniqueInput = {
+  AND?: InputMaybe<Array<NoteWhereInput>>;
+  NOT?: InputMaybe<Array<NoteWhereInput>>;
+  OR?: InputMaybe<Array<NoteWhereInput>>;
+  blockNumber?: InputMaybe<IntFilter>;
+  character?: InputMaybe<CharacterNullableRelationFilter>;
+  characterId?: InputMaybe<IntFilter>;
   characterId_noteId?: InputMaybe<NoteCharacterIdNoteIdCompoundUniqueInput>;
+  contractAddress?: InputMaybe<StringNullableFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  deleted?: InputMaybe<BoolFilter>;
+  deletedAt?: InputMaybe<DateTimeNullableFilter>;
+  feeds?: InputMaybe<FeedListRelationFilter>;
+  fromNotes?: InputMaybe<NoteListRelationFilter>;
+  linkItemType?: InputMaybe<EnumLinkItemTypeNullableFilter>;
+  linkKey?: InputMaybe<StringFilter>;
+  links?: InputMaybe<LinkListRelationFilter>;
+  locked?: InputMaybe<BoolFilter>;
+  logIndex?: InputMaybe<IntFilter>;
+  metadata?: InputMaybe<MetadataNullableRelationFilter>;
+  mintedNotes?: InputMaybe<MintedNoteListRelationFilter>;
+  noteId?: InputMaybe<IntFilter>;
   note_characterId_noteId_unique?: InputMaybe<NoteNote_CharacterId_NoteId_UniqueCompoundUniqueInput>;
+  notes?: InputMaybe<NoteListRelationFilter>;
+  operator?: InputMaybe<StringFilter>;
+  owner?: InputMaybe<StringFilter>;
+  publishedAt?: InputMaybe<DateTimeNullableFilter>;
+  receivedTips?: InputMaybe<TipListRelationFilter>;
+  stat?: InputMaybe<NoteStatNullableRelationFilter>;
+  toAddress?: InputMaybe<StringNullableFilter>;
+  toCharacter?: InputMaybe<CharacterNullableRelationFilter>;
+  toCharacterId?: InputMaybe<IntNullableFilter>;
+  toContractAddress?: InputMaybe<StringNullableFilter>;
+  toHeadCharacter?: InputMaybe<CharacterNullableRelationFilter>;
+  toHeadCharacterId?: InputMaybe<IntNullableFilter>;
+  toHeadNote?: InputMaybe<NoteNullableRelationFilter>;
+  toHeadNoteId?: InputMaybe<IntNullableFilter>;
+  toLinkModules?: InputMaybe<LinkModuleListRelationFilter>;
+  toLinklist?: InputMaybe<LinklistNullableRelationFilter>;
+  toLinklistId?: InputMaybe<IntNullableFilter>;
+  toMintModules?: InputMaybe<MintModuleListRelationFilter>;
+  toNote?: InputMaybe<NoteNullableRelationFilter>;
+  toNoteId?: InputMaybe<IntNullableFilter>;
+  toTokenId?: InputMaybe<IntNullableFilter>;
+  toUri?: InputMaybe<StringNullableFilter>;
+  transactionHash?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+  updatedBlockNumber?: InputMaybe<IntFilter>;
+  updatedLogIndex?: InputMaybe<IntFilter>;
+  updatedTransactionHash?: InputMaybe<StringFilter>;
+  uri?: InputMaybe<StringNullableFilter>;
 };
 
 export type Notification = {
@@ -5465,7 +5554,7 @@ export type QueryCharacterAggregateArgs = {
   _min?: InputMaybe<CharacterMinAggregateInput>;
   _sum?: InputMaybe<CharacterSumAggregateInput>;
   cursor?: InputMaybe<CharacterWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CharacterWhereInput>;
@@ -5475,7 +5564,7 @@ export type QueryCharacterAggregateArgs = {
 export type QueryCharacterCountArgs = {
   cursor?: InputMaybe<CharacterWhereUniqueInput>;
   distinct?: InputMaybe<Array<CharacterScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CharacterWhereInput>;
@@ -5500,7 +5589,7 @@ export type QueryCharacterGroupByArgs = {
 export type QueryCharactersArgs = {
   cursor?: InputMaybe<CharacterWhereUniqueInput>;
   distinct?: InputMaybe<Array<CharacterScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CharacterWhereInput>;
@@ -5519,7 +5608,7 @@ export type QueryLinkAggregateArgs = {
   _min?: InputMaybe<LinkMinAggregateInput>;
   _sum?: InputMaybe<LinkSumAggregateInput>;
   cursor?: InputMaybe<LinkWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<LinkOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<LinkOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LinkWhereInput>;
@@ -5529,7 +5618,7 @@ export type QueryLinkAggregateArgs = {
 export type QueryLinkCountArgs = {
   cursor?: InputMaybe<LinkWhereUniqueInput>;
   distinct?: InputMaybe<Array<LinkScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<LinkOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<LinkOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LinkWhereInput>;
@@ -5563,7 +5652,7 @@ export type QueryLinklistAggregateArgs = {
   _min?: InputMaybe<LinklistMinAggregateInput>;
   _sum?: InputMaybe<LinklistSumAggregateInput>;
   cursor?: InputMaybe<LinklistWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<LinklistOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<LinklistOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LinklistWhereInput>;
@@ -5573,7 +5662,7 @@ export type QueryLinklistAggregateArgs = {
 export type QueryLinklistCountArgs = {
   cursor?: InputMaybe<LinklistWhereUniqueInput>;
   distinct?: InputMaybe<Array<LinklistScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<LinklistOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<LinklistOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LinklistWhereInput>;
@@ -5598,7 +5687,7 @@ export type QueryLinklistGroupByArgs = {
 export type QueryLinklistsArgs = {
   cursor?: InputMaybe<LinklistWhereUniqueInput>;
   distinct?: InputMaybe<Array<LinklistScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<LinklistOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<LinklistOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LinklistWhereInput>;
@@ -5608,7 +5697,7 @@ export type QueryLinklistsArgs = {
 export type QueryLinksArgs = {
   cursor?: InputMaybe<LinkWhereUniqueInput>;
   distinct?: InputMaybe<Array<LinkScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<LinkOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<LinkOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<LinkWhereInput>;
@@ -5627,7 +5716,7 @@ export type QueryMintedNoteAggregateArgs = {
   _min?: InputMaybe<MintedNoteMinAggregateInput>;
   _sum?: InputMaybe<MintedNoteSumAggregateInput>;
   cursor?: InputMaybe<MintedNoteWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<MintedNoteOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<MintedNoteOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<MintedNoteWhereInput>;
@@ -5637,7 +5726,7 @@ export type QueryMintedNoteAggregateArgs = {
 export type QueryMintedNoteCountArgs = {
   cursor?: InputMaybe<MintedNoteWhereUniqueInput>;
   distinct?: InputMaybe<Array<MintedNoteScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<MintedNoteOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<MintedNoteOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<MintedNoteWhereInput>;
@@ -5662,7 +5751,7 @@ export type QueryMintedNoteGroupByArgs = {
 export type QueryMintedNotesArgs = {
   cursor?: InputMaybe<MintedNoteWhereUniqueInput>;
   distinct?: InputMaybe<Array<MintedNoteScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<MintedNoteOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<MintedNoteOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<MintedNoteWhereInput>;
@@ -5672,7 +5761,7 @@ export type QueryMintedNotesArgs = {
 export type QueryNonTestCharactersArgs = {
   cursor?: InputMaybe<CharacterWhereUniqueInput>;
   distinct?: InputMaybe<Array<CharacterScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<CharacterOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CharacterWhereInput>;
@@ -5691,7 +5780,7 @@ export type QueryNoteAggregateArgs = {
   _min?: InputMaybe<NoteMinAggregateInput>;
   _sum?: InputMaybe<NoteSumAggregateInput>;
   cursor?: InputMaybe<NoteWhereUniqueInput>;
-  orderBy?: InputMaybe<Array<NoteOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<NoteOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<NoteWhereInput>;
@@ -5701,7 +5790,7 @@ export type QueryNoteAggregateArgs = {
 export type QueryNoteCountArgs = {
   cursor?: InputMaybe<NoteWhereUniqueInput>;
   distinct?: InputMaybe<Array<NoteScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<NoteOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<NoteOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<NoteWhereInput>;
@@ -5726,7 +5815,7 @@ export type QueryNoteGroupByArgs = {
 export type QueryNotesArgs = {
   cursor?: InputMaybe<NoteWhereUniqueInput>;
   distinct?: InputMaybe<Array<NoteScalarFieldEnum>>;
-  orderBy?: InputMaybe<Array<NoteOrderByWithRelationAndSearchRelevanceInput>>;
+  orderBy?: InputMaybe<Array<NoteOrderByWithRelationInput>>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   take?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<NoteWhereInput>;
@@ -5759,7 +5848,6 @@ export type StringFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -5775,7 +5863,6 @@ export type StringNullableFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringNullableFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -5802,7 +5889,6 @@ export type StringNullableWithAggregatesFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringNullableWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -5821,7 +5907,6 @@ export type StringWithAggregatesFilter = {
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringWithAggregatesFilter>;
   notIn?: InputMaybe<Array<Scalars['String']['input']>>;
-  search?: InputMaybe<Scalars['String']['input']>;
   startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
