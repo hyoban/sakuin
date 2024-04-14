@@ -23,7 +23,7 @@ const client = new Client();
 const site = = await client.site.getInfo(HANDLE)
 ```
 
-For more details, please take a look at the [SDK documentation](https://sakuin-docs.vercel.app).
+For more details, please take a look at the [SDK documentation](https://sakuin-docs.netlify.app).
 
 ## See also
 
