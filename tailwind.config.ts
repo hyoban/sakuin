@@ -6,7 +6,11 @@ import animate from "tailwindcss-animate";
 
 const config = {
 	darkMode: "selector",
-	content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+	content: [
+		"./app/**/*.{ts,tsx}",
+		"./components/**/*.{ts,tsx}",
+		"./src/platforms.ts",
+	],
 	future: {
 		hoverOnlyWhenSupported: true,
 	},
