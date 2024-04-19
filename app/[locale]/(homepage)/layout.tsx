@@ -1,6 +1,7 @@
 import type { Language } from "sakuin";
 
 import { AppearanceSwitch } from "~/components/appearance-switch";
+import { LanguageSwitch } from "~/components/language-switch";
 
 import { env } from "../../../env";
 import { client } from "../../../lib/client";
@@ -34,6 +35,7 @@ export default async function HomeLayout({
 				<h2 className="flex items-center gap-3">
 					{characterName}
 					<AppearanceSwitch className="scale-75" />
+					<LanguageSwitch currentLocale={params.locale} />
 				</h2>
 				<p>{description}</p>
 				{links.length > 0 && (

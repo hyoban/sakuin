@@ -8,8 +8,6 @@ import localFont from "next/font/local";
 import Balancer from "react-wrap-balancer";
 import { type Language, languages } from "sakuin";
 
-import { LanguageSwitch } from "~/components/language-switch";
-
 import { env } from "../../env";
 import { client } from "../../lib/client";
 import Providers from "./providers";
@@ -87,7 +85,6 @@ export function generateStaticParams() {
 
 export default async function RootLayout({
 	children,
-	params,
 }: React.PropsWithChildren<{ params: { locale: Language } }>) {
 	const { HANDLE, SITE_URL } = env;
 	const {
@@ -167,10 +164,11 @@ export default async function RootLayout({
 					}}
 				/>
 				<Providers>{children}</Providers>
-				<footer className="mx-6 flex flex-col gap-4 items-center opacity-80 text-sm mb-6 text-center">
-					{footer && <Balancer className="max-w-[670px]">{footer}</Balancer>}
-					<LanguageSwitch currentLocale={params.locale} />
-				</footer>
+				{footer && (
+					<footer className="mx-6 flex flex-col gap-4 items-center opacity-80 text-sm mb-6 text-center">
+						<Balancer className="max-w-[670px]">{footer}</Balancer>
+					</footer>
+				)}
 			</body>
 		</html>
 	);
