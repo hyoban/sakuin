@@ -1,4 +1,4 @@
-import { AppLink } from '../../app/[locale]/external-link'
+import { AppLink } from '../../app/external-link'
 import { env } from '../../env'
 import { client } from '../../lib/client'
 import { AppearanceSwitch } from '../appearance-switch'

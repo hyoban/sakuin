@@ -1,5 +1,5 @@
-import { env } from '../../../../env'
-import { client } from '../../../../lib/client'
+import { env } from '../../../env'
+import { client } from '../../../lib/client'
 import { ListItem } from '../../list-item'
 import { capitalize, getSuperscript } from '../../utils'
 

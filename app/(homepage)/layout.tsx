@@ -1,18 +1,12 @@
-import type { Language } from 'sakuin'
-
 import { AppearanceSwitch } from '~/components/appearance-switch'
-import { LanguageSwitch } from '~/components/language-switch'
 
-import { env } from '../../../env'
-import { client } from '../../../lib/client'
+import { env } from '../../env'
+import { client } from '../../lib/client'
 import { AppLink } from '../external-link'
 import { Navigation } from '../navigation'
 import { getUniverseLinks } from '../utils'
 
-export default async function HomeLayout({
-  children,
-  params,
-}: React.PropsWithChildren<{ params: { locale: Language } }>) {
+export default async function HomeLayout({ children }: React.PropsWithChildren) {
   const { HANDLE } = env
   const { characterName, description, socialPlatforms, navigation, xlogUrl }
     = await client.site.getInfo(HANDLE)
@@ -35,7 +29,7 @@ export default async function HomeLayout({
         <h2 className="flex items-center gap-3">
           {characterName}
           <AppearanceSwitch className="scale-75" />
-          <LanguageSwitch currentLocale={params.locale} />
+
         </h2>
         <p>{description}</p>
         {links.length > 0 && (
@@ -53,7 +47,7 @@ export default async function HomeLayout({
           </section>
         )}
       </section>
-      <Navigation additionalNavigation={navigations} locale={params.locale} />
+      <Navigation additionalNavigation={navigations} />
       {children}
     </main>
   )

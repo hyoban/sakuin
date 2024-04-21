@@ -1,22 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import type { Language } from 'sakuin'
 
-import { Comment } from '../../../../components/post/comment'
-import { Markdown } from '../../../../components/post/markdown'
-import { PageMeta, PostMeta } from '../../../../components/post/meta'
-import { env } from '../../../../env'
-import { client } from '../../../../lib/client'
+import { Comment } from '../../../components/post/comment'
+import { Markdown } from '../../../components/post/markdown'
+import { PageMeta, PostMeta } from '../../../components/post/meta'
+import { env } from '../../../env'
+import { client } from '../../../lib/client'
 
-export async function generateStaticParams({
-  params: { locale },
-}: {
-  params: { locale: Language },
-}) {
-  const { list: posts } = await client.post.getMany(env.HANDLE, {
-    translate: { to: locale, from: env.LANGUAGE },
-  })
+export async function generateStaticParams() {
+  const { list: posts } = await client.post.getMany(env.HANDLE)
   const slugs = posts.map(post => post.slug)
   return slugs.map(slug => ({ slug }))
 }
@@ -24,13 +17,11 @@ export async function generateStaticParams({
 export default async function PostPage({
   params,
 }: {
-  params: { slug: string, locale: Language },
+  params: { slug: string },
 }) {
   const { HANDLE } = env
   const [post, site] = await Promise.all([
-    client.post.getBySlug(HANDLE, params.slug, {
-      translate: { to: params.locale, from: env.LANGUAGE },
-    }),
+    client.post.getBySlug(HANDLE, params.slug),
     client.site.getInfo(HANDLE),
   ])
   if (!post)

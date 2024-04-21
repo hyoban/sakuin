@@ -2,8 +2,6 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import type { Post } from 'sakuin'
 
-import { env } from '~/env'
-
 import { AppLink } from '../external-link'
 
 export type PostWithCoverInfo = Post & {
@@ -18,7 +16,7 @@ export function PostItem({ post }: PostItemProps) {
   if (!post.cover) {
     return (
       <AppLink
-        href={`${post.lang ?? env.LANGUAGE}/post/${post.slug}`}
+        href={`post/${post.slug}`}
         className={(isLoading) => {
           return clsx(
             'not-prose my-6 p-4 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
@@ -34,7 +32,7 @@ export function PostItem({ post }: PostItemProps) {
 
   return (
     <AppLink
-      href={`${post.lang ?? env.LANGUAGE}/post/${post.slug}`}
+      href={`post/${post.slug}`}
       transition
       className={isLoading => clsx(
         'not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
