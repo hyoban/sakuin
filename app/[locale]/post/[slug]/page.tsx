@@ -12,19 +12,19 @@ import { client } from "../../../../lib/client";
 export async function generateStaticParams({
   params: { locale },
 }: {
-  params: { locale: Language };
+  params: { locale: Language },
 }) {
   const { list: posts } = await client.post.getMany(env.HANDLE, {
     translate: { to: locale, from: env.LANGUAGE },
   });
-  const slugs = posts.map((post) => post.slug);
-  return slugs.map((slug) => ({ slug }));
+  const slugs = posts.map(post => post.slug);
+  return slugs.map(slug => ({ slug }));
 }
 
 export default async function PostPage({
   params,
 }: {
-  params: { slug: string; locale: Language };
+  params: { slug: string, locale: Language },
 }) {
   const { HANDLE } = env;
   const [post, site] = await Promise.all([
@@ -33,7 +33,8 @@ export default async function PostPage({
     }),
     client.site.getInfo(HANDLE),
   ]);
-  if (!post) notFound();
+  if (!post)
+    notFound();
 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert break-all">

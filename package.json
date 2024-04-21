@@ -51,8 +51,8 @@
     "dev": "next dev",
     "dev:docs": "pnpm run build:docs --watch",
     "knip": "knip",
-    "lint": "prettier --list-different . && eslint",
-    "lint:fix": "prettier --list-different --write . && eslint --fix",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "prepublishOnly": "pnpm run build:lib",
     "start": "next start",
     "start:docs": "live-server docs",
@@ -88,7 +88,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "eslint": "^9.1.0",
-    "eslint-config-hyoban": "^1.0.3",
+    "eslint-config-hyoban": "^2.1.0",
     "graphql": "^16.8.1",
     "hast-util-from-html": "^2.0.1",
     "image-size": "^1.1.1",
@@ -104,8 +104,6 @@
     "next-mdx-remote": "0.0.0-canary-20240314011020",
     "path-to-regexp": "^6.2.2",
     "postcss": "^8.4.38",
-    "prettier": "^3.2.5",
-    "prettier-config-hyoban": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-tweet": "^3.2.1",
@@ -124,6 +122,5 @@
     "unist-util-visit": "^5.0.0",
     "vitest": "^1.5.0",
     "zod": "^3.22.5"
-  },
-  "prettier": "prettier-config-hyoban"
+  }
 }

@@ -4,7 +4,8 @@ import { env } from "../../env";
 
 export default function robots(): MetadataRoute.Robots {
   const { SITE_URL } = env;
-  if (!SITE_URL) return { rules: [] };
+  if (!SITE_URL)
+    return { rules: [] };
 
   return {
     rules: {

@@ -14,10 +14,10 @@ export default async function HomeLayout({
   params,
 }: React.PropsWithChildren<{ params: { locale: Language } }>) {
   const { HANDLE } = env;
-  const { characterName, description, socialPlatforms, navigation, xlogUrl } =
-    await client.site.getInfo(HANDLE);
+  const { characterName, description, socialPlatforms, navigation, xlogUrl }
+    = await client.site.getInfo(HANDLE);
   const pages = await client.page.getAll(HANDLE);
-  const navigations = pages.map((page) => ({
+  const navigations = pages.map(page => ({
     href: `/${page.slug}`,
     label: page.title,
   }));
@@ -40,7 +40,7 @@ export default async function HomeLayout({
         <p>{description}</p>
         {links.length > 0 && (
           <section className="flex gap-4 items-center">
-            {links.map((link) => (
+            {links.map(link => (
               <AppLink
                 href={link.href}
                 key={link.href}

@@ -81,7 +81,7 @@ const snPro = localFont({
 });
 
 export function generateStaticParams() {
-  return languages.map((locale) => ({ locale }));
+  return languages.map(locale => ({ locale }));
 }
 
 export default async function RootLayout({
@@ -161,7 +161,7 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              '!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-dark")||\'"system"\';(\'"dark"\'===t||e&&\'"light"\'!==t)&&document.documentElement.classList.toggle("dark",!0)}();',
+              "!function(){var e=window.matchMedia&&window.matchMedia(\"(prefers-color-scheme: dark)\").matches,t=localStorage.getItem(\"use-dark\")||'\"system\"';('\"dark\"'===t||e&&'\"light\"'!==t)&&document.documentElement.classList.toggle(\"dark\",!0)}();",
           }}
         />
         <Providers>{children}</Providers>

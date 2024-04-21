@@ -32,7 +32,7 @@ test("parse connected account", () => {
     "csb://account:SW-3404-1126-5044@nintendo switch",
   ] as const;
 
-  expect(connectedAccounts.map((element) => parseConnectedAccount(element)))
+  expect(connectedAccounts.map(element => parseConnectedAccount(element)))
     .toMatchInlineSnapshot(`
     [
       {

@@ -7,9 +7,10 @@ const IPFS_PREFIX = "ipfs://";
  * @public
  */
 export function toGateway(url?: string | URL, customGateway?: string) {
-  if (!url) return;
-  const ipfsUrl =
-    typeof url === "string" ? toIPFS(url) : toIPFS(url.toString());
+  if (!url)
+    return;
+  const ipfsUrl
+    = typeof url === "string" ? toIPFS(url) : toIPFS(url.toString());
 
   return ipfsUrl.replaceAll(IPFS_PREFIX, customGateway || IPFS_GATEWAY);
 }

@@ -8,7 +8,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {portfolios.map((portfolio) => (
+      {portfolios.map(portfolio => (
         <ListItem
           key={portfolio.noteId}
           title={capitalize(portfolio.title)}

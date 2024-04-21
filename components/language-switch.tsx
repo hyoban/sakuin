@@ -30,7 +30,7 @@ export function LanguageSwitch({ currentLocale }: { currentLocale: Language }) {
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        {languages.map((language) => (
+        {languages.map(language => (
           <SelectItem value={language} key={language}>
             {language}
           </SelectItem>

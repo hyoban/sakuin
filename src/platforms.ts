@@ -1,84 +1,84 @@
 export const platforms: Record<
   string,
   {
-    name: string;
+    name: string,
     // TODO: icon should not be pure string
-    icon?: string;
-    url?: string;
-    identityFormatTemplate?: string;
-    portfolioDomain?: string;
+    icon?: string,
+    url?: string,
+    identityFormatTemplate?: string,
+    portfolioDomain?: string,
   }
 > = {
-  telegram: {
+  "telegram": {
     name: "Telegram",
     url: "https://t.me/{username}",
     icon: "i-simple-icons-telegram",
   },
-  tg_channel: {
+  "tg_channel": {
     name: "Telegram Channel",
     url: "https://t.me/{username}",
     icon: "i-simple-icons-telegram",
   },
-  twitter: {
+  "twitter": {
     name: "Twitter",
     url: "https://twitter.com/{username}",
     portfolioDomain: "https://twitter.com/",
     icon: "i-simple-icons-twitter",
   },
-  twitter_id: {
+  "twitter_id": {
     name: "Twitter",
     url: "https://twitter.com/i/user/{username}",
     icon: "i-simple-icons-twitter",
   },
-  x: {
+  "x": {
     name: "X",
     url: "https://x.com/{username}",
     portfolioDomain: "https://x.com/",
     icon: "i-simple-icons-x",
   },
-  x_id: {
+  "x_id": {
     name: "X",
     url: "https://x.com/i/user/{username}",
     icon: "i-simple-icons-x",
   },
-  pixiv: {
+  "pixiv": {
     name: "Pixiv",
     url: "https://www.pixiv.net/users/{username}",
     portfolioDomain: "https://www.pixiv.net/",
     icon: "i-simple-icons-pixiv",
   },
-  substack: {
+  "substack": {
     name: "Substack",
     url: "https://{username}.substack.com/",
     icon: "i-simple-icons-substack",
   },
-  medium: {
+  "medium": {
     name: "Medium",
     url: "https://medium.com/@{username}",
     icon: "i-simple-icons-medium",
   },
-  github: {
+  "github": {
     name: "GitHub",
     url: "https://github.com/{username}",
     portfolioDomain: "https://github.com/",
     icon: "i-simple-icons-github",
   },
-  jike: {
+  "jike": {
     name: "即刻",
     url: "https://web.okjike.com/u/{username}",
   },
-  bilibili: {
+  "bilibili": {
     name: "bilibili",
     icon: "i-simple-icons-bilibili",
     url: "https://space.bilibili.com/{username}",
     portfolioDomain: "https://www.bilibili.com/",
   },
-  zhihu: {
+  "zhihu": {
     name: "知乎",
     url: "https://www.zhihu.com/people/{username}",
     icon: "i-simple-icons-zhihu",
   },
-  playstation: {
+  "playstation": {
     name: "PlayStation",
     url: "https://psnprofiles.com/{username}",
     icon: "i-simple-icons-playstation",
@@ -92,71 +92,71 @@ export const platforms: Record<
     url: "https://discord.gg/{username}",
     icon: "i-simple-icons-discord",
   },
-  xiaoyuzhou: {
+  "xiaoyuzhou": {
     name: "小宇宙播客",
     url: "https://www.xiaoyuzhoufm.com/podcast/{username}",
     portfolioDomain: "https://www.xiaoyuzhoufm.com/",
   },
-  steam: {
+  "steam": {
     name: "Steam",
     url: "https://steamcommunity.com/id/{username}",
     icon: "i-simple-icons-steam",
   },
-  steam_profiles: {
+  "steam_profiles": {
     name: "Steam",
     url: "https://steamcommunity.com/profiles/{username}",
     icon: "i-simple-icons-steam",
   },
-  gitlab: {
+  "gitlab": {
     name: "Gitlab",
     url: "https://gitlab.com/{username}",
     icon: "i-simple-icons-gitlab",
   },
-  keybase: {
+  "keybase": {
     name: "Keybase",
     url: "https://keybase.io/{username}",
     icon: "i-simple-icons-keybase",
   },
-  youtube: {
+  "youtube": {
     name: "Youtube",
     url: "https://youtube.com/@{username}",
     portfolioDomain: "https://youtube.com/",
     icon: "i-simple-icons-youtube",
   },
-  facebook: {
+  "facebook": {
     name: "Facebook",
     url: "https://facebook.com/{username}",
     icon: "i-simple-icons-facebook",
   },
-  whatsapp: {
+  "whatsapp": {
     name: "Whatsapp",
     url: "https://wa.me/{username}",
     icon: "i-simple-icons-whatsapp",
   },
-  mastodon: {
+  "mastodon": {
     name: "Mastodon",
     url: "https://{instance}/@{username}",
     identityFormatTemplate: "username@instance.ltd",
     icon: "i-simple-icons-mastodon",
   },
-  misskey: {
+  "misskey": {
     name: "Misskey",
     url: "https://{instance}/@{username}",
     identityFormatTemplate: "username@instance.ltd",
     icon: "i-simple-icons-misskey",
   },
-  pleroma: {
+  "pleroma": {
     name: "Pleroma",
     url: "https://{instance}/users/{username}",
     identityFormatTemplate: "username@instance.ltd",
     icon: "i-simple-icons-pleroma",
   },
-  douban: {
+  "douban": {
     name: "豆瓣",
     url: "https://www.douban.com/people/{username}",
     icon: "i-simple-icons-douban",
   },
-  email: {
+  "email": {
     name: "Email",
     url: "mailto:{username}",
     icon: "i-lucide-mail",

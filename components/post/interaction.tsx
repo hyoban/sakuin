@@ -3,7 +3,7 @@ import type { InteractionCount } from "sakuin";
 export function InteractionView({
   interaction,
 }: {
-  interaction: InteractionCount;
+  interaction: InteractionCount,
 }) {
   return (
     <div className="flex gap-4">

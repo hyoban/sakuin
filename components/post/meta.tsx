@@ -8,8 +8,8 @@ export async function PostMeta({
   slug,
   isPost,
 }: {
-  slug: string;
-  isPost?: boolean;
+  slug: string,
+  isPost?: boolean,
 }) {
   const { HANDLE } = env;
   const [post, site] = await Promise.all([
@@ -18,7 +18,8 @@ export async function PostMeta({
       : client.page.getBySlug(HANDLE, slug),
     client.site.getInfo(HANDLE),
   ]);
-  if (!post) return null;
+  if (!post)
+    return null;
 
   return (
     <div className="flex flex-wrap gap-4 items-center mb-6">
@@ -30,7 +31,7 @@ export async function PostMeta({
           tips: post.tips,
         }}
       />
-      {post.tags.map((tag) => (
+      {post.tags.map(tag => (
         <span key={tag}>{`# ${tag}`}</span>
       ))}
       <AppLink href={`${site.xlogUrl}/${slug}`}>View on xLog</AppLink>
@@ -43,8 +44,8 @@ export async function PageMeta({
   slug,
   isPost,
 }: {
-  slug: string;
-  isPost?: boolean;
+  slug: string,
+  isPost?: boolean,
 }) {
   const { HANDLE, SITE_URL } = env;
   const [post, site] = await Promise.all([
@@ -53,7 +54,8 @@ export async function PageMeta({
       : client.page.getBySlug(HANDLE, slug),
     client.site.getInfo(HANDLE),
   ]);
-  if (!post) return null;
+  if (!post)
+    return null;
 
   const { siteName, characterName } = site;
   const { cover, summary } = post;

@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 type AppLinkProps = React.PropsWithChildren<{
-  transition?: boolean;
-  className?: ((isLoading: boolean) => string) | string;
+  transition?: boolean,
+  className?: ((isLoading: boolean) => string) | string,
 }> &
-  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className">;
+Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className">;
 
 export function AppLink({
   href,
@@ -19,12 +19,11 @@ export function AppLink({
 }: AppLinkProps) {
   const router = useRouter();
   const [isLoading, startTransition] = useTransition();
-  const classNameFn =
-    typeof className === "function" ? className : () => className;
-  const classNameStr =
-    typeof className === "function" ? className(isLoading) : className;
+  const classNameFn = typeof className === "function" ? className : () => className;
+  const classNameStr = typeof className === "function" ? className(isLoading) : className;
 
-  if (!href) return <>{children}</>;
+  if (!href)
+    return <>{children}</>;
 
   if (href.startsWith("http") && !transition) {
     return (

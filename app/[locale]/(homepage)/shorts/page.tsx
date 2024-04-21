@@ -11,7 +11,7 @@ export default async function ShortPage() {
 
   return (
     <div className="columns-3xs">
-      {shorts.map((short) => (
+      {shorts.map(short => (
         <ShortItem key={short.slug} short={short} />
       ))}
     </div>
@@ -20,7 +20,8 @@ export default async function ShortPage() {
 
 async function ShortItem({ short }: { short: Short }) {
   const photos = short.attachments?.at(0)?.address;
-  if (!photos) return null;
+  if (!photos)
+    return null;
 
   const { xlogUrl } = await client.site.getInfo(env.HANDLE);
 

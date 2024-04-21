@@ -102,7 +102,8 @@ export class CommentClient {
           comment.characterId,
           comment.noteId,
         );
-        if (interaction.comments === 0) return { ...comment, ...interaction };
+        if (interaction.comments === 0)
+          return { ...comment, ...interaction };
 
         const { list: replies } = await this.getMany(
           comment.characterId,

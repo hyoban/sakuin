@@ -14,8 +14,8 @@ export function CommentListClient({
   comments,
   noteId,
 }: {
-  comments: Comment[];
-  noteId: number;
+  comments: Comment[],
+  noteId: number,
 }) {
   const [optimisticComments, addOptimisticComment] = useOptimistic<
     Comment[],
@@ -26,7 +26,7 @@ export function CommentListClient({
     <>
       {optimisticComments.length > 0 && (
         <ul>
-          {optimisticComments.map((comment) => (
+          {optimisticComments.map(comment => (
             <CommentView key={comment.noteId} comment={comment} />
           ))}
         </ul>
@@ -45,18 +45,22 @@ function CommentView({ comment }: { comment: Comment }) {
       <p>
         <AppLink href={comment.url} className="font-bold">
           {comment.name}
-        </AppLink>{" "}
-        : {comment.content}
+        </AppLink>
+        {" "}
+        :
+        {" "}
+        {comment.content}
         {comment.likes > 0 && (
           <>
             {" "}
-            <span className="i-lucide-thumbs-up text-xs align-baseline" />{" "}
+            <span className="i-lucide-thumbs-up text-xs align-baseline" />
+            {" "}
             {comment.likes}
           </>
         )}
       </p>
       <ul>
-        {comment.replies.map((reply) => (
+        {comment.replies.map(reply => (
           <CommentView key={reply.noteId} comment={reply} />
         ))}
       </ul>
@@ -68,8 +72,8 @@ function CommentForm({
   noteId,
   addOptimisticComment,
 }: {
-  noteId: number;
-  addOptimisticComment: (comment: Comment) => void;
+  noteId: number,
+  addOptimisticComment: (comment: Comment) => void,
 }) {
   const ref = useRef<HTMLFormElement>(null);
   return (

@@ -13,7 +13,8 @@ export async function fetchMorePost(cursor: string | null) {
   );
   const morePostsWithCoverSize = await Promise.all(
     morePosts.map(async (post) => {
-      if (!post.cover) return { ...post, coverSize: null };
+      if (!post.cover)
+        return { ...post, coverSize: null };
 
       const size = await getImageDimensionByUri(post.cover);
       return {

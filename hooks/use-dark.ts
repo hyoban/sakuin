@@ -7,9 +7,9 @@ const isDarkAtom = atomDark({
 });
 
 export function useDark(): {
-  isDark: boolean;
-  toggleDark: () => void;
-  theme: "dark" | "light";
+  isDark: boolean,
+  toggleDark: () => void,
+  theme: "dark" | "light",
 } {
   const [isDark, setIsDark] = useAtom(isDarkAtom);
   return {

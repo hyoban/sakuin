@@ -17,12 +17,14 @@ export function Markdown({ content }: { content: string }) {
     <MDXRemote
       source={content}
       components={{
-        a: AppLink,
-        img: async (props) => {
-          if (!props.src) return null;
+        "a": AppLink,
+        "img": async (props) => {
+          if (!props.src)
+            return null;
 
           const size = await getImageDimensionByUri(props.src);
-          if (!size) return <img {...props} />;
+          if (!size)
+            return <img {...props} />;
           return (
             <Image
               width={size.width}
@@ -31,7 +33,7 @@ export function Markdown({ content }: { content: string }) {
             />
           );
         },
-        tweet: ({ id }: { id: string }) => (
+        "tweet": ({ id }: { id: string }) => (
           <div className="not-prose">
             <Tweet id={id} />
           </div>

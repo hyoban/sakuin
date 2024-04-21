@@ -14,8 +14,8 @@ export function PostList({
   posts,
   cursor,
 }: {
-  posts: PostWithCoverInfo[];
-  cursor: string | null;
+  posts: PostWithCoverInfo[],
+  cursor: string | null,
 }) {
   useHydrateAtoms([[currentPostsAtom, posts]]);
   useHydrateAtoms([[currentCursorAtom, cursor]]);
@@ -25,7 +25,7 @@ export function PostList({
 
   return (
     <>
-      {currentPosts.map((post) => (
+      {currentPosts.map(post => (
         <PostItem key={post.slug} post={post} />
       ))}
       {currentCursor && (
@@ -41,11 +41,9 @@ export function PostList({
           disabled={isLoadMorePending}
           className="px-2 py-1 rounded-full hover:bg-neutral-100 disabled:hover:bg-inherit dark:hover:bg-neutral-800 opacity-60 hover:opacity-100 disabled:opacity-20"
         >
-          {isLoadMorePending ? (
-            <span className="ml-2 i-lucide-loader-2 animate-spin" />
-          ) : (
-            <span>Next</span>
-          )}
+          {isLoadMorePending
+            ? <span className="ml-2 i-lucide-loader-2 animate-spin" />
+            : <span>Next</span>}
         </button>
       )}
     </>

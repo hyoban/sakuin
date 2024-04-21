@@ -19,15 +19,17 @@ export class SiteClient {
 
   async getInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
     const { indexer, xLogBase } = this.base.context;
-    const character =
-      typeof handleOrCharacterId === "string"
+    const character
+      = typeof handleOrCharacterId === "string"
         ? await indexer.character.getByHandle(handleOrCharacterId)
         : await indexer.character.get(handleOrCharacterId);
 
-    if (!character) throw new Error("Character not found");
+    if (!character)
+      throw new Error("Character not found");
 
     const content = character.metadata?.content;
-    if (!content) throw new Error("Character content not found");
+    if (!content)
+      throw new Error("Character content not found");
 
     const {
       attributes,
@@ -58,8 +60,8 @@ export class SiteClient {
       characterId: character.characterId,
       xlogUrl,
 
-      icon: avatars?.map((avatar) => toGateway(avatar)).at(0),
-      banner: banners?.map((banner) => toGateway(banner.address)).at(0),
+      icon: avatars?.map(avatar => toGateway(avatar)).at(0),
+      banner: banners?.map(banner => toGateway(banner.address)).at(0),
       characterName,
       siteName: siteName || characterName,
       description: bio,
@@ -71,7 +73,7 @@ export class SiteClient {
           id: ua,
         },
       },
-      socialPlatforms: connectedAccounts.map((account) =>
+      socialPlatforms: connectedAccounts.map(account =>
         parseConnectedAccount(account),
       ),
       navigation,
@@ -83,8 +85,8 @@ export class SiteClient {
   async getStat(handleOrCharacterId: HandleOrCharacterId) {
     const { indexer, client } = this.base.context;
     const characterId = await this.base.getCharacterId(handleOrCharacterId);
-    const [stat, site, subscriptions, comments, notes, likes, achievement] =
-      await Promise.all([
+    const [stat, site, subscriptions, comments, notes, likes, achievement]
+      = await Promise.all([
         indexer.stat.getForCharacter(characterId),
         indexer.character.get(characterId),
         indexer.link.getBacklinksOfCharacter(characterId, {

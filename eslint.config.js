@@ -1,7 +1,12 @@
+// @ts-check
 import hyoban from "eslint-config-hyoban";
 
 export default hyoban({
   ignores: ["gql/**"],
-  react: true,
+  react: "next",
   typeChecked: true,
+  stylistic: {
+    quotes: "double",
+    semi: true,
+  },
 });

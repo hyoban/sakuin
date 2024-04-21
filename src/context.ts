@@ -12,10 +12,10 @@ import type {
 } from "./types";
 
 interface ClientContext {
-  client: Client;
-  indexer: Indexer;
-  contract: Contract;
-  xLogBase: string;
+  client: Client,
+  indexer: Indexer,
+  contract: Contract,
+  xLogBase: string,
 }
 
 export class ClientBase {
@@ -51,12 +51,14 @@ export class ClientBase {
    * Otherwise, it will be treated as a handle and the character ID will be looked up.
    */
   async getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
-    if (typeof handleOrCharacterId === "number") return handleOrCharacterId;
+    if (typeof handleOrCharacterId === "number")
+      return handleOrCharacterId;
 
     const { indexer } = this.context;
 
     const character = await indexer.character.getByHandle(handleOrCharacterId);
-    if (!character) throw new Error("Character not found");
+    if (!character)
+      throw new Error("Character not found");
     return character.characterId;
   }
 
@@ -86,16 +88,16 @@ export class ClientBase {
       const decimals = await this.getMiraTokenDecimals();
       tips.list = tips.list.filter((t) => {
         return (
-          BigInt(t.amount) >=
-          BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
+          BigInt(t.amount)
+          >= BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
         );
       });
       tips.list = tips.list.map((t) => {
         return {
           ...t,
           amount: (
-            BigInt(t.amount) /
-            BigInt(10) ** BigInt(decimals.data || 18)
+            BigInt(t.amount)
+            / BigInt(10) ** BigInt(decimals.data || 18)
           ).toString(),
         };
       });
@@ -114,7 +116,8 @@ export class ClientBase {
     let decimals;
     try {
       decimals = await contract.tips.getTokenDecimals();
-    } catch {
+    }
+    catch {
       decimals = {
         data: 18,
       };

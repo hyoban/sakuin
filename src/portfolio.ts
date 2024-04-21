@@ -50,7 +50,7 @@ export class PortfolioClient {
     });
 
     const list = await Promise.all(
-      notes.list.map((note) => this.createPortfolioFromNote(note)),
+      notes.list.map(note => this.createPortfolioFromNote(note)),
     );
 
     return {
@@ -67,7 +67,8 @@ export class PortfolioClient {
     const { indexer } = this.base.context;
     const characterId = await this.base.getCharacterId(handleOrCharacterId);
     const note = await indexer.note.get(characterId, noteId);
-    if (!note) throw new Error(`Note not found: ${noteId}`);
+    if (!note)
+      throw new Error(`Note not found: ${noteId}`);
     return this.createPortfolioFromNote(note);
   }
 
@@ -84,7 +85,7 @@ export class PortfolioClient {
       cover:
         toGateway(
           note.metadata?.content?.attachments?.find(
-            (att) => att.name === "cover",
+            att => att.name === "cover",
           )?.address,
         ) ?? "",
     };

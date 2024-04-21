@@ -21,8 +21,8 @@ import type { NoteQueryOptions, ResultMany } from "./types/utils";
 import { getXLogMeta, toCid, toGateway } from "./utils";
 
 interface ContentTranslation {
-  title?: string;
-  content?: string;
+  title?: string,
+  content?: string,
 }
 
 const noteQuery = graphql(`
@@ -67,14 +67,14 @@ const noteQuery = graphql(`
 `);
 
 interface CreateOptions {
-  raw?: boolean;
-  translate?: { from: Language; to: Language };
+  raw?: boolean,
+  translate?: { from: Language, to: Language },
 }
 
 type UpdateOptions<Tag extends Exclude<NoteType, "portfolio">> = {
-  token: string;
-  handleOrCharacterId: HandleOrCharacterId;
-  note: Partial<Tag extends "short" ? ShortInput : PostInput>;
+  token: string,
+  handleOrCharacterId: HandleOrCharacterId,
+  note: Partial<Tag extends "short" ? ShortInput : PostInput>,
 } & ({ noteId: number } | { slug: string });
 
 export class NoteClient<
@@ -129,7 +129,7 @@ export class NoteClient<
     });
 
     const list = await Promise.all(
-      notes.list.map((note) => this.createFromNote(note, characterId, options)),
+      notes.list.map(note => this.createFromNote(note, characterId, options)),
     );
 
     return {
@@ -148,7 +148,8 @@ export class NoteClient<
     const { indexer } = this.base.context;
 
     const note = await indexer.note.get(characterId, noteId);
-    if (!note) return null;
+    if (!note)
+      return null;
 
     return this.createFromNote(note, characterId, options);
   }
@@ -167,14 +168,17 @@ export class NoteClient<
       tag: this.tag,
     });
     const post = note.data?.notes.at(0);
-    if (!post) return null;
+    if (!post)
+      return null;
     return this.createFromNote(post as NoteEntity, characterId, options);
   }
 
   private ensureToken(token: string) {
     const { indexer } = this.base.context;
-    if (!indexer.siwe.token && !token) throw new Error("Missing token");
-    if (!indexer.siwe.token) indexer.siwe.token = token;
+    if (!indexer.siwe.token && !token)
+      throw new Error("Missing token");
+    if (!indexer.siwe.token)
+      indexer.siwe.token = token;
   }
 
   async put({
@@ -182,9 +186,9 @@ export class NoteClient<
     handleOrCharacterId,
     note,
   }: {
-    token: string;
-    handleOrCharacterId: HandleOrCharacterId;
-    note: Input;
+    token: string,
+    handleOrCharacterId: HandleOrCharacterId,
+    note: Input,
   }) {
     this.ensureToken(token);
     const { indexer } = this.base.context;
@@ -209,11 +213,12 @@ export class NoteClient<
     this.ensureToken(token);
     const { indexer } = this.base.context;
     const characterId = await this.base.getCharacterId(handleOrCharacterId);
-    const noteToUpdate =
-      "noteId" in options
+    const noteToUpdate
+      = "noteId" in options
         ? await this.get(characterId, options.noteId)
         : await this.getBySlug(characterId, options.slug);
-    if (!noteToUpdate) throw new Error("Post not found");
+    if (!noteToUpdate)
+      throw new Error("Post not found");
 
     const { noteId } = noteToUpdate as unknown as NoteEntity;
     const metadata = this.createNoteMetaFromInput({
@@ -230,7 +235,8 @@ export class NoteClient<
   private clearUnknownAttributes(
     input?: Record<string, unknown> | null,
   ): Partial<Input> {
-    if (typeof input !== "object" || !input) return {};
+    if (typeof input !== "object" || !input)
+      return {};
     const keys = Object.keys(input);
     const result: Partial<Input> = {};
     for (const key of keys) {
@@ -255,8 +261,8 @@ export class NoteClient<
     values,
     autofill,
   }: {
-    values: Partial<Input>;
-    autofill?: boolean;
+    values: Partial<Input>,
+    autofill?: boolean,
   }): NoteMetadata & { summary?: string } {
     if (this.tag === "short") {
       const short = values as unknown as Partial<ShortInput>;
@@ -273,8 +279,8 @@ export class NoteClient<
         attachments: short.attachments,
         sources: ["xlog"],
         date_published:
-          short.datePublishedAt ||
-          (autofill ? new Date().toISOString() : undefined),
+          short.datePublishedAt
+          || (autofill ? new Date().toISOString() : undefined),
       };
     }
 
@@ -303,8 +309,8 @@ export class NoteClient<
       attachments: post.cover ? [{ name: "cover", address: post.cover }] : [],
       sources: ["xlog"],
       date_published:
-        post.datePublishedAt ||
-        (autofill ? new Date().toISOString() : undefined),
+        post.datePublishedAt
+        || (autofill ? new Date().toISOString() : undefined),
       summary: post.summary,
     };
   }
@@ -324,9 +330,9 @@ export class NoteClient<
 
     let translation: ContentTranslation | undefined = undefined;
     if (
-      options?.translate &&
-      note.uri &&
-      options.translate.from !== options.translate.to
+      options?.translate
+      && note.uri
+      && options.translate.from !== options.translate.to
     ) {
       const response = await fetch(
         `https://${xLogBase}/api/translate-note?cid=${toCid(note.uri)}&fromLang=${options.translate.from}&toLang=${options.translate.to}`,
@@ -335,25 +341,25 @@ export class NoteClient<
       translation = json.data;
     }
 
-    const rawContent =
-      translation?.content ?? note.metadata?.content?.content ?? "";
+    const rawContent
+      = translation?.content ?? note.metadata?.content?.content ?? "";
     const content = raw ? rawContent : toGateway(rawContent)!;
     const match = content.match(/!\[.*?]\((.*?)\)/g);
-    const imagesInContent =
-      match?.map((img) => img.match(/\((.*?)\)/)?.[1]) ?? [];
+    const imagesInContent
+      = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? [];
 
     const rawAttachments = (note.metadata?.content?.attachments ?? []) as Array<
       NoteMetadataAttachmentBase<"address">
     >;
     const attachments = rawAttachments
-      .filter((att) => att.address)
-      .map((att) => ({
+      .filter(att => att.address)
+      .map(att => ({
         ...att,
         address: raw ? att.address : toGateway(att.address),
       }));
-    const coverInAttachments = attachments.find((att) => att.name === "cover");
-    const cover =
-      coverInAttachments?.address ?? (raw ? "" : imagesInContent.at(0) ?? "");
+    const coverInAttachments = attachments.find(att => att.name === "cover");
+    const cover
+      = coverInAttachments?.address ?? (raw ? "" : imagesInContent.at(0) ?? "");
 
     // @ts-expect-error FIXME: https://github.com/Crossbell-Box/crossbell.js/issues/83#issuecomment-1987235215
     let summary = (note.metadata?.content?.summary as string | undefined) ?? "";
@@ -372,9 +378,9 @@ export class NoteClient<
     const datePublishedAt = note.metadata?.content?.date_published ?? "";
     const slug = getXLogMeta(note.metadata?.content?.attributes, "slug") ?? "";
     const title = translation?.title ?? note.metadata?.content?.title ?? "";
-    const tags =
-      note.metadata?.content?.tags?.filter((tag: string) => tag !== "post") ??
-      [];
+    const tags
+      = note.metadata?.content?.tags?.filter((tag: string) => tag !== "post")
+      ?? [];
 
     if (this.tag === "short") {
       return {

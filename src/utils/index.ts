@@ -43,16 +43,18 @@ export function getXLogMeta(
   type: XLogTraitType,
 ) {
   const attribute = attributes?.find(
-    (attr) => attr.trait_type === `xlog_${type}`,
+    attr => attr.trait_type === `xlog_${type}`,
   )?.value;
   if (!attribute) {
-    if (type === "navigation") return [];
+    if (type === "navigation")
+      return [];
     return;
   }
 
   if (type === "navigation")
     return JSON.parse(attribute as string) as Navigation[];
-  if (type === "disable_ai_summary") return attribute as boolean;
+  if (type === "disable_ai_summary")
+    return attribute as boolean;
   return attribute as string;
 }
 
@@ -77,11 +79,13 @@ export function getFullXLogMeta(attributes: AttributesMetadata["attributes"]) {
     sender_email: "",
     sender_url: "",
   };
-  if (!attributes) return xlogMeta;
+  if (!attributes)
+    return xlogMeta;
 
   for (const trait of attributes) {
     const { trait_type, value } = trait;
-    if (!trait_type?.startsWith("xlog_")) continue;
+    if (!trait_type?.startsWith("xlog_"))
+      continue;
 
     const key = trait_type.replace("xlog_", "") as XLogTraitType;
 
@@ -101,10 +105,11 @@ export function getFullXLogMeta(attributes: AttributesMetadata["attributes"]) {
 }
 
 export function parseConnectedAccount(
-  account: string | { uri: string; extra: Record<string, string> },
+  account: string | { uri: string, extra: Record<string, string> },
 ): SocialPlatform {
   const uri = typeof account === "string" ? account : account.uri;
   const [, id, platform] = uri.match(/csb:\/\/account:(.+)@(.+)/) as string[];
-  if (!platform || !id) throw new Error("Invalid connected account");
+  if (!platform || !id)
+    throw new Error("Invalid connected account");
   return { platform, id };
 }

@@ -15,8 +15,8 @@ export function Navigation({
   additionalNavigation,
   locale,
 }: {
-  additionalNavigation?: Array<{ href: string; label: string }>;
-  locale: Language;
+  additionalNavigation?: Array<{ href: string, label: string }>,
+  locale: Language,
 }) {
   const pathname = usePathname();
   return (

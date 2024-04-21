@@ -35,9 +35,9 @@ const buttonVariants = cva(
 );
 
 export type ButtonProps = {
-  asChild?: boolean;
+  asChild?: boolean,
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof buttonVariants>;
+VariantProps<typeof buttonVariants>;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
@@ -53,4 +53,5 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { Button, buttonVariants };
