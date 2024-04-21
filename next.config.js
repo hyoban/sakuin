@@ -13,17 +13,17 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	// output: 'export',
-	// images: { unoptimized: true },
-	images: {
-		dangerouslyAllowSVG: true,
-		remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "**",
-			},
-		],
-	},
+  // output: 'export',
+  // images: { unoptimized: true },
+  images: {
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 export default withNextIntl(nextConfig);

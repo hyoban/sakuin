@@ -4,14 +4,14 @@ import { languages } from "sakuin";
 import { env } from "./env";
 
 export default createMiddleware({
-	// A list of all locales that are supported
-	locales: languages,
+  // A list of all locales that are supported
+  locales: languages,
 
-	// Used when no locale matches
-	defaultLocale: env.LANGUAGE,
+  // Used when no locale matches
+  defaultLocale: env.LANGUAGE,
 });
 
 export const config = {
-	// Match only internationalized pathnames
-	matcher: ["/", "/(en|zh|zh-TW|ja)/:path*"],
+  // Match only internationalized pathnames
+  matcher: ["/", "/(en|zh|zh-TW|ja)/:path*"],
 };
