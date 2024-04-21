@@ -1,14 +1,14 @@
-"use client";
-import { useOptimistic, useRef } from "react";
-import type { Comment } from "sakuin";
+'use client'
+import { useOptimistic, useRef } from 'react'
+import type { Comment } from 'sakuin'
 
-import { AppLink } from "~/app/[locale]/external-link";
+import { AppLink } from '~/app/[locale]/external-link'
 
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
-import { createComment } from "./comment-action";
-import { SubmitButton } from "./submit-button";
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+import { Textarea } from '../ui/textarea'
+import { createComment } from './comment-action'
+import { SubmitButton } from './submit-button'
 
 export function CommentListClient({
   comments,
@@ -20,7 +20,7 @@ export function CommentListClient({
   const [optimisticComments, addOptimisticComment] = useOptimistic<
     Comment[],
     Comment
-  >(comments, (state, newComment) => [newComment, ...state]);
+  >(comments, (state, newComment) => [newComment, ...state])
 
   return (
     <>
@@ -36,7 +36,7 @@ export function CommentListClient({
         addOptimisticComment={addOptimisticComment}
       />
     </>
-  );
+  )
 }
 
 function CommentView({ comment }: { comment: Comment }) {
@@ -46,15 +46,15 @@ function CommentView({ comment }: { comment: Comment }) {
         <AppLink href={comment.url} className="font-bold">
           {comment.name}
         </AppLink>
-        {" "}
+        {' '}
         :
-        {" "}
+        {' '}
         {comment.content}
         {comment.likes > 0 && (
           <>
-            {" "}
+            {' '}
             <span className="i-lucide-thumbs-up text-xs align-baseline" />
-            {" "}
+            {' '}
             {comment.likes}
           </>
         )}
@@ -65,7 +65,7 @@ function CommentView({ comment }: { comment: Comment }) {
         ))}
       </ul>
     </li>
-  );
+  )
 }
 
 function CommentForm({
@@ -75,7 +75,7 @@ function CommentForm({
   noteId: number,
   addOptimisticComment: (comment: Comment) => void,
 }) {
-  const ref = useRef<HTMLFormElement>(null);
+  const ref = useRef<HTMLFormElement>(null)
   return (
     <>
       <p className="text-sm opacity-80">
@@ -85,19 +85,19 @@ function CommentForm({
       <form
         ref={ref}
         action={async (formData: FormData) => {
-          ref.current?.reset();
+          ref.current?.reset()
 
           addOptimisticComment({
-            content: formData.get("content") as string,
-            email: formData.get("email") as string,
-            name: formData.get("name") as string,
-            url: formData.get("url") as string,
+            content: formData.get('content') as string,
+            email: formData.get('email') as string,
+            name: formData.get('name') as string,
+            url: formData.get('url') as string,
             targetNoteId: 0,
             targetCharacterId: 0,
             replies: [],
             characterId: 0,
             noteId: 0,
-            uri: "",
+            uri: '',
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             publishedAt: new Date().toISOString(),
@@ -106,8 +106,8 @@ function CommentForm({
             views: 0,
             likes: 0,
             tips: 0,
-          });
-          await createComment(formData);
+          })
+          await createComment(formData)
         }}
         className="flex flex-col gap-4"
       >
@@ -131,5 +131,5 @@ function CommentForm({
         <SubmitButton />
       </form>
     </>
-  );
+  )
 }

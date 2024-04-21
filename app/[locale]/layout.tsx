@@ -1,93 +1,93 @@
 /* eslint-disable @eslint-react/dom/no-dangerously-set-innerhtml */
-import "remark-github-alerts/styles/github-base.css";
-import "remark-github-alerts/styles/github-colors-dark-class.css";
-import "remark-github-alerts/styles/github-colors-light.css";
-import "./globals.css";
+import 'remark-github-alerts/styles/github-base.css'
+import 'remark-github-alerts/styles/github-colors-dark-class.css'
+import 'remark-github-alerts/styles/github-colors-light.css'
+import './globals.css'
 
-import localFont from "next/font/local";
-import Balancer from "react-wrap-balancer";
-import type { Language } from "sakuin";
-import { languages } from "sakuin";
+import localFont from 'next/font/local'
+import Balancer from 'react-wrap-balancer'
+import type { Language } from 'sakuin'
+import { languages } from 'sakuin'
 
-import { env } from "../../env";
-import { client } from "../../lib/client";
-import Providers from "./providers";
+import { env } from '../../env'
+import { client } from '../../lib/client'
+import Providers from './providers'
 
 const snPro = localFont({
-  variable: "--font-sans",
+  variable: '--font-sans',
   preload: false,
   src: [
     {
-      path: "../../font/SNPro-Thin.otf",
-      weight: "100",
-      style: "normal",
+      path: '../../font/SNPro-Thin.otf',
+      weight: '100',
+      style: 'normal',
     },
     {
-      path: "../../font/SNPro-ThinItalic.otf",
-      weight: "100",
-      style: "italic",
+      path: '../../font/SNPro-ThinItalic.otf',
+      weight: '100',
+      style: 'italic',
     },
     {
-      path: "../../font/SNPro-Light.otf",
-      weight: "300",
-      style: "normal",
+      path: '../../font/SNPro-Light.otf',
+      weight: '300',
+      style: 'normal',
     },
     {
-      path: "../../font/SNPro-LightItalic.otf",
-      weight: "300",
-      style: "italic",
+      path: '../../font/SNPro-LightItalic.otf',
+      weight: '300',
+      style: 'italic',
     },
     {
-      path: "../../font/SNPro-Regular.otf",
-      weight: "400",
-      style: "normal",
+      path: '../../font/SNPro-Regular.otf',
+      weight: '400',
+      style: 'normal',
     },
     {
-      path: "../../font/SNPro-RegularItalic.otf",
-      weight: "400",
-      style: "italic",
+      path: '../../font/SNPro-RegularItalic.otf',
+      weight: '400',
+      style: 'italic',
     },
     {
-      path: "../../font/SNPro-Medium.otf",
-      weight: "500",
-      style: "normal",
+      path: '../../font/SNPro-Medium.otf',
+      weight: '500',
+      style: 'normal',
     },
     {
-      path: "../../font/SNPro-MediumItalic.otf",
-      weight: "500",
-      style: "italic",
+      path: '../../font/SNPro-MediumItalic.otf',
+      weight: '500',
+      style: 'italic',
     },
     {
-      path: "../../font/SNPro-Semibold.otf",
-      weight: "600",
-      style: "normal",
+      path: '../../font/SNPro-Semibold.otf',
+      weight: '600',
+      style: 'normal',
     },
     {
-      path: "../../font/SNPro-SemiboldItalic.otf",
-      weight: "600",
-      style: "italic",
+      path: '../../font/SNPro-SemiboldItalic.otf',
+      weight: '600',
+      style: 'italic',
     },
     {
-      path: "../../font/SNPro-Bold.otf",
-      weight: "700",
-      style: "normal",
+      path: '../../font/SNPro-Bold.otf',
+      weight: '700',
+      style: 'normal',
     },
     {
-      path: "../../font/SNPro-BoldItalic.otf",
-      weight: "700",
-      style: "italic",
+      path: '../../font/SNPro-BoldItalic.otf',
+      weight: '700',
+      style: 'italic',
     },
   ],
-});
+})
 
 export function generateStaticParams() {
-  return languages.map(locale => ({ locale }));
+  return languages.map(locale => ({ locale }))
 }
 
 export default async function RootLayout({
   children,
 }: React.PropsWithChildren<{ params: { locale: Language } }>) {
-  const { HANDLE, SITE_URL } = env;
+  const { HANDLE, SITE_URL } = env
   const {
     siteName,
     characterName,
@@ -96,8 +96,8 @@ export default async function RootLayout({
     banner,
     xlogUrl,
     footer,
-  } = await client.site.getInfo(HANDLE);
-  const title = siteName ?? characterName;
+  } = await client.site.getInfo(HANDLE)
+  const title = siteName ?? characterName
 
   return (
     <html
@@ -161,7 +161,7 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "!function(){var e=window.matchMedia&&window.matchMedia(\"(prefers-color-scheme: dark)\").matches,t=localStorage.getItem(\"use-dark\")||'\"system\"';('\"dark\"'===t||e&&'\"light\"'!==t)&&document.documentElement.classList.toggle(\"dark\",!0)}();",
+              '!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-dark")||\'"system"\';(\'"dark"\'===t||e&&\'"light"\'!==t)&&document.documentElement.classList.toggle("dark",!0)}();',
           }}
         />
         <Providers>{children}</Providers>
@@ -172,5 +172,5 @@ export default async function RootLayout({
         )}
       </body>
     </html>
-  );
+  )
 }

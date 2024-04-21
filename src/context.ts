@@ -1,15 +1,15 @@
 // credit: https://blog.skk.moe/post/context-in-javascript/
 
-import { cacheExchange, Client, fetchExchange } from "@urql/core";
-import type { Contract, Indexer } from "crossbell";
-import { createContract, createIndexer } from "crossbell";
-import { ipfsUploadFile } from "crossbell/ipfs";
+import { cacheExchange, Client, fetchExchange } from '@urql/core'
+import type { Contract, Indexer } from 'crossbell'
+import { createContract, createIndexer } from 'crossbell'
+import { ipfsUploadFile } from 'crossbell/ipfs'
 
 import type {
   ClientOptions,
   HandleOrCharacterId,
   InteractionCount,
-} from "./types";
+} from './types'
 
 interface ClientContext {
   client: Client,
@@ -22,13 +22,13 @@ export class ClientBase {
   /**
    * @ignore
    */
-  context: ClientContext;
+  context: ClientContext
 
   constructor(options?: ClientOptions) {
     const {
-      endpoint = "https://indexer.crossbell.io/v1",
-      xLogBase = "xlog.app",
-    } = options ?? {};
+      endpoint = 'https://indexer.crossbell.io/v1',
+      xLogBase = 'xlog.app',
+    } = options ?? {}
 
     this.context = {
       client: new Client({
@@ -42,7 +42,7 @@ export class ClientBase {
       }),
       contract: createContract(),
       xLogBase,
-    };
+    }
   }
 
   /**
@@ -51,15 +51,15 @@ export class ClientBase {
    * Otherwise, it will be treated as a handle and the character ID will be looked up.
    */
   async getCharacterId(handleOrCharacterId: HandleOrCharacterId) {
-    if (typeof handleOrCharacterId === "number")
-      return handleOrCharacterId;
+    if (typeof handleOrCharacterId === 'number')
+      return handleOrCharacterId
 
-    const { indexer } = this.context;
+    const { indexer } = this.context
 
-    const character = await indexer.character.getByHandle(handleOrCharacterId);
+    const character = await indexer.character.getByHandle(handleOrCharacterId)
     if (!character)
-      throw new Error("Character not found");
-    return character.characterId;
+      throw new Error('Character not found')
+    return character.characterId
   }
 
   /**
@@ -70,28 +70,28 @@ export class ClientBase {
     characterId: number,
     noteId: number,
   ): Promise<InteractionCount> {
-    const { indexer } = this.context;
+    const { indexer } = this.context
 
     const [views, likes, comments, tips] = await Promise.all([
       indexer.stat.getForNote(characterId, noteId),
       indexer.link.getBacklinksByNote(characterId, noteId, {
-        linkType: "like",
+        linkType: 'like',
       }),
       indexer.note.getMany({ toCharacterId: characterId, toNoteId: noteId }),
       indexer.tip.getMany({
         toNoteId: noteId,
         toCharacterId: characterId,
       }),
-    ]);
+    ])
 
     if (tips.list.length > 0) {
-      const decimals = await this.getMiraTokenDecimals();
+      const decimals = await this.getMiraTokenDecimals()
       tips.list = tips.list.filter((t) => {
         return (
           BigInt(t.amount)
           >= BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
-        );
-      });
+        )
+      })
       tips.list = tips.list.map((t) => {
         return {
           ...t,
@@ -99,8 +99,8 @@ export class ClientBase {
             BigInt(t.amount)
             / BigInt(10) ** BigInt(decimals.data || 18)
           ).toString(),
-        };
-      });
+        }
+      })
     }
 
     return {
@@ -108,21 +108,21 @@ export class ClientBase {
       likes: likes.count,
       comments: comments.count,
       tips: tips.list.reduce((acc, tip) => acc + Number(tip.amount), 0),
-    };
+    }
   }
 
   private async getMiraTokenDecimals() {
-    const { contract } = this.context;
-    let decimals;
+    const { contract } = this.context
+    let decimals
     try {
-      decimals = await contract.tips.getTokenDecimals();
+      decimals = await contract.tips.getTokenDecimals()
     }
     catch {
       decimals = {
         data: 18,
-      };
+      }
     }
-    return decimals;
+    return decimals
   }
 
   /**
@@ -133,16 +133,16 @@ export class ClientBase {
   async uploadFileFromUrl(urls: string[]) {
     return await Promise.all(
       urls.map(async (url) => {
-        const response = await fetch(url);
-        const file = new Blob([await response.blob()]);
-        return await ipfsUploadFile(file);
+        const response = await fetch(url)
+        const file = new Blob([await response.blob()])
+        return await ipfsUploadFile(file)
       }),
-    );
+    )
   }
 
   /**
    * Upload a file to IPFS.
    * equivalent to `ipfsUploadFile` from `crossbell/ipfs`
    */
-  uploadFile = ipfsUploadFile;
+  uploadFile = ipfsUploadFile
 }

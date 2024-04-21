@@ -1,8 +1,8 @@
-import { AppLink } from "../../app/[locale]/external-link";
-import { env } from "../../env";
-import { client } from "../../lib/client";
-import { AppearanceSwitch } from "../appearance-switch";
-import { InteractionView } from "./interaction";
+import { AppLink } from '../../app/[locale]/external-link'
+import { env } from '../../env'
+import { client } from '../../lib/client'
+import { AppearanceSwitch } from '../appearance-switch'
+import { InteractionView } from './interaction'
 
 export async function PostMeta({
   slug,
@@ -11,15 +11,15 @@ export async function PostMeta({
   slug: string,
   isPost?: boolean,
 }) {
-  const { HANDLE } = env;
+  const { HANDLE } = env
   const [post, site] = await Promise.all([
     isPost
       ? client.post.getBySlug(HANDLE, slug)
       : client.page.getBySlug(HANDLE, slug),
     client.site.getInfo(HANDLE),
-  ]);
+  ])
   if (!post)
-    return null;
+    return null
 
   return (
     <div className="flex flex-wrap gap-4 items-center mb-6">
@@ -37,7 +37,7 @@ export async function PostMeta({
       <AppLink href={`${site.xlogUrl}/${slug}`}>View on xLog</AppLink>
       <AppearanceSwitch className="hidden" />
     </div>
-  );
+  )
 }
 
 export async function PageMeta({
@@ -47,21 +47,21 @@ export async function PageMeta({
   slug: string,
   isPost?: boolean,
 }) {
-  const { HANDLE, SITE_URL } = env;
+  const { HANDLE, SITE_URL } = env
   const [post, site] = await Promise.all([
     isPost
       ? client.post.getBySlug(HANDLE, slug)
       : client.page.getBySlug(HANDLE, slug),
     client.site.getInfo(HANDLE),
-  ]);
+  ])
   if (!post)
-    return null;
+    return null
 
-  const { siteName, characterName } = site;
-  const { cover, summary } = post;
+  const { siteName, characterName } = site
+  const { cover, summary } = post
 
-  const siteTitle = siteName ?? characterName;
-  const title = post.title + (siteTitle ? ` - ${siteTitle}` : "");
+  const siteTitle = siteName ?? characterName
+  const title = post.title + (siteTitle ? ` - ${siteTitle}` : '')
 
   return (
     <>
@@ -81,5 +81,5 @@ export async function PageMeta({
         </>
       )}
     </>
-  );
+  )
 }

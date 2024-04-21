@@ -1,5 +1,5 @@
-import type { Language } from "../";
-import type { InteractionCount, NoteBasic } from ".";
+import type { Language } from '../'
+import type { InteractionCount, NoteBasic } from '.'
 
 export interface PostInput {
   title: string,
@@ -13,4 +13,4 @@ export interface PostInput {
 }
 
 export type Post = PostInput & { lang?: Language } & InteractionCount &
-  NoteBasic;
+  NoteBasic

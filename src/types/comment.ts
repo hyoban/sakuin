@@ -1,4 +1,4 @@
-import type { InteractionCount, NoteBasic } from ".";
+import type { InteractionCount, NoteBasic } from '.'
 
 export interface CommentInput {
   targetCharacterId: number,
@@ -11,4 +11,4 @@ export interface CommentInput {
 
 export type Comment = CommentInput &
   InteractionCount &
-  NoteBasic & { replies: Comment[] };
+  NoteBasic & { replies: Comment[] }

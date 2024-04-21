@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useTransition } from 'react'
 
 type AppLinkProps = React.PropsWithChildren<{
   transition?: boolean,
   className?: ((isLoading: boolean) => string) | string,
 }> &
-Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className">;
+Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'className'>
 
 export function AppLink({
   href,
@@ -17,15 +17,15 @@ export function AppLink({
   transition,
   ...props
 }: AppLinkProps) {
-  const router = useRouter();
-  const [isLoading, startTransition] = useTransition();
-  const classNameFn = typeof className === "function" ? className : () => className;
-  const classNameStr = typeof className === "function" ? className(isLoading) : className;
+  const router = useRouter()
+  const [isLoading, startTransition] = useTransition()
+  const classNameFn = typeof className === 'function' ? className : () => className
+  const classNameStr = typeof className === 'function' ? className(isLoading) : className
 
   if (!href)
-    return <>{children}</>;
+    return <>{children}</>
 
-  if (href.startsWith("http") && !transition) {
+  if (href.startsWith('http') && !transition) {
     return (
       <a
         {...props}
@@ -36,7 +36,7 @@ export function AppLink({
       >
         {children}
       </a>
-    );
+    )
   }
 
   if (!transition) {
@@ -44,7 +44,7 @@ export function AppLink({
       <Link {...props} href={href} className={classNameStr}>
         {children}
       </Link>
-    );
+    )
   }
 
   return (
@@ -52,14 +52,14 @@ export function AppLink({
       {...props}
       href={href}
       onClick={(e) => {
-        e.preventDefault();
+        e.preventDefault()
         startTransition(() => {
-          router.push(href);
-        });
+          router.push(href)
+        })
       }}
       className={classNameFn(isLoading)}
     >
       {children}
     </a>
-  );
+  )
 }

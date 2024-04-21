@@ -1,6 +1,6 @@
-import type { Indexer } from "crossbell";
+import type { Indexer } from 'crossbell'
 
-export type NoteQueryOptions = Parameters<Indexer["note"]["getMany"]>[0];
+export type NoteQueryOptions = Parameters<Indexer['note']['getMany']>[0]
 
 export interface ResultMany<T> {
   list: T[],

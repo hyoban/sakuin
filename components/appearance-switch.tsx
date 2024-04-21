@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { useDark } from "~/hooks/use-dark";
+import { useDark } from '~/hooks/use-dark'
 
-export function AppearanceSwitch({ className = "" }: { className?: string }) {
-  const { toggleDark } = useDark();
+export function AppearanceSwitch({ className = '' }: { className?: string }) {
+  const { toggleDark } = useDark()
 
   return (
     <button
@@ -24,5 +24,5 @@ export function AppearanceSwitch({ className = "" }: { className?: string }) {
         className="i-lucide-moon absolute scale-0 dark:scale-100 transition-transform duration-500 rotate-90 dark:rotate-0"
       />
     </button>
-  );
+  )
 }

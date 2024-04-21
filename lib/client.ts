@@ -1,5 +1,5 @@
-import { Client } from "sakuin";
+import { Client } from 'sakuin'
 
 export const client = new Client({
   fetchOptions: { next: { revalidate: 3600 } },
-});
+})

@@ -1,4 +1,4 @@
-import type { InteractionCount } from "sakuin";
+import type { InteractionCount } from 'sakuin'
 
 export function InteractionView({
   interaction,
@@ -24,5 +24,5 @@ export function InteractionView({
         <span className="text-lg">{interaction.comments}</span>
       </span>
     </div>
-  );
+  )
 }

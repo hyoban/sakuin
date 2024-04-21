@@ -1,7 +1,7 @@
-import { graphql } from "../gql";
-import type { ClientBase } from "./context";
-import type { HandleOrCharacterId, SiteInfo } from "./types";
-import { getFullXLogMeta, parseConnectedAccount, toGateway } from "./utils";
+import { graphql } from '../gql'
+import type { ClientBase } from './context'
+import type { HandleOrCharacterId, SiteInfo } from './types'
+import { getFullXLogMeta, parseConnectedAccount, toGateway } from './utils'
 
 const linkListCountQuery = graphql(`
   query getLinklistCount($characterId: Int!) {
@@ -12,24 +12,24 @@ const linkListCountQuery = graphql(`
       }
     )
   }
-`);
+`)
 
 export class SiteClient {
   constructor(private base: ClientBase) {}
 
   async getInfo(handleOrCharacterId: HandleOrCharacterId): Promise<SiteInfo> {
-    const { indexer, xLogBase } = this.base.context;
+    const { indexer, xLogBase } = this.base.context
     const character
-      = typeof handleOrCharacterId === "string"
+      = typeof handleOrCharacterId === 'string'
         ? await indexer.character.getByHandle(handleOrCharacterId)
-        : await indexer.character.get(handleOrCharacterId);
+        : await indexer.character.get(handleOrCharacterId)
 
     if (!character)
-      throw new Error("Character not found");
+      throw new Error('Character not found')
 
-    const content = character.metadata?.content;
+    const content = character.metadata?.content
     if (!content)
-      throw new Error("Character content not found");
+      throw new Error('Character content not found')
 
     const {
       attributes,
@@ -38,7 +38,7 @@ export class SiteClient {
       avatars,
       banners,
       bio,
-    } = content;
+    } = content
     const {
       navigation,
       custom_domain: customDomain,
@@ -48,12 +48,12 @@ export class SiteClient {
       ua,
       uh,
       css,
-    } = getFullXLogMeta(attributes);
+    } = getFullXLogMeta(attributes)
 
-    const { handle } = character;
+    const { handle } = character
     const xlogUrl = customDomain
       ? `https://${customDomain}`
-      : `https://${handle}.${xLogBase}`;
+      : `https://${handle}.${xLogBase}`
 
     return {
       handle,
@@ -79,19 +79,19 @@ export class SiteClient {
       navigation,
       customDomain,
       customCSS: css,
-    };
+    }
   }
 
   async getStat(handleOrCharacterId: HandleOrCharacterId) {
-    const { indexer, client } = this.base.context;
-    const characterId = await this.base.getCharacterId(handleOrCharacterId);
+    const { indexer, client } = this.base.context
+    const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const [stat, site, subscriptions, comments, notes, likes, achievement]
       = await Promise.all([
         indexer.stat.getForCharacter(characterId),
         indexer.character.get(characterId),
         indexer.link.getBacklinksOfCharacter(characterId, {
           limit: 0,
-          linkType: "follow",
+          linkType: 'follow',
         }),
         indexer.note.getMany({
           limit: 0,
@@ -99,14 +99,14 @@ export class SiteClient {
         }),
         indexer.note.getMany({
           characterId,
-          sources: "xlog",
+          sources: 'xlog',
           limit: 0,
         }),
         client.query(linkListCountQuery, { characterId }).toPromise(),
         indexer.achievement.getMany(characterId, {
-          status: ["MINTED"],
+          status: ['MINTED'],
         }),
-      ]);
+      ])
 
     return {
       viewsCount: stat.viewNoteCount,
@@ -117,8 +117,8 @@ export class SiteClient {
       notesCount: notes.count,
       likesCount: likes.data?.linkCount,
       achievements: achievement?.list.reduce((acc, cur) => {
-        return acc + cur.groups.length;
+        return acc + cur.groups.length
       }, 0),
-    };
+    }
   }
 }

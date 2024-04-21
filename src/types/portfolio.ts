@@ -13,4 +13,4 @@ export type Portfolio = {
   date: string,
   summary: string,
   cover: string,
-} & PortfolioStats;
+} & PortfolioStats

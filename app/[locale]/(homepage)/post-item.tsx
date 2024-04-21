@@ -1,15 +1,15 @@
-import clsx from "clsx";
-import Image from "next/image";
-import type { Post } from "sakuin";
+import clsx from 'clsx'
+import Image from 'next/image'
+import type { Post } from 'sakuin'
 
-import { env } from "~/env";
+import { env } from '~/env'
 
-import { AppLink } from "../external-link";
+import { AppLink } from '../external-link'
 
 export type PostWithCoverInfo = Post & {
   coverSize: { width: number, height: number } | null,
   priority?: boolean,
-};
+}
 interface PostItemProps {
   post: PostWithCoverInfo,
 }
@@ -21,15 +21,15 @@ export function PostItem({ post }: PostItemProps) {
         href={`${post.lang ?? env.LANGUAGE}/post/${post.slug}`}
         className={(isLoading) => {
           return clsx(
-            "not-prose my-6 p-4 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800",
-            isLoading && "animate-pulse",
-          );
+            'not-prose my-6 p-4 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
+            isLoading && 'animate-pulse',
+          )
         }}
         transition
       >
         <PostDetail post={post} fullSummary />
       </AppLink>
-    );
+    )
   }
 
   return (
@@ -37,8 +37,8 @@ export function PostItem({ post }: PostItemProps) {
       href={`${post.lang ?? env.LANGUAGE}/post/${post.slug}`}
       transition
       className={isLoading => clsx(
-        "not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800",
-        isLoading && "animate-pulse",
+        'not-prose my-6 flex flex-col rounded-md overflow-hidden bg-neutral-50 dark:bg-neutral-800',
+        isLoading && 'animate-pulse',
       )}
     >
       <Image
@@ -53,7 +53,7 @@ export function PostItem({ post }: PostItemProps) {
         <PostDetail post={post} />
       </div>
     </AppLink>
-  );
+  )
 }
 
 function PostDetail({
@@ -79,25 +79,25 @@ function PostDetail({
         {post.views > 0 && (
           <span>
             {post.views}
-            {" "}
+            {' '}
             views
           </span>
         )}
         {post.likes > 0 && (
           <span>
             {post.likes}
-            {" "}
+            {' '}
             likes
           </span>
         )}
         {post.comments > 0 && (
           <span>
             {post.comments}
-            {" "}
+            {' '}
             comments
           </span>
         )}
       </p>
     </>
-  );
+  )
 }

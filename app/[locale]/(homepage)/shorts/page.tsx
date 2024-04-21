@@ -1,13 +1,13 @@
-import Image from "next/image";
-import type { Short } from "sakuin";
+import Image from 'next/image'
+import type { Short } from 'sakuin'
 
-import { env } from "../../../../env";
-import { client } from "../../../../lib/client";
-import { AppLink } from "../../external-link";
-import { getImageDimensionByUri } from "../../utils";
+import { env } from '../../../../env'
+import { client } from '../../../../lib/client'
+import { AppLink } from '../../external-link'
+import { getImageDimensionByUri } from '../../utils'
 
 export default async function ShortPage() {
-  const { list: shorts } = await client.short.getMany(env.HANDLE);
+  const { list: shorts } = await client.short.getMany(env.HANDLE)
 
   return (
     <div className="columns-3xs">
@@ -15,17 +15,17 @@ export default async function ShortPage() {
         <ShortItem key={short.slug} short={short} />
       ))}
     </div>
-  );
+  )
 }
 
 async function ShortItem({ short }: { short: Short }) {
-  const photos = short.attachments?.at(0)?.address;
+  const photos = short.attachments?.at(0)?.address
   if (!photos)
-    return null;
+    return null
 
-  const { xlogUrl } = await client.site.getInfo(env.HANDLE);
+  const { xlogUrl } = await client.site.getInfo(env.HANDLE)
 
-  const size = await getImageDimensionByUri(photos);
+  const size = await getImageDimensionByUri(photos)
   return (
     <AppLink
       href={`${xlogUrl}/${short.slug}`}
@@ -42,5 +42,5 @@ async function ShortItem({ short }: { short: Short }) {
         <p>{short.title || short.content}</p>
       </div>
     </AppLink>
-  );
+  )
 }

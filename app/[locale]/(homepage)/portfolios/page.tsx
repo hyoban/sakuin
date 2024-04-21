@@ -1,10 +1,10 @@
-import { env } from "../../../../env";
-import { client } from "../../../../lib/client";
-import { ListItem } from "../../list-item";
-import { capitalize, getSuperscript } from "../../utils";
+import { env } from '../../../../env'
+import { client } from '../../../../lib/client'
+import { ListItem } from '../../list-item'
+import { capitalize, getSuperscript } from '../../utils'
 
 export default async function HomePage() {
-  const portfolios = await client.portfolio.getAll(env.HANDLE);
+  const portfolios = await client.portfolio.getAll(env.HANDLE)
 
   return (
     <>
@@ -18,5 +18,5 @@ export default async function HomePage() {
         />
       ))}
     </>
-  );
+  )
 }

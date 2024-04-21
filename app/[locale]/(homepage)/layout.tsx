@@ -1,33 +1,33 @@
-import type { Language } from "sakuin";
+import type { Language } from 'sakuin'
 
-import { AppearanceSwitch } from "~/components/appearance-switch";
-import { LanguageSwitch } from "~/components/language-switch";
+import { AppearanceSwitch } from '~/components/appearance-switch'
+import { LanguageSwitch } from '~/components/language-switch'
 
-import { env } from "../../../env";
-import { client } from "../../../lib/client";
-import { AppLink } from "../external-link";
-import { Navigation } from "../navigation";
-import { getUniverseLinks } from "../utils";
+import { env } from '../../../env'
+import { client } from '../../../lib/client'
+import { AppLink } from '../external-link'
+import { Navigation } from '../navigation'
+import { getUniverseLinks } from '../utils'
 
 export default async function HomeLayout({
   children,
   params,
 }: React.PropsWithChildren<{ params: { locale: Language } }>) {
-  const { HANDLE } = env;
+  const { HANDLE } = env
   const { characterName, description, socialPlatforms, navigation, xlogUrl }
-    = await client.site.getInfo(HANDLE);
-  const pages = await client.page.getAll(HANDLE);
+    = await client.site.getInfo(HANDLE)
+  const pages = await client.page.getAll(HANDLE)
   const navigations = pages.map(page => ({
     href: `/${page.slug}`,
     label: page.title,
-  }));
+  }))
 
   const links = getUniverseLinks(
     socialPlatforms,
     navigation,
     xlogUrl,
     env.SITE_URL,
-  );
+  )
 
   return (
     <main className="mx-auto max-w-[692px] px-6 my-6 sm:my-16 antialiased prose prose-neutral dark:prose-invert">
@@ -56,5 +56,5 @@ export default async function HomeLayout({
       <Navigation additionalNavigation={navigations} locale={params.locale} />
       {children}
     </main>
-  );
+  )
 }

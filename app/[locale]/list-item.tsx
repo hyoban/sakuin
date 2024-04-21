@@ -1,4 +1,4 @@
-import { AppLink } from "./external-link";
+import { AppLink } from './external-link'
 
 export function ListItem({
   title,
@@ -22,5 +22,5 @@ export function ListItem({
       </div>
       <span className="opacity-70 mt-1">{description}</span>
     </AppLink>
-  );
+  )
 }

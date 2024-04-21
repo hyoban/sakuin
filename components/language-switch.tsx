@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import { usePathname, useRouter } from "next/navigation";
-import type { Language } from "sakuin";
-import { languages } from "sakuin";
+import { usePathname, useRouter } from 'next/navigation'
+import type { Language } from 'sakuin'
+import { languages } from 'sakuin'
 
 import {
   Select,
@@ -10,11 +10,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "~/components/ui/select";
+} from '~/components/ui/select'
 
 export function LanguageSwitch({ currentLocale }: { currentLocale: Language }) {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = usePathname()
+  const router = useRouter()
   return (
     <Select
       value={currentLocale}
@@ -22,8 +22,8 @@ export function LanguageSwitch({ currentLocale }: { currentLocale: Language }) {
         const nextPathname = pathname.replace(
           `/${currentLocale}`,
           `/${locale}`,
-        );
-        router.push(nextPathname);
+        )
+        router.push(nextPathname)
       }}
     >
       <SelectTrigger className="w-[120px]">
@@ -37,5 +37,5 @@ export function LanguageSwitch({ currentLocale }: { currentLocale: Language }) {
         ))}
       </SelectContent>
     </Select>
-  );
+  )
 }
