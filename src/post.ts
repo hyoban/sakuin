@@ -68,7 +68,7 @@ const noteQuery = graphql(`
 
 interface CreateOptions {
   raw?: boolean,
-  translate?: { from: Language, to: Language },
+  translate?: { from?: Language, to: Language },
 }
 
 type UpdateOptions<Tag extends Exclude<NoteType, 'portfolio'>> = {
@@ -335,7 +335,7 @@ export class NoteClient<
       && options.translate.from !== options.translate.to
     ) {
       const response = await fetch(
-        `https://${xLogBase}/api/translate-note?cid=${toCid(note.uri)}&fromLang=${options.translate.from}&toLang=${options.translate.to}`,
+        `https://${xLogBase}/api/translate-note?cid=${toCid(note.uri)}&toLang=${options.translate.to}${options.translate.from ? `&fromLang=${options.translate.from}` : ''}`,
       )
       const json = (await response.json()) as { data: ContentTranslation }
       translation = json.data
