@@ -369,7 +369,7 @@ export class NoteClient<
     )
     if (!disableAISummary && !raw && !summary && note.uri) {
       const res = await fetch(
-        `https://${xLogBase}/api/ai-summary?cid=${toCid(note.uri)}&lang=${translate?.to}`,
+        `https://${xLogBase}/api/summary?cid=${toCid(note.uri)}&lang=${translate?.to}`,
       )
       const json = (await res.json()) as { summary: string | null }
       summary = json.summary ?? ''
