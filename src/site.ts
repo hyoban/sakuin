@@ -116,9 +116,7 @@ export class SiteClient {
       commentsCount: comments.count,
       notesCount: notes.count,
       likesCount: likes.data?.linkCount,
-      achievements: achievement?.list.reduce((acc, cur) => {
-        return acc + cur.groups.length
-      }, 0),
+      achievements: achievement?.list.reduce((acc, cur) => acc + cur.groups.length, 0),
     }
   }
 }

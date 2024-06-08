@@ -34,39 +34,39 @@ test('parse connected account', () => {
 
   expect(connectedAccounts.map(element => parseConnectedAccount(element)))
     .toMatchInlineSnapshot(`
-    [
-      {
-        "id": "DIYgod",
-        "platform": "github",
-      },
-      {
-        "id": "DIYgod",
-        "platform": "twitter",
-      },
-      {
-        "id": "2267573",
-        "platform": "bilibili",
-      },
-      {
-        "id": "prpr233",
-        "platform": "telegram",
-      },
-      {
-        "id": "i@diygod.me",
-        "platform": "email",
-      },
-      {
-        "id": "diygod",
-        "platform": "steam",
-      },
-      {
-        "id": "DIYgod_",
-        "platform": "playstation",
-      },
-      {
-        "id": "SW-3404-1126-5044",
-        "platform": "nintendo switch",
-      },
-    ]
-  `)
+      [
+        {
+          "id": "DIYgod",
+          "platform": "github",
+        },
+        {
+          "id": "DIYgod",
+          "platform": "twitter",
+        },
+        {
+          "id": "2267573",
+          "platform": "bilibili",
+        },
+        {
+          "id": "prpr233",
+          "platform": "telegram",
+        },
+        {
+          "id": "i@diygod.me",
+          "platform": "email",
+        },
+        {
+          "id": "diygod",
+          "platform": "steam",
+        },
+        {
+          "id": "DIYgod_",
+          "platform": "playstation",
+        },
+        {
+          "id": "SW-3404-1126-5044",
+          "platform": "nintendo switch",
+        },
+      ]
+    `)
 })

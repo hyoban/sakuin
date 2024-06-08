@@ -21,8 +21,8 @@ import type { NoteQueryOptions, ResultMany } from './types/utils'
 import { getXLogMeta, toCid, toGateway } from './utils'
 
 interface ContentTranslation {
-  title?: string,
-  content?: string,
+  title?: string
+  content?: string
 }
 
 const noteQuery = graphql(`
@@ -67,14 +67,14 @@ const noteQuery = graphql(`
 `)
 
 interface CreateOptions {
-  raw?: boolean,
-  translate?: { from?: Language, to: Language },
+  raw?: boolean
+  translate?: { from?: Language, to: Language }
 }
 
 type UpdateOptions<Tag extends Exclude<NoteType, 'portfolio'>> = {
-  token: string,
-  handleOrCharacterId: HandleOrCharacterId,
-  note: Partial<Tag extends 'short' ? ShortInput : PostInput>,
+  token: string
+  handleOrCharacterId: HandleOrCharacterId
+  note: Partial<Tag extends 'short' ? ShortInput : PostInput>
 } & ({ noteId: number } | { slug: string })
 
 export class NoteClient<
@@ -186,9 +186,9 @@ export class NoteClient<
     handleOrCharacterId,
     note,
   }: {
-    token: string,
-    handleOrCharacterId: HandleOrCharacterId,
-    note: Input,
+    token: string
+    handleOrCharacterId: HandleOrCharacterId
+    note: Input
   }) {
     this.ensureToken(token)
     const { indexer } = this.base.context
@@ -251,8 +251,9 @@ export class NoteClient<
           'disableAISummary',
           'cover',
         ].includes(key)
-      )
+      ) {
         result[key as keyof Input] = input[key] as never
+      }
     }
     return result
   }
@@ -261,8 +262,8 @@ export class NoteClient<
     values,
     autofill,
   }: {
-    values: Partial<Input>,
-    autofill?: boolean,
+    values: Partial<Input>
+    autofill?: boolean
   }): NoteMetadata & { summary?: string } {
     if (this.tag === 'short') {
       const short = values as unknown as Partial<ShortInput>
@@ -344,9 +345,9 @@ export class NoteClient<
     const rawContent
       = translation?.content ?? note.metadata?.content?.content ?? ''
     const content = raw ? rawContent : toGateway(rawContent)!
-    const match = content.match(/!\[.*?]\((.*?)\)/g)
+    const match = content.match(/!\[.*?\]\((.*?)\)/g)
     const imagesInContent
-      = match?.map(img => img.match(/\((.*?)\)/)?.[1]) ?? []
+      = match?.map(img => (/\((.*?)\)/.exec(img))?.[1]) ?? []
 
     const rawAttachments = (note.metadata?.content?.attachments ?? []) as Array<
       NoteMetadataAttachmentBase<'address'>

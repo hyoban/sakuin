@@ -12,10 +12,10 @@ import type {
 } from './types'
 
 interface ClientContext {
-  client: Client,
-  indexer: Indexer,
-  contract: Contract,
-  xLogBase: string,
+  client: Client
+  indexer: Indexer
+  contract: Contract
+  xLogBase: string
 }
 
 export class ClientBase {
@@ -86,21 +86,17 @@ export class ClientBase {
 
     if (tips.list.length > 0) {
       const decimals = await this.getMiraTokenDecimals()
-      tips.list = tips.list.filter((t) => {
-        return (
+      tips.list = tips.list.filter(t => (
+        BigInt(t.amount)
+        >= BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
+      ))
+      tips.list = tips.list.map(t => ({
+        ...t,
+        amount: (
           BigInt(t.amount)
-          >= BigInt(1) * BigInt(10) ** BigInt(decimals.data || 18)
-        )
-      })
-      tips.list = tips.list.map((t) => {
-        return {
-          ...t,
-          amount: (
-            BigInt(t.amount)
-            / BigInt(10) ** BigInt(decimals.data || 18)
-          ).toString(),
-        }
-      })
+          / BigInt(10) ** BigInt(decimals.data || 18)
+        ).toString(),
+      }))
     }
 
     return {

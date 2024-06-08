@@ -13,7 +13,7 @@ export type ClientOptions = IndexerOptions & {
    * The base URL for the xLog related API.
    * @default 'xlog.app'
    */
-  xLogBase?: 'xlog.app' | 'xlog.page',
+  xLogBase?: 'xlog.app' | 'xlog.page'
 }
 
 /**
@@ -26,10 +26,10 @@ export type HandleOrCharacterId = string | number
  * The interaction count for a note.
  */
 export interface InteractionCount {
-  views: number,
-  likes: number,
-  comments: number,
-  tips: number,
+  views: number
+  likes: number
+  comments: number
+  tips: number
 }
 
 export type NoteType = 'post' | 'page' | 'portfolio' | 'short'
