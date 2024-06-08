@@ -18,8 +18,6 @@ const client = new Client();
 const site = = await client.site.getInfo(HANDLE)
 ```
 
-For more details, please take a look at the [SDK documentation](https://sakuin-docs.netlify.app).
-
 ## See also
 
 - [xLog](https://xlog.app) An open-source creative community written on the blockchain.
