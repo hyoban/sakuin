@@ -108,6 +108,7 @@ export function parseConnectedAccount(
   account: string | { uri: string, extra: Record<string, string> },
 ): SocialPlatform {
   const uri = typeof account === 'string' ? account : account.uri
+  // eslint-disable-next-line regexp/no-misleading-capturing-group
   const [, id, platform] = /csb:\/\/account:(.+)@(.+)/.exec(uri) as string[]
   if (!platform || !id)
     throw new Error('Invalid connected account')

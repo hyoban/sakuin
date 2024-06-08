@@ -345,7 +345,7 @@ export class NoteClient<
     const rawContent
       = translation?.content ?? note.metadata?.content?.content ?? ''
     const content = raw ? rawContent : toGateway(rawContent)!
-    const match = content.match(/!\[.*?\]\((.*?)\)/g)
+    const match = content.match(/!\[.*?\]\(.*?\)/g)
     const imagesInContent
       = match?.map(img => (/\((.*?)\)/.exec(img))?.[1]) ?? []
 
