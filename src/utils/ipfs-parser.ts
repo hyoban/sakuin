@@ -1,6 +1,6 @@
 // https://github.com/Crossbell-Box/xLog/blob/dev/src/lib/ipfs-parser.ts
 
-const IPFS_GATEWAY = 'https://ipfs.4everland.xyz/ipfs/'
+const IPFS_GATEWAY = 'https://ipfs.crossbell.io/ipfs'
 const IPFS_PREFIX = 'ipfs://'
 
 /**
