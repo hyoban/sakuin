@@ -18,6 +18,19 @@ const client = new Client();
 const site = = await client.site.getInfo(HANDLE)
 ```
 
+## Astro Loader
+
+```ts
+import { defineCollection } from 'astro:content'
+import { postLoader } from 'sakuin/astro'
+
+const posts = defineCollection({
+  loader: postLoader({ handle: 'hyoban' }),
+})
+
+export const collections = { posts }
+```
+
 ## See also
 
 - [xLog](https://xlog.app) An open-source creative community written on the blockchain.
