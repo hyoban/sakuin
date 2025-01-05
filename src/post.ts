@@ -211,7 +211,7 @@ export class NoteClient<
     ...options
   }: UpdateOptions<Tag>) {
     this.ensureToken(token)
-    const { indexer } = this.base.context
+    // const { indexer } = this.base.context
     const characterId = await this.base.getCharacterId(handleOrCharacterId)
     const noteToUpdate
       = 'noteId' in options
@@ -225,11 +225,25 @@ export class NoteClient<
       values: { ...noteToUpdate, ...this.clearUnknownAttributes(note) },
     })
 
-    return indexer.siwe.updateNote({
-      characterId,
-      noteId,
-      metadata,
-    })
+    // return indexer.siwe.updateNote({
+    //   characterId,
+    //   noteId,
+    //   metadata,
+    // })
+
+    return fetch(
+      `https://op-sign.crossbell.io/v1/contract/characters/${characterId}/notes/${noteId}/metadata`,
+      {
+        method: 'POST',
+        headers: {
+          'authorization': `Bearer ${token}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          metadata,
+        }),
+      },
+    )
   }
 
   private clearUnknownAttributes(
