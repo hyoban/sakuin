@@ -27,6 +27,16 @@
         "types": "./output/index.d.cts",
         "default": "./output/index.cjs"
       }
+    },
+    "./astro": {
+      "import": {
+        "types": "./output/astro.d.ts",
+        "default": "./output/astro.js"
+      },
+      "require": {
+        "types": "./output/astro.d.cts",
+        "default": "./output/astro.cjs"
+      }
     }
   },
   "main": "./output/index.cjs",
@@ -56,12 +66,17 @@
     "test": "vitest",
     "typecheck": "tsc"
   },
+  "peerDependencies": {
+    "@astrojs/markdown-remark": "^6.0.1",
+    "astro": "^5.1.2"
+  },
   "dependencies": {
     "@urql/core": "^5.1.0",
     "crossbell": "^1.12.1",
     "nanoid": "^5.0.9"
   },
   "devDependencies": {
+    "@astrojs/markdown-remark": "^6.0.1",
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/client-preset": "^4.5.1",
     "@graphql-typed-document-node/core": "^3.2.0",
@@ -72,6 +87,7 @@
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "astro": "^5.1.2",
     "bunchee": "^6.2.0",
     "eslint": "^9.17.0",
     "eslint-config-hyoban": "3.1.15",
