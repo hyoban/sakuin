@@ -44,8 +44,8 @@ export type NoteBasic = Pick<
   | 'deletedAt'
 >
 
-export * from './comment'
-export * from './portfolio'
-export * from './post'
-export * from './short'
-export * from './site'
+export type * from './comment'
+export type * from './portfolio'
+export type * from './post'
+export type * from './short'
+export type * from './site'

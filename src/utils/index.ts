@@ -4,6 +4,7 @@ import type { Navigation, SocialPlatform } from '../types'
 
 export * from './ipfs-parser'
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 const XLogTrait = [
   'xlog_css',
   'xlog_ga',

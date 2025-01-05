@@ -12,8 +12,7 @@ test('get character id', async () => {
     client.getCharacterId('thisCharacterDoesNotExist'),
   ).rejects.toThrowErrorMatchingInlineSnapshot('[Error: Character not found]')
 
-  await expect(() => client.getCharacterId('$')).rejects
-    .toThrowErrorMatchingInlineSnapshot(`
+  await expect(() => client.getCharacterId('$')).rejects.toThrowErrorMatchingInlineSnapshot(`
     [Error: Request failed, status code: 400
     Response:
     {"message":["handle must be a handle"],"error":"Bad Request","statusCode":400}]
