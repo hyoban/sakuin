@@ -31,12 +31,16 @@ export function postLoader(
           id: post.slug,
           data: {
             slug: post.slug,
+            link: post.slug,
             title: post.title,
             description: post.summary,
             summary: post.summary,
             tags: post.tags,
+            categories: post.tags,
             cover: post.cover,
             date: new Date(post.publishedAt),
+            pubDate: new Date(post.publishedAt),
+            content: html,
           },
           body: post.content,
           rendered: { html },
@@ -46,12 +50,16 @@ export function postLoader(
     schema: () => {
       return z.object({
         slug: z.string(),
+        link: z.string(),
         title: z.string(),
         description: z.string(),
         summary: z.string(),
         tags: z.array(z.string()),
+        categories: z.array(z.string()),
         cover: z.string(),
         date: z.coerce.date(),
+        pubDate: z.coerce.date(),
+        content: z.string(),
       })
     },
   }
