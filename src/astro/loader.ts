@@ -1,6 +1,8 @@
 import { createMarkdownProcessor } from '@astrojs/markdown-remark'
+import { inferRemoteSize } from 'astro/assets/utils'
 import type { Loader } from 'astro/loaders'
 import { z } from 'astro/zod'
+import { visit } from 'unist-util-visit'
 
 import type { ClientOptions } from '../index'
 import { Client } from '../index'
@@ -18,7 +20,35 @@ export function postLoader(
   return {
     name: 'xlog-post-loader',
     async load({ config, store }) {
-      const markdownProcessor = await createMarkdownProcessor(config.markdown)
+      const markdownProcessor = await createMarkdownProcessor({
+        ...config.markdown,
+        rehypePlugins: [
+          ...config.markdown.rehypePlugins,
+          () => {
+            const imageNodes = new Set<any>()
+            return (tree) => {
+              visit(tree, 'element', (node) => {
+                if (node.tagName === 'img') {
+                  imageNodes.add(node)
+                }
+              })
+
+              return new Promise((resolve) => {
+                const promises = Array.from(imageNodes).map(async (node) => {
+                  const src = node.properties.src as string
+                  const { width, height } = await inferRemoteSize(src)
+                  node.properties.width = width
+                  node.properties.height = height
+                })
+
+                Promise.all(promises).then(() => {
+                  resolve()
+                })
+              })
+            }
+          },
+        ],
+      })
       const posts = (await client.post.getAll(handle))
         .sort((a, b) => {
           return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
