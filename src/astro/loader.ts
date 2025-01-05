@@ -43,14 +43,16 @@ export function postLoader(
         })
       }
     },
-    schema: z.object({
-      slug: z.string(),
-      title: z.string(),
-      description: z.string(),
-      summary: z.string(),
-      tags: z.array(z.string()),
-      cover: z.string(),
-      date: z.coerce.date(),
-    }),
+    schema: () => {
+      return z.object({
+        slug: z.string(),
+        title: z.string(),
+        description: z.string(),
+        summary: z.string(),
+        tags: z.array(z.string()),
+        cover: z.string(),
+        date: z.coerce.date(),
+      })
+    },
   }
 }
