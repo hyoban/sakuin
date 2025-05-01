@@ -52,6 +52,7 @@ export function shortsLoader(
           rendered: { html },
         })
       }
+      return // 返回 void
     },
     schema: () => {
       return z.object({
