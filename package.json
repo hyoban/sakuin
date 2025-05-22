@@ -1,7 +1,7 @@
 {
   "name": "sakuin",
   "type": "module",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "packageManager": "pnpm@10.11.0",
   "description": "SDK for XLog",
   "author": {
