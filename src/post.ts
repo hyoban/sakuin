@@ -395,7 +395,7 @@ export class NoteClient<
     const title = translation?.title ?? note.metadata?.content?.title ?? ''
     const tags
       = note.metadata?.content?.tags?.filter((tag: string) => tag !== 'post')
-      ?? []
+        ?? []
 
     if (this.tag === 'short') {
       return {
