@@ -2,6 +2,7 @@ import { createMarkdownProcessor } from '@astrojs/markdown-remark'
 import { inferRemoteSize } from 'astro/assets/utils'
 import type { Loader } from 'astro/loaders'
 import { z } from 'astro/zod'
+import pRetry from 'p-retry'
 import { visit } from 'unist-util-visit'
 
 import type { ClientOptions } from '../index'
@@ -10,9 +11,11 @@ import { Client } from '../index'
 export function postLoader(
   {
     handle,
+    retries = 3,
     ...options
   }: ClientOptions & {
     handle: string
+    retries?: number
   },
 ): Loader {
   const client = new Client(options)
@@ -49,7 +52,7 @@ export function postLoader(
           },
         ],
       })
-      const posts = (await client.post.getAll(handle))
+      const posts = (await pRetry(() => client.post.getAll(handle), { retries }))
         .sort((a, b) => {
           return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
         })

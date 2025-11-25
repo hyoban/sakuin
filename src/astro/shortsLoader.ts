@@ -1,5 +1,6 @@
 import type { Loader } from 'astro/loaders'
 import { z } from 'astro/zod'
+import pRetry from 'p-retry'
 
 import type { ClientOptions } from '../index'
 import { Client } from '../index'
@@ -7,9 +8,11 @@ import { Client } from '../index'
 export function shortsLoader(
   {
     handle,
+    retries = 3,
     ...options
   }: ClientOptions & {
     handle: string
+    retries?: number
   },
 ): Loader {
   const client = new Client(options)
@@ -18,7 +21,7 @@ export function shortsLoader(
     name: 'xlog-shorts-loader',
     async load({ store }) {
       // 所有图文排序
-      const shorts = (await client.short.getAll(handle))
+      const shorts = (await pRetry(() => client.short.getAll(handle), { retries }))
         .sort((a, b) => {
           return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
         })

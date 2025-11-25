@@ -15,7 +15,9 @@
     "url": "git+https://github.com/hyoban/sakuin.git"
   },
   "bugs": "https://github.com/hyoban/sakuin/issues",
-  "keywords": ["XLog"],
+  "keywords": [
+    "XLog"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
@@ -74,6 +76,7 @@
     "@urql/core": "^5.1.1",
     "crossbell": "^1.13.1",
     "nanoid": "^5.1.5",
+    "p-retry": "^7.1.0",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
